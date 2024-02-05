@@ -13,6 +13,7 @@ Users-
 * add items to cart
 * remove items from cart
 * purchase items
+
 Admins-
 * login
 * edit product prices
