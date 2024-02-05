@@ -26,7 +26,7 @@ Admins-
 * Kanyan Gresset (gressettkanyan@gmail.com) Grunt
 * Stephen Martin (svm89@msstate.edu, svm89) Grunt
 * Charles Ueltschey (chaseuelt@gmail.com, cmu32) Grunt
-* Matthew Hoang (mdh819@msstate.edu, mdh819) Grunt
+* Matthew Hoang (matthewhoang811@gmail.com, mdh819) Grunt
 
 ## Languages and Tools:
 frontend:
