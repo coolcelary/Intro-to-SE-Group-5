@@ -33,13 +33,15 @@ Admins-
 * Matthew Hoang (matthewhoang811@gmail.com, mdh819) Grunt
 
 ## Languages and Tools:
-frontend:
+
+### frontend:
 * Reactjs
 * Nodejs
 * Typescript + SWC
 * HTML
 * CSS
-backend:
+* 
+### backend:
 * SQLite3
 * Nodejs
 * cors
