@@ -2,7 +2,7 @@
 
 ## 🚧 Project Description 🚧
 A simple Nodejs and React website for buying and selling lawn decor.
-It will incorporate a buyer and seller login system, to authorize purchases and products. The project will use an SQLite database to save credentials and products. Each product will have reviews, price, name, description, and image.
+It will incorporate a buyer and admin login system, to authorize purchases and products. The project will use an SQLite database to save credentials and products. Each product will have reviews, price, name, description, and image.
 
 ## Objective
 The objective of this project is to have a fully functional eccommerce website with a variety of lawn decor.
