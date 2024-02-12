@@ -40,7 +40,7 @@ Admins-
 * Typescript + SWC
 * HTML
 * CSS
-* 
+  
 ### backend:
 * SQLite3
 * Nodejs
