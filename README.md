@@ -21,9 +21,10 @@ Users-
 Admins-
 * login
 * edit product prices
+* edit product descriptions
 * add products
 * remove products
-* edit product descriptions
+* remove product reviews
 
 ## Group 5 members:
 * Hunter Pope (hntrpope@gmail.com) Team Leader
