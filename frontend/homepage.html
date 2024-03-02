@@ -28,10 +28,27 @@
         }
 
         nav .logo {
+            display: flex;
+            align-items: center;
             color: #fff;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             text-decoration: none;
+        }
+
+        nav .logo img {
+            width: 70px; /* Adjust the width as needed */
+            height: auto; /* Maintain the aspect ratio */
+            margin-right: 10px; /* Add some spacing between the image and text */
+        }
+
+        nav .logo-text {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+        }
+
+        nav .logo-text span {
+            margin-bottom: 0px; /* Add some spacing between the words */
         }
 
         nav ul {
@@ -52,7 +69,7 @@
         }
 
         .hamburger {
-            display: none;
+            display: auto;
             cursor: pointer;
             font-size: 24px;
             color: #fff;
@@ -104,18 +121,24 @@
 </head>
 <body>
 
-<nav>
-    <a href="#" class="logo">Lawn Depot</a>
-
-    <div class="hamburger">&#9776;</div>
-
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-</nav>
+    <nav>
+        <a href="#" class="logo">
+            <img src="../logo/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+            <div class="logo-text">
+                <span>Lawn</span>
+                <span>Depot</span>
+            </div>
+        </a>
+    
+        <div class="hamburger">&#9776;</div>
+    
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
 
 <div class="content">
     <div class="product">
