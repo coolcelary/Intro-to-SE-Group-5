@@ -55,7 +55,7 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "../frontend")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,7 +118,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_DIRS = [
-    os.path.join(BASE_DIR, "../../login-page/")
+    os.path.join("/", "mnt/c/Users/paige/Desktop/Intro-to-SE-Group-5/frontend/")
 ]
 
 # Default primary key field type
