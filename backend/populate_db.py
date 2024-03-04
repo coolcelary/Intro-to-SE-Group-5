@@ -2,7 +2,7 @@ import sqlite3
 
 def insert_testing_users():
     # Connect to the SQLite database
-    conn = sqlite3.connect('./Database.db')
+    conn = sqlite3.connect('./EcommerceDB.db')
     cursor = conn.cursor()
 
     # Insert testing users
@@ -13,7 +13,7 @@ def insert_testing_users():
     ]
 
     cursor.executemany('''
-        INSERT INTO users (username, password, email)
+        INSERT INTO Authentication (username, password, email)
         VALUES (?, ?, ?)
     ''', users)
 
