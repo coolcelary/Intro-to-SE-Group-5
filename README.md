@@ -25,6 +25,7 @@ Admins-
 * add products
 * remove products
 * remove product reviews
+* remove user accounts
 
 ## Group 5 members:
 * Hunter Pope (hntrpope@gmail.com) Team Leader
