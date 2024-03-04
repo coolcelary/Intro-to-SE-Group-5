@@ -27,8 +27,8 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
-  console.log(username, password)
-  const pythonProcess = spawn("python3", ["./backend/auth.py", "login", username, password])
+  console.log(`./backend/Login_Module.py login ${username} ${password}`)
+  const pythonProcess = spawn("python3", ["./backend/Login_Module.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     if (result == "True"){
