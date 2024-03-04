@@ -56,6 +56,40 @@
             font-size: 20px;
         }
 
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 400px;
+            font-size: large;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        .search-button {
+            padding: 0px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .search-button img {
+        width: 40px; /* Adjust the width of the image inside the button */
+        height: auto; /* Maintain aspect ratio */
+        }
+
+        .search-button:hover {
+            background-color: #45a049;
+        }
+
         .user-icon {
         display: block;
         position: fixed;
@@ -165,13 +199,18 @@
         <a href="#" class="logo">
             <img src="../assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
         </a>
-    
+
         <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#">Products</a></li>
             <li><a href="#">About Us</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
+
+        <div class="search-container">
+            <button class="search-button"><img src="../assets/Search Icon.png" alt="Search"></button>
+            <input type="text" class="search-input" placeholder="Search Products...">
+        </div>
 
         <div class="user-icon" id="userIcon"><img src="../assets/User Icon.png" alt="User Icon"></div> <!-- Unicode character for a user icon -->
 
