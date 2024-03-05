@@ -83,6 +83,10 @@ def main():
     argB = sys.argv[3]
     if command == "login":
         print(login_user(argA, argB))
+    elif command == "register":
+        argC = argv[4]
+        argD = argv[4]
+.
 
 if __name__ == "__main__":
     main()

@@ -8,15 +8,15 @@ const cookieParser = require("cookie-parser")
 const app = express()
 const PORT = 3000
 
-app.use(express.static(path.join(__dirname,"/frontend/")))
+app.use(express.static(path.join(__dirname, "/frontend/")))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 app.get("/", (req, res) => {
-  if (req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "/frontend/homepage.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
@@ -31,11 +31,11 @@ app.post("/login", (req, res) => {
   const pythonProcess = spawn("python3", ["./backend/Login_Module.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    if (result == "True"){
+    if (result == "True") {
       console.log("valid")
-      res.cookie("authenticated", { maxAge: 900000, httpOnly: true})
+      res.cookie("authenticated", { maxAge: 900000, httpOnly: true })
       res.redirect("/")
-    } else{
+    } else {
       console.log("invalid")
     }
   })
@@ -46,6 +46,6 @@ app.post("/logout", (req, res) => {
   res.status(200)
 })
 
-app.listen(PORT, () =>{
+app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
 })
