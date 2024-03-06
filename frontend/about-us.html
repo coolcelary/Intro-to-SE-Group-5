@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Manrope', sans-serif;
-            background-color: #12a04d;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
             color: #333;
@@ -17,31 +17,239 @@
 
         .about {
             align-self: center;
-            max-width: 1000px;
+            max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #12a04d;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             text-align: center;
         }
 
         h2 {
-            color: #12a04d;
+            color: #fff;
+            font-size: 32px;
+            margin-top: 0px;
+            border-radius: 8px;
             text-align: center;
         }
 
         p {
-            line-height: 1.6;
+            line-height: 1.8;
+            background-color: #fff;
+            border-radius: 8px;
+            font-size: 20px;
+            color: #000000;
+            margin: 10px;
+        }
+        nav {
+            background-color: #12a04d;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+
+        nav .logo img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto; /* Maintain the aspect ratio */
+            margin-right: 30px; /* Add some spacing between the image and text */
+            margin-bottom: 0px;
+            margin-top: 0px;
+        }
+
+        nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: flex-start; /* Align items to the left */
+        align-items: center; /* Center items vertically */
+        margin-left: 0px; /* Push the ul all the way to the left */
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 400px;
+            font-size: large;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        .search-button {
+            padding: 0px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .search-button img {
+        width: 40px; /* Adjust the width of the image inside the button */
+        height: auto; /* Maintain aspect ratio */
+        }
+
+        .search-button:hover {
+            background-color: #45a049;
+        }
+
+        .user-icon {
+        display: block;
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        cursor: pointer;
+        font-size: 24px;
+        color: #fff;
+        margin-right: 15px;
+        width: 40px; /* Adjust the width as needed */
+        height: auto;
+        }
+
+        .user-icon img {
+        width: 55px; /* Adjust the width as needed */
+        height: auto; /* Maintain aspect ratio */
+        }
+
+        .user-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 15px;
+        background-color: #0b6430;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-menu ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        }
+
+        .user-menu li {
+        margin-bottom: 5px;
+        }
+
+        .user-menu a {
+        text-decoration: none;
+        font-size: 20px;
+        color: #fff;
+        font-weight: bold;
+        }
+
+        .user-menu.show {
+        display: block;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .product {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media only screen and (max-width: 600px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: #12a04d;
+                padding: 10px;
+                z-index: 1;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .user-icon {
+            display: block;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            }
+            
+            .user-icon img {
+            width: 30px; /* Adjust the width as needed */
+            height: auto; /* Maintain aspect ratio */
+            }
+
         }
     </style>
 
 </head>
 <body>
+    <nav>
+        <a href="#" class="logo">
+            <img src="../assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+        </a>
+
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Products</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+
+        <div class="search-container">
+            <button class="search-button"><img src="../assets/Search Icon.png" alt="Search"></button>
+            <input type="text" class="search-input" placeholder="Search Products...">
+        </div>
+
+        <div class="user-icon" id="userIcon"><img src="../assets/User Icon.png" alt="User Icon"></div> <!-- Unicode character for a user icon -->
+
+        <div class="user-menu" id="userMenu">
+            <ul>
+                <li><a href="#">Account Information</a></li>
+                <li><a href="#">Order History</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    
+    </nav>
     <div class="about">
         <div class="us">
             <h2>About Us!</h2>
-            <p>This website is created by a group of handsome lads with the objective to have a fully functional eccommerce website with a variety of lawn decor. This website is for our Intro to SE class for the Spring 2024 Msstate semester.</p>
+            <p>This website is created by a group of handsome lads with the objective to have a fully functional e-commerce website with a variety of lawn decor. The website allows users to browse for all their lawn decor needs. Gnomes, wind chimes, bird baths, you name it! This website is for our Intro to SE class for the Spring 2024 Msstate semester.</p>
         </div>
 </body>
 </html>
