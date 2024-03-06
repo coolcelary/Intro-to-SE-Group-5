@@ -68,10 +68,8 @@ def register_user(username, password, usertype, email, phoneNum):
     try:
         cursor.execute("INSERT INTO Authentication (Username, Password, UserType, Email, PhoneNumber) VALUES (?, ?, ?, ?, ?)", (username, password, usertype, email, phoneNum))
         conn.commit()
-        print("User registered successfully.")
         return True
     except sqlite3.Error as e:
-        print("Error inserting user:", e)
         return False
     finally:
         conn.close()
@@ -83,6 +81,12 @@ def main():
     argB = sys.argv[3]
     if command == "login":
         print(login_user(argA, argB))
+    elif command == "register":
+        argC = sys.argv[4]
+        argD = sys.argv[5]
+        argE = sys.argv[6]
+        print(register_user(argA, argB, argC, argD, argE))
+
 
 if __name__ == "__main__":
     main()
