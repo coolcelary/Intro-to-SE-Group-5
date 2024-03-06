@@ -46,6 +46,20 @@ app.post("/logout", (req, res) => {
   res.status(200)
 })
 
+app.post("/register", (req, res) => {
+  const { username, password, user_type, email, phone } = req.body;
+  const pythonProcess = spawn("python3", ["./backend/Login_Module.py", "register", username, password, user_type, email, phone])
+  pythonProcess.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result == "True") {
+      res.status(200).json({ "valid": true })
+    }
+    else {
+      res.status(405).json({ "valid": false })
+    }
+  })
+})
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
 })

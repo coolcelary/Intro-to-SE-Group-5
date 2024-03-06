@@ -1,10 +1,15 @@
-FROM ubuntu:18.04
+FROM node:14-slim
 
-COPY . /
+ENV NODE_ENV development
 
-WORKDIR /
+WORKDIR /usr/src/app
 
-RUN apt-get install nodejs && \
-    apt-get install npm
+COPY . .
+
+RUN npm install express cookie-parser child_process
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+
+EXPOSE 3000
 
 CMD ["npm", "start"]
