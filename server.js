@@ -52,10 +52,13 @@ app.get("/register", (req, res) => {
 })
 
 app.post("/register", (req, res) => {
-  const { username, password, user_type, email, phone } = req.body;
+  const { username, password, email, phone} = req.body;
+  console.log(phone)
+  const user_type = "customer"
   const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone])
-  pythonProcess.on('data', (data) => {
+  pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
+    console.log(result)
     if (result == "True") {
       res.status(200).json({ "valid": true })
     }
