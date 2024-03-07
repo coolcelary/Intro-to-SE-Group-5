@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <!-- You can link external stylesheets or include CSS here -->
+    <style>
+        /* CSS code goes here */
+        /* Just a basic styling for demonstration purposes */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div id="additionalFields" style="display: none;">
+                <!-- Additional fields for registration -->
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full Name</label>
+                    <input type="text" id="fullname" name="fullname">
+                </div>
+            </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+    
+    <!-- You can include JavaScript at the end of the body -->
+    <script>
+        // JavaScript code goes here
+        // This script will toggle the display of additional fields based on user selection
+        const registrationForm = document.getElementById('registrationForm');
+        const additionalFields = document.getElementById('additionalFields');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission for now, we'll handle it later
+            // Here you can add your logic to handle form submission, such as validation and sending data to a server
+            // For now, we'll just log the form data to the console
+            console.log('Form submitted:', new FormData(registrationForm));
+        });
+
+        // Toggle additional fields based on user selection
+        document.getElementById('hasAccount').addEventListener('change', function() {
+            additionalFields.style.display = this.checked ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
