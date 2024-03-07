@@ -47,6 +47,10 @@ app.post("/logout", (req, res) => {
   res.redirect("/login")
 })
 
+app.get("/register", (req, res) => {
+  res.sendFile(path.join(__dirname, "./frontend/registration.html"))
+})
+
 app.post("/register", (req, res) => {
   const { username, password, user_type, email, phone } = req.body;
   const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone])
