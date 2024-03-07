@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Depot - Products</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Manrope, sans-serif;
+      background-color: #ffffff;
+      backdrop-filter: blur(5px);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    nav {
+      background-color: #12a04d;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    nav .logo img {
+      width: 100px;
+      height: auto;
+      margin-right: 30px;
+      margin-bottom: 0px;
+      margin-top: 0px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-left: 0px;
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 10px;
+      width: 400px;
+      font-size: large;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+      outline: none;
+    }
+
+    .search-button {
+      padding: 0px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+    .search-button img {
+      width: 40px;
+      height: auto;
+    }
+
+    .search-button:hover {
+      background-color: #45a049;
+    }
+
+    .user-icon {
+      display: block;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #fff;
+      margin-right: 15px;
+      width: 40px;
+      height: auto;
+    }
+
+    .user-icon img {
+      width: 55px;
+      height: auto;
+    }
+
+    .user-menu {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 15px;
+      background-color: #0b6430;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .user-menu li {
+      margin-bottom: 5px;
+    }
+
+    .user-menu a {
+      text-decoration: none;
+      font-size: 20px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .user-menu.show {
+      display: block;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .product-card {
+      width: calc(25% - 40px);
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @media only screen and (max-width: 768px) {
+      .product-card {
+        width: calc(50% - 40px);
+      }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .product-card {
+        width: 100%;
+      }
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .product-details {
+      text-align: left;
+    }
+
+    .filters {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .filter-section {
+      margin-right: 20px;
+    }
+
+    .filter-label {
+      font-weight: bold;
+    }
+
+    .filter-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .filter-options select {
+      padding: 5px;
+      border-radius: 5px;
+    }
+
+    .pagination {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: center; /* Add this line to center the contents horizontally */
+  align-items: center; /* Add this line to center the contents vertically */
+}
+
+
+    .pagination button {
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .pagination button:hover {
+      background-color: #45a049;
+    }
+
+
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo">
+      <img src="./assets/Logo.png" alt="Logo">
+    </a>
+
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <div class="search-container">
+      <button class="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
+      <input type="text" class="search-input" placeholder="Search Products...">
+    </div>
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+
+    <div class="user-menu" id="userMenu">
+      <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="#">Order History</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h2>Filter Products By</h2>
+    <div class="filters">
+      <div class="filter-section">
+        <span class="filter-label">Price:</span>
+        <div class="filter-options">
+          <select>
+            <option value="all">All</option>
+            <option value="under20">$0 - $20</option>
+            <option value="20to50">$20 - $50</option>
+            <option value="50to100">$50 - $100</option>
+            <option value="over100">Over $100</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-label">Type:</span>
+        <div class="filter-options">
+          <select>
+            <option value="all">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="clothing">Clothing</option>
+            <option value="home">Home & Kitchen</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-label">Color:</span>
+        <div class="filter-options">
+          <select>
+            <option value="all">All</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-list">
+        <!-- Product cards will be dynamically added here -->
+        <!-- Example product card -->
+        <div class="product-card">
+          <img src="./assets/product1.jpg" alt="Product Image">
+          <div class="product-details">
+            <h3>Product Title</h3>
+            <p class="price">$99.99</p>
+            <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="./assets/product1.jpg" alt="Product Image">
+          <div class="product-details">
+            <h3>Product Title</h3>
+            <p class="price">$99.99</p>
+            <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="./assets/product1.jpg" alt="Product Image">
+          <div class="product-details">
+            <h3>Product Title</h3>
+            <p class="price">$99.99</p>
+            <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="./assets/product1.jpg" alt="Product Image">
+          <div class="product-details">
+            <h3>Product Title</h3>
+            <p class="price">$99.99</p>
+            <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+        <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <img src="./assets/product1.jpg" alt="Product Image">
+            <div class="product-details">
+              <h3>Product Title</h3>
+              <p class="price">$99.99</p>
+              <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+          </div>
+          <div class="product-card">
+              <img src="./assets/product1.jpg" alt="Product Image">
+              <div class="product-details">
+                <h3>Product Title</h3>
+                <p class="price">$99.99</p>
+                <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </div>
+            <div class="product-card">
+              <img src="./assets/product1.jpg" alt="Product Image">
+              <div class="product-details">
+                <h3>Product Title</h3>
+                <p class="price">$99.99</p>
+                <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </div>
+            <div class="product-card">
+              <img src="./assets/product1.jpg" alt="Product Image">
+              <div class="product-details">
+                <h3>Product Title</h3>
+                <p class="price">$99.99</p>
+                <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </div>
+            <div class="product-card">
+              <img src="./assets/product1.jpg" alt="Product Image">
+              <div class="product-details">
+                <h3>Product Title</h3>
+                <p class="price">$99.99</p>
+                <p>Short description of the product. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              </div>
+            </div>
+      </div>
+      
+      <div class="pagination">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <!-- Add more buttons as needed -->
+      </div>
+      
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    });
+
+    const productsPerPage = 16; // Number of products to display per page
+    const productListContainer = document.querySelector('.product-list');
+    const paginationButtons = document.querySelectorAll('.pagination button');
+
+    // Function to show products based on the page number
+    function showPage(pageNumber) {
+      const startIdx = (pageNumber - 1) * productsPerPage;
+      const endIdx = startIdx + productsPerPage;
+
+      // Hide all products
+      const allProducts = document.querySelectorAll('.product-card');
+      allProducts.forEach((product, index) => {
+        if (index >= startIdx && index < endIdx) {
+          product.style.display = 'block';
+        } else {
+          product.style.display = 'none';
+        }
+      });
+    }
+
+    // Show the first page initially
+    showPage(1);
+
+    // Attach click event listeners to pagination buttons
+    paginationButtons.forEach((button, index) => {
+      button.addEventListener('click', () => showPage(index + 1));
+    });
+  </script>
+
+</body>
+
+</html>
