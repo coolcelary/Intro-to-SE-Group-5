@@ -584,6 +584,9 @@ nav ul li a {
 
 }
 
+.contact-form{
+  height: 100vh;
+}
 
 .contact-form label {
     display: block;
