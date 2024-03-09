@@ -151,6 +151,22 @@ nav ul li a {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+#productInfo{
+  display: flex;
+  flex-direction: column;
+}
+#productInfo img{
+  max-width: 50%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  overflow: hidden;
+}
+#productInfo  p{
+  margin: 20px;
+  background-color: transparent;
+}
+
 @media only screen and (max-width: 768px) {
   .product-card {
     width: calc(50% - 40px);
@@ -356,14 +372,13 @@ button:hover {
 }
 
 .about {
+  height: 100vh;
   align-self: center;
   max-width: 800px;
   margin: 20px auto;
+}
+.about p{
   padding: 20px;
-  background-color: #12a04d;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  text-align: center;
 }
 
 h2 {

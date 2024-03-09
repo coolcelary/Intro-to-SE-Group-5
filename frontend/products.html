@@ -84,6 +84,7 @@
         </div>
       </div>
     </div>
+    <div id="productInfo"></div>
     <div id="product-container"></div>
     <div class="pagination">
       <button>1</button>
@@ -104,6 +105,24 @@
               const productContainer = document.getElementById('product-container');
               const productCard = document.createElement('div');
               productCard.classList.add('product-card');
+              productCard.addEventListener("click", function() {
+              window.scroll(0, 0)
+              fetch(`/product/${item.id}`)
+                    .then(response => response.json())
+                    .then(prod => {
+                      console.log(prod)
+                      const productInfoDiv = document.getElementById('productInfo');
+                      productInfoDiv.innerHTML = `
+                        <img src="${prod.image_url}"></img>
+                        <h2>${prod.name}</h2>
+                        <p>Price: ${prod.price}</p>
+                        <p>Description: ${prod.description}</p>
+                      `;
+                    })
+                    .catch(error => {
+                      console.error('Error fetching product details:', error);
+                    });
+              })
 
               const title = document.createElement('div');
               title.classList.add('product-title');
@@ -148,7 +167,7 @@
 
       // Attach click event listeners to pagination buttons
       paginationButtons.forEach((button, index) => {
-        button.addEventListener('click', () => showPage(index + 1));
+        button.addEventListener('click', () => {showPage(index + 1); window.scroll(0, 0)});
       });
 
 

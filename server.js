@@ -104,6 +104,23 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+app.get('/product/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
+    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "idsearch", id])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json({})
+      }
+    })
+});
+
+
 app.get("/contact", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
     res.sendFile(path.join(__dirname, "./frontend/contact.html"))
