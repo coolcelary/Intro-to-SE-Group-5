@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,89 +85,71 @@
       </div>
     </div>
     <div id="product-container"></div>
-
+    <div class="pagination">
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <!-- Add more buttons as needed -->
+    </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            fetch('/inventory')
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(item => {
-                        const productContainer = document.getElementById('product-container');
-                        const productCard = document.createElement('div');
-                        productCard.classList.add('product-card');
+      function showPage(pageNumber) {
+        fetch('/inventory')
+          .then(response => response.json())
+          .then(data => {
+            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+              const productContainer = document.getElementById('product-container');
+              const productCard = document.createElement('div');
+              productCard.classList.add('product-card');
 
-                        const title = document.createElement('div');
-                        title.classList.add('product-title');
-                        title.textContent = item.name;
-                        productCard.appendChild(title);
+              const title = document.createElement('div');
+              title.classList.add('product-title');
+              title.textContent = item.name;
+              productCard.appendChild(title);
 
-                        const price = document.createElement('div');
-                        price.classList.add('product-price');
-                        price.textContent = `${item.price}`;
-                        productCard.appendChild(price);
+              const price = document.createElement('div');
+              price.classList.add('product-price');
+              price.textContent = `${item.price}`;
+              productCard.appendChild(price);
 
-                        const description = document.createElement('div');
-                        description.textContent = item.description;
-                        productCard.appendChild(description);
+              const description = document.createElement('div');
+              description.textContent = item.description;
+              productCard.appendChild(description);
 
-                        const image = document.createElement('img');
-                        image.src = item.image_url
-                        image.classList.add('product-image')
-                        productCard.appendChild(image)
+              const image = document.createElement('img');
+              image.src = item.image_url
+              image.classList.add('product-image')
+              productCard.appendChild(image)
 
-                        productContainer.appendChild(productCard);
-                    });
-                })
-                .catch(error => console.error('Error fetching data:', error));
+              productContainer.appendChild(productCard);
+            });
+          })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const userIcon = document.getElementById('userIcon');
+        const userMenu = document.getElementById('userMenu');
+
+        userIcon.addEventListener('click', function () {
+          userMenu.classList.toggle('show');
         });
+        showPage(1)
+      });
+
+      const productsPerPage = 20; // Number of products to display per page
+      const productListContainer = document.querySelector('.product-list');
+      const paginationButtons = document.querySelectorAll('.pagination button');
+
+
+      // Attach click event listeners to pagination buttons
+      paginationButtons.forEach((button, index) => {
+        button.addEventListener('click', () => showPage(index + 1));
+      });
+
+
     </script>
-      <div class="pagination">
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <!-- Add more buttons as needed -->
-      </div>
-      
-
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const userIcon = document.getElementById('userIcon');
-      const userMenu = document.getElementById('userMenu');
-
-      userIcon.addEventListener('click', function () {
-        userMenu.classList.toggle('show');
-      });
-    });
-
-    const productsPerPage = 16; // Number of products to display per page
-    const productListContainer = document.querySelector('.product-list');
-    const paginationButtons = document.querySelectorAll('.pagination button');
-
-    // Function to show products based on the page number
-    function showPage(pageNumber) {
-      const startIdx = (pageNumber - 1) * productsPerPage;
-      const endIdx = startIdx + productsPerPage;
-
-      // Hide all products
-      const allProducts = document.querySelectorAll('.product-card');
-      allProducts.forEach((product, index) => {
-        if (index >= startIdx && index < endIdx) {
-          product.style.display = 'block';
-        } else {
-          product.style.display = 'none';
-        }
-      });
-    }
-
-    // Show the first page initially
-    showPage(1);
-
-    // Attach click event listeners to pagination buttons
-    paginationButtons.forEach((button, index) => {
-      button.addEventListener('click', () => showPage(index + 1));
-    });
-  </script>
 
 </body>
+
 </html>
