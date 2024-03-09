@@ -104,6 +104,33 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+app.get("/contact", (req, res) => {
+  if(req.cookies && req.cookies.authenticated){
+    res.sendFile(path.join(__dirname, "./frontend/contact.html"))
+  }
+  else{
+    res.redirect("/login")
+  }
+})
+
+app.post("/contact", (req, res) => {
+  const {name, email, message} = req.body;
+  console.log(`python3 ./backend/Contact.py ${name} ${email} ${message}`)
+  const pythonProcess = spawn("python3", ["./backend/Contact.py", name, email, `"${message}"`])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "message OK") {
+        res.status(200)
+      }
+      else {
+        res.status(500)
+      }
+    })
+
+})
+
+
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
