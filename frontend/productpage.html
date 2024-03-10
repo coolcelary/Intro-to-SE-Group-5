@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Depot - Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: Manrope, sans-serif;
+      background-color: #ffffff;
+      backdrop-filter: blur(5px);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    nav {
+      background-color: #12a04d;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+
+    nav .logo img {
+      width: 100px;
+      /* Adjust the width as needed */
+      height: auto;
+      /* Maintain the aspect ratio */
+      margin-right: 30px;
+      /* Add some spacing between the image and text */
+      margin-bottom: 0px;
+      margin-top: 0px;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: flex-start;
+      /* Align items to the left */
+      align-items: center;
+      /* Center items vertically */
+      margin-left: 0px;
+      /* Push the ul all the way to the left */
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      padding: 10px;
+      width: 400px;
+      font-size: large;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+      outline: none;
+    }
+
+    .search-button {
+      padding: 0px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+
+    .search-button img {
+      width: 40px;
+      /* Adjust the width of the image inside the button */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+
+    .search-button:hover {
+      background-color: #45a049;
+    }
+
+    .user-icon {
+      display: block;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #fff;
+      margin-right: 15px;
+      width: 40px;
+      /* Adjust the width as needed */
+      height: auto;
+    }
+
+    .user-icon img {
+      width: 55px;
+      /* Adjust the width as needed */
+      height: auto;
+      /* Maintain aspect ratio */
+    }
+
+    .user-menu {
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 15px;
+      background-color: #0b6430;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .user-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .user-menu li {
+      margin-bottom: 5px;
+    }
+
+    .user-menu a {
+      text-decoration: none;
+      font-size: 20px;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .user-menu.show {
+      display: block;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    @media only screen and (max-width: 600px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: #12a04d;
+        padding: 10px;
+        z-index: 1;
+      }
+
+      nav ul.show {
+        display: flex;
+      }
+
+      nav ul li {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .user-icon {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 24px;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .user-icon img {
+        width: 30px;
+        /* Adjust the width as needed */
+        height: auto;
+        /* Maintain aspect ratio */
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo">
+      <img src="./assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+    </a>
+
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+
+    <div class="search-container">
+      <button class="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
+      <input type="text" class="search-input" placeholder="Search Products...">
+    </div>
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+    <!-- Unicode character for a user icon -->
+
+    <div class="user-menu" id="userMenu">
+      <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="#">Order History</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+
+  </nav>
+
+  <div class="content">
+    <div class="product">
+      <h2>Title of Product</h2>
+      <img src="#" alt="Product Image">
+      <p>Test Test Test Test Test.</p>
+      <p>$99.99</p><button>Add to Cart</button><button>Leave a Review</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    });
+  </script>
+
+</body>
+
+</html>
