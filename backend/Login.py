@@ -74,6 +74,25 @@ def register_user(username, password, usertype, email, phoneNum):
     finally:
         conn.close()
 
+def delete_user(username, password):
+    # Check if username and password are provided
+    if not username or not password:
+        return False
+    
+    # connect to database
+    conn = sqlite3.connect('EcommerceDB.db')
+    cursor = conn.cursor()
+
+    #delete user info from database
+    try:
+        cursor.execute("DELETE FROM Authentication WHERE Username = ? Password = ?", (username, password))
+        conn.commit()
+        return True
+    except sqlite3.Error as e:
+        return False
+    finally:
+        conn.close()
+
 
 def main():
     command = sys.argv[1]
