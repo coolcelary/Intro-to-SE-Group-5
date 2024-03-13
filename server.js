@@ -147,6 +147,24 @@ app.post("/contact", (req, res) => {
 
 })
 
+app.post("/cart", (req, res) => {
+  const {userid, itemid, quantity}
+  console.log(`python3 ./backend/Cart.py ${userid} ${itemid} ${quantity}`)
+  const pythonProcess = spawn("python3", ["./backend/Contact.py", userid, itemid, quantity])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "item added") {
+        res.status(200)
+      }
+      else {
+        res.status(500)
+      }
+    })
+
+
+})
+
 
 
 app.listen(PORT, () => {
