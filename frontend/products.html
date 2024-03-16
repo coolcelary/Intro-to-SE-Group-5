@@ -144,6 +144,20 @@
               image.classList.add('product-image')
               productCard.appendChild(image)
 
+              const cartButton = document.createElement('button');
+              cartButton.textContent = "add to cart"
+              cartButton.addEventListener('click', function() {
+                const body = { itemid : `${item.id}` }
+                fetch("/cart", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+              })
+              productCard.appendChild(cartButton)
+
               productContainer.appendChild(productCard);
             });
           })

@@ -3,7 +3,6 @@ const path = require("path")
 const bodyParser = require("body-parser")
 const { spawn } = require("child_process")
 const cookieParser = require("cookie-parser")
-
 // comment here:
 const app = express()
 const PORT = 3000
@@ -11,6 +10,7 @@ const PORT = 3000
 app.use(express.static(path.join(__dirname, "/frontend/")))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   if (req.cookies && req.cookies.authenticated) {
@@ -131,14 +131,14 @@ app.get("/cart_items", (req, res) => {
 })
 
 app.post("/cart", (req, res) => {
-  const {itemid, quantity} = req.body
+  const { itemid } = req.body
   const userid = req.cookies.userid
-  console.log(`python3 ./backend/Cart.py ${userid} ${itemid} ${quantity}`)
-  const pythonProcess = spawn("python3", ["./backend/Cart.py", "add", userid, itemid, quantity])
+  console.log(`python3 ./backend/Cart.py add ${userid} ${itemid}`)
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "add", userid, itemid])
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
       console.log(result)
-      if (result == "item added") {
+      if (result == "valid") {
         res.status(200)
       }
       else {

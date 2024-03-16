@@ -17,6 +17,8 @@ def get_items(userid):
     for row in rows:
         products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (row[1],))
         product = products.fetchone()
+        if not product:
+            continue
         item = dict()
         item["id"] = product[0]
         item["name"] = product[1]
@@ -30,16 +32,19 @@ def get_items(userid):
     conn.close()
 
 
-def add_to_cart(userID, productID, quantity):
+def add_to_cart(userID, productID):
     # Check if username and password are provided
-    if not userID or not productID or not quantity:
-        print("Error: UserID, ProductID, or Quantity not read.")
+    if not userID or not productID:
         return False
 
     # connect to database
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
-
+    existing_entry = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID)).fetchone()
+    if existing_entry:
+        quantity = int(existing_entry[0]) + 1
+    else:
+        quantity = 1
     try:
         cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
         conn.commit()
@@ -89,7 +94,8 @@ def remove_from_cart(userID, productID, quantity):
 if __name__ == "__main__":
     command = sys.argv[1]
     if command == "add":
-       add_to_cart(sys.argv[2], sys.argv[3], sys.argv[4]) 
+        if add_to_cart(sys.argv[2], sys.argv[3]):
+            print("valid")
     elif command == "remove":
         remove_from_cart(sys.argv[2], sys.argv[3], sys.argv[4])
     elif command == "search":
