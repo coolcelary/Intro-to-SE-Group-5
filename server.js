@@ -144,7 +144,6 @@ app.post("/contact", (req, res) => {
         res.status(500)
       }
     })
-
 })
 
 
