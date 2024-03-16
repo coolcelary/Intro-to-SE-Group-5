@@ -1,8 +1,0 @@
-Database.db
-Ecommerce.db
-EcommerceDB.db
-Component
-Login
-Registration
-Users.db
-backend/test.json

@@ -3,9 +3,9 @@ import sys
 
 
 
-def display_cart_table():
+def get_items():
     # Connect to the SQLite database
-    conn = sqlite3.connect('EcommerceDB.db')
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
     # Execute a SELECT query to fetch all rows from the Authentication table
@@ -13,16 +13,17 @@ def display_cart_table():
     rows = cursor.fetchall()
 
     # Display the retrieved rows
+    result = list()
     for row in rows:
-        print("CartID:", row[0])
-        print("UserID:", row[1])
-        print("ProductID:", row[2])
-        print("Quantity:", row[3])
-        print("Price:", row[4])
-        print("")
+        item = dict()
+        item["userid"] = row[0]
+        item["itemid"] = row[1]
+        item["quantity"] = row[2]
+        result.append(item)
 
     # Close the database connection
     conn.close()
+    print(result)
 
 
 def add_to_cart(userID, productID, quantity):
@@ -32,15 +33,14 @@ def add_to_cart(userID, productID, quantity):
         return False
 
     # connect to database
-    conn = sqlite3.connect('EcommerceDB.db')
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
     try:
-        cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?, ?)", (userID, productID, quantity))
+        cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
         conn.commit()
         return True
-    except sqlite3.Error as e:
-        print("Error inserting product:", e)
+    except:
         return False
     finally:
         conn.close()
@@ -48,11 +48,10 @@ def add_to_cart(userID, productID, quantity):
 def remove_from_cart(userID, productID, quantity):
     # Check if username and password are provided
     if not userID or not productID or not quantity:
-        print("Error: UserID, ProductID, or Quantity not read.")
         return False
 
     # connect to database
-    conn = sqlite3.connect('EcommerceDB.db')
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
     try:
@@ -60,9 +59,7 @@ def remove_from_cart(userID, productID, quantity):
         cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID))
         row = cursor.fetchone()
         if row:
-            current_quantity = row[0]
-            print("Current quantity in cart:", current_quantity)
-            print("Quantity requested to remove:", quantity)
+            current_quantity = row[2]
             if current_quantity >= quantity:
                 # Update the quantity in the cart
                 new_quantity = current_quantity - quantity
