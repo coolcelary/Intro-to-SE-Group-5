@@ -147,6 +147,23 @@ app.post("/cart", (req, res) => {
     })
 })
 
+app.delete("/cart", (req, res) => {
+  const { itemid } = req.body
+  const userid = req.cookies.userid
+  console.log(`python3 ./backend/Cart.py remove ${userid} ${itemid}`)
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "remove", userid, itemid])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "valid") {
+        res.status(200).json({"valid":true})
+      }
+      else {
+        res.status(500).json({"valid":false})
+      }
+    })
+})
+
 
 
 

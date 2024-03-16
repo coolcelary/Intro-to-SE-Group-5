@@ -106,24 +106,6 @@
               const productContainer = document.getElementById('product-container');
               const productCard = document.createElement('div');
               productCard.classList.add('product-card');
-              productCard.addEventListener("click", function() {
-              window.scroll(0, 0)
-              fetch(`/product/${item.id}`)
-                    .then(response => response.json())
-                    .then(prod => {
-                      console.log(prod)
-                      const productInfoDiv = document.getElementById('productInfo');
-                      productInfoDiv.innerHTML = `
-                        <img src="${prod.image_url}"></img>
-                        <h2>${prod.name}</h2>
-                        <p>Price: ${prod.price}</p>
-                        <p>Description: ${prod.description}</p>
-                      `;
-                    })
-                    .catch(error => {
-                      console.error('Error fetching product details:', error);
-                    });
-              })
 
               const title = document.createElement('div');
               title.classList.add('product-title');
@@ -143,6 +125,22 @@
               image.src = item.image_url
               image.classList.add('product-image')
               productCard.appendChild(image)
+
+              const removeButton = document.createElement('button')
+              removeButton.textContent = "remove from cart"
+              removeButton.addEventListener("click", function() {
+                const body = { itemid: `${item.id}` }
+                const result = fetch("/cart", {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                location.reload()
+                })
+                productCard.appendChild(removeButton)
+
 
               productContainer.appendChild(productCard);
             });
