@@ -27,7 +27,7 @@ def login_user(username, password):
     # Check if username and password are provided
     if not username or not password:
         #print("Error: Username and password are required.")
-        return False
+        return
 
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
@@ -35,11 +35,9 @@ def login_user(username, password):
     try:
         users = cursor.execute("SELECT UserID, Username FROM Authentication WHERE Username = ? AND Password = ?", (username, password))
         for user in users:
-            return True
-        return False
+            return user[0]
     except sqlite3.Error as e:
-        #print("Error Logging in:", e)
-        return False
+        return
     finally:
         conn.close()
 
@@ -80,7 +78,10 @@ def main():
     argA = sys.argv[2]
     argB = sys.argv[3]
     if command == "login":
-        print(login_user(argA, argB))
+        result = login_user(argA, argB)
+        if result:
+            print(result)
+
     elif command == "register":
         argC = sys.argv[4]
         argD = sys.argv[5]

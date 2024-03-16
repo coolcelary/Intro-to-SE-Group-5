@@ -31,8 +31,9 @@ app.post("/login", (req, res) => {
   const pythonProcess = spawn("python3", ["./backend/Login.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    if (result == "True") {
-      console.log("valid")
+    if (result) {
+      console.log(result)
+      res.cookie("userid", result, { maxAge: 900000, httpOnly: true });
       res.cookie("authenticated", { maxAge: 900000, httpOnly: true })
       res.redirect("/")
     } else {
@@ -103,6 +104,52 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+app.get("/cart", (req, res) => {
+  if(req.cookies && req.cookies.authenticated){
+    res.sendFile(path.join(__dirname, "./frontend/cart.html"))
+  }
+  else{
+    res.redirect("/login")
+  }
+})
+
+app.get("/cart_items", (req, res) => {
+    console.log(`python3 ./backend/Cart.py search "${req.cookies.userid}"`)
+    const userid = req.cookies.userid;
+    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(userid)
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json([])
+      }
+    })
+})
+
+app.post("/cart", (req, res) => {
+  const {itemid, quantity} = req.body
+  const userid = req.cookies.userid
+  console.log(`python3 ./backend/Cart.py ${userid} ${itemid} ${quantity}`)
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "add", userid, itemid, quantity])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "item added") {
+        res.status(200)
+      }
+      else {
+        res.status(500)
+      }
+    })
+})
+
+
+
+
 app.get('/product/:id', (req, res) => {
     const id = req.params.id;
     console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
@@ -143,24 +190,6 @@ app.post("/contact", (req, res) => {
         res.status(500)
       }
     })
-})
-
-app.post("/cart", (req, res) => {
-  const {userid, itemid, quantity} = req.body
-  console.log(`python3 ./backend/Cart.py ${userid} ${itemid} ${quantity}`)
-  const pythonProcess = spawn("python3", ["./backend/Cart.py", "add", userid, itemid, quantity])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "item added") {
-        res.status(200)
-      }
-      else {
-        res.status(500)
-      }
-    })
-
-
 })
 
 

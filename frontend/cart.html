@@ -99,7 +99,7 @@
         previous_cards.forEach(function (element) {
           element.remove()
         })
-        fetch('/inventory')
+        fetch('/cart_items')
           .then(response => response.json())
           .then(data => {
             data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {

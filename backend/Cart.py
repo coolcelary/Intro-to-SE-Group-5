@@ -3,27 +3,31 @@ import sys
 
 
 
-def get_items():
+def get_items(userid):
     # Connect to the SQLite database
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
     # Execute a SELECT query to fetch all rows from the Authentication table
-    cursor.execute("SELECT * FROM Cart")
+    cursor.execute("SELECT * FROM Cart WHERE UserID = ?", (userid,))
     rows = cursor.fetchall()
 
     # Display the retrieved rows
     result = list()
     for row in rows:
+        products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (row[1],))
+        product = products.fetchone()
         item = dict()
-        item["userid"] = row[0]
-        item["itemid"] = row[1]
-        item["quantity"] = row[2]
+        item["id"] = product[0]
+        item["name"] = product[1]
+        item["price"] = product[2]
+        item["category"] = product[3]
+        item["image_url"] = product[4]
         result.append(item)
+    print(result)
 
     # Close the database connection
     conn.close()
-    print(result)
 
 
 def add_to_cart(userID, productID, quantity):
@@ -65,7 +69,7 @@ def remove_from_cart(userID, productID, quantity):
                 new_quantity = current_quantity - quantity
                 if new_quantity == 0:
                     # If the new quantity is 0, remove the item from the cart entirely
-                    cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ItemID = ?", (userID, productID))
+                    cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID))
                     print("Item removed from cart successfully.")
                 else:
                     # Update the quantity of the item in the cart
@@ -88,3 +92,5 @@ if __name__ == "__main__":
        add_to_cart(sys.argv[2], sys.argv[3], sys.argv[4]) 
     elif command == "remove":
         remove_from_cart(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif command == "search":
+        get_items(sys.argv[2])
