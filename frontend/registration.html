@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
+    <title>Lawn Depot - Registration</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="main-title">
@@ -16,22 +17,22 @@
   </div>
 
     <div class="register">
-        <h2>Registration</h2>
+        <h2 class ="regtitle">Registration</h2>
         <form id="registrationForm" action="/register" method="post">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">Email:</label>
                     <input type="email" id="email" name="email">
                 </div>
                 <div class="form-group">
-                    <label for="fullname">Full Name</label>
+                    <label for="fullname">Full Name:</label>
                     <input type="text" id="fullname" name="fullname">
                 </div>
             <button type="submit" class="btn">Register</button>
