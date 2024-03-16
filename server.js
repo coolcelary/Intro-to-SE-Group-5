@@ -41,9 +41,8 @@ app.post("/login", (req, res) => {
   })
 })
 
-app.post("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
   res.clearCookie('authenticated')
-  res.status(200)
   res.redirect("/login")
 })
 
