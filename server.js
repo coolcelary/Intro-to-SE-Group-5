@@ -198,9 +198,6 @@ app.delete("/cart", (req, res) => {
     })
 })
 
-
-
-
 app.get('/product/:id', (req, res) => {
     const id = req.params.id;
     console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
@@ -243,6 +240,22 @@ app.post("/contact", (req, res) => {
     })
 })
 
+app.get("/checkout", (req, res) => {
+  const userid = req.cookies.userid
+  console.log(`python3 ./backend/Order.py ${userid}`)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "valid") {
+        res.redirect("/")
+      }
+      else {
+        res.redirect("/error")
+      }
+    })
+
+})
 
 
 app.listen(PORT, () => {
