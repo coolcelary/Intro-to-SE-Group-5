@@ -141,6 +141,14 @@
                 })
                 productCard.appendChild(removeButton)
 
+            const moreButton = document.createElement('button');
+            moreButton.textContent = "more"
+            moreButton.addEventListener("click", function(){
+              localStorage.setItem("clicked_id",item.id)
+              window.location.href = "/more_info"
+            })
+            productCard.appendChild(moreButton)
+
 
               productContainer.appendChild(productCard);
             });

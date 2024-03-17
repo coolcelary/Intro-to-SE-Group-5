@@ -106,24 +106,6 @@
               const productContainer = document.getElementById('product-container');
               const productCard = document.createElement('div');
               productCard.classList.add('product-card');
-              productCard.addEventListener("click", function() {
-              window.scroll(0, 0)
-              fetch(`/product/${item.id}`)
-                    .then(response => response.json())
-                    .then(prod => {
-                      console.log(prod)
-                      const productInfoDiv = document.getElementById('productInfo');
-                      productInfoDiv.innerHTML = `
-                        <img src="${prod.image_url}"></img>
-                        <h2>${prod.name}</h2>
-                        <p>Price: ${prod.price}</p>
-                        <p>Description: ${prod.description}</p>
-                      `;
-                    })
-                    .catch(error => {
-                      console.error('Error fetching product details:', error);
-                    });
-              })
 
               const title = document.createElement('div');
               title.classList.add('product-title');
@@ -158,9 +140,17 @@
               })
               productCard.appendChild(cartButton)
 
+            const moreButton = document.createElement('button');
+            moreButton.textContent = "more"
+            moreButton.addEventListener("click", function(){
+              localStorage.setItem("clicked_id",item.id)
+              window.location.href = "/more_info"
+            })
+            productCard.appendChild(moreButton)
+
               productContainer.appendChild(productCard);
             });
-          })
+                      })
           .catch(error => console.error('Error fetching data:', error));
       }
 
@@ -197,24 +187,6 @@
               const productContainer = document.getElementById('product-container');
               const productCard = document.createElement('div');
               productCard.classList.add('product-card');
-              productCard.addEventListener("click", function() {
-              window.scroll(0, 0)
-              fetch(`/product/${item.id}`)
-                    .then(response => response.json())
-                    .then(prod => {
-                      console.log(prod)
-                      const productInfoDiv = document.getElementById('productInfo');
-                      productInfoDiv.innerHTML = `
-                        <img src="${prod.image_url}"></img>
-                        <h2>${prod.name}</h2>
-                        <p>Price: ${prod.price}</p>
-                        <p>Description: ${prod.description}</p>
-                      `;
-                    })
-                    .catch(error => {
-                      console.error('Error fetching product details:', error);
-                    });
-              })
 
               const title = document.createElement('div');
               title.classList.add('product-title');
@@ -248,6 +220,15 @@
                 });
               })
               productCard.appendChild(cartButton)
+
+            const moreButton = document.createElement('button');
+            moreButton.textContent = "more"
+            moreButton.addEventListener("click", function(){
+              localStorage.setItem("clicked_id",item.id)
+              window.location.href = "/more_info"
+            })
+            productCard.appendChild(moreButton)
+
 
               productContainer.appendChild(productCard);
             });

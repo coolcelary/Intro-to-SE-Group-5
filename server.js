@@ -104,6 +104,15 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+app.get("/more_info", (req, res) => {
+  if(req.cookies && req.cookies.authenticated){
+    res.sendFile(path.join(__dirname, "./frontend/more.html"))
+  }
+  else{
+    res.redirect("/login")
+  }
+})
+
 app.get("/search", (req, res) => {
     const query = req.query.q
     console.log(`python3 ./backend/Inventory.py search "${query}" ""`)
