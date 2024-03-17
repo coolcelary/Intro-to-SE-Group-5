@@ -43,79 +43,7 @@
       <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
       <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
     </div>
-    <script>
-      function searchItems(query){
-        fetch(`/search?q=${query}`)
-          .then(response => response.json())
-          .then(data => {
-            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
-              const productContainer = document.getElementById('product-container');
-              const productCard = document.createElement('div');
-              productCard.classList.add('product-card');
-              productCard.addEventListener("click", function() {
-              window.scroll(0, 0)
-              fetch(`/product/${item.id}`)
-                    .then(response => response.json())
-                    .then(prod => {
-                      console.log(prod)
-                      const productInfoDiv = document.getElementById('productInfo');
-                      productInfoDiv.innerHTML = `
-                        <img src="${prod.image_url}"></img>
-                        <h2>${prod.name}</h2>
-                        <p>Price: ${prod.price}</p>
-                        <p>Description: ${prod.description}</p>
-                      `;
-                    })
-                    .catch(error => {
-                      console.error('Error fetching product details:', error);
-                    });
-              })
-
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-              })
-              productCard.appendChild(cartButton)
-
-              productContainer.appendChild(productCard);
-            });
-          })
-          .catch(error => console.error('Error fetching data:', error));
-      }
-      searchButton = document.getElementById("search-button")
-      searchinput = document.getElementById("search-input")
-      searchButton.addEventListener("click", searchItems(searchButton.text))
-
-    </script>
-
-    <div class="filters">
+        <div class="filters">
       <div class="filter-section">
         <span class="filter-label">Price:</span>
         <div class="filter-options">
@@ -256,8 +184,86 @@
         button.addEventListener('click', () => {showPage(index + 1); window.scroll(0, 0)});
       });
 
+      function searchItems(pageNumber, query){
+        previous_cards = document.querySelectorAll('.product-card');
+        previous_cards.forEach(function (element) {
+          element.remove()
+        })
+        fetch(`/search?q=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+              const productContainer = document.getElementById('product-container');
+              const productCard = document.createElement('div');
+              productCard.classList.add('product-card');
+              productCard.addEventListener("click", function() {
+              window.scroll(0, 0)
+              fetch(`/product/${item.id}`)
+                    .then(response => response.json())
+                    .then(prod => {
+                      console.log(prod)
+                      const productInfoDiv = document.getElementById('productInfo');
+                      productInfoDiv.innerHTML = `
+                        <img src="${prod.image_url}"></img>
+                        <h2>${prod.name}</h2>
+                        <p>Price: ${prod.price}</p>
+                        <p>Description: ${prod.description}</p>
+                      `;
+                    })
+                    .catch(error => {
+                      console.error('Error fetching product details:', error);
+                    });
+              })
 
+              const title = document.createElement('div');
+              title.classList.add('product-title');
+              title.textContent = item.name;
+              productCard.appendChild(title);
+
+              const price = document.createElement('div');
+              price.classList.add('product-price');
+              price.textContent = `${item.price}`;
+              productCard.appendChild(price);
+
+              const description = document.createElement('div');
+              description.textContent = item.description;
+              productCard.appendChild(description);
+
+              const image = document.createElement('img');
+              image.src = item.image_url
+              image.classList.add('product-image')
+              productCard.appendChild(image)
+
+              const cartButton = document.createElement('button');
+              cartButton.textContent = "add to cart"
+              cartButton.addEventListener('click', function() {
+                const body = { itemid : `${item.id}` }
+                fetch("/cart", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+              })
+              productCard.appendChild(cartButton)
+
+              productContainer.appendChild(productCard);
+            });
+          })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+      searchButton = document.getElementById("search-button")
+      searchinput = document.getElementById("search-input")
+      searchButton.addEventListener("click", function(){
+        console.log(searchinput.value)
+        if(searchinput.value){
+        searchItems(1, searchinput.value)
+        }
+      })
     </script>
+
+
 
 </body>
 
