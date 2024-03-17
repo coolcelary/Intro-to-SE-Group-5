@@ -86,3 +86,4 @@ if __name__ == "__main__":
         get_items(sys.argv[2])
     elif command == "search":
         get_items(sys.argv[2], sys.argv[3])
+

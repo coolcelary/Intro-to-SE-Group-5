@@ -3,14 +3,17 @@ const path = require("path")
 const bodyParser = require("body-parser")
 const { spawn } = require("child_process")
 const cookieParser = require("cookie-parser")
-// comment here:
+
 const app = express()
+// using port 3000 for now
 const PORT = 3000
 
 app.use(express.static(path.join(__dirname, "/frontend/")))
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser())
 app.use(bodyParser.json());
+app.use(cookieParser())
+
+// Homepage
 
 app.get("/", (req, res) => {
   if (req.cookies && req.cookies.authenticated) {
@@ -20,6 +23,8 @@ app.get("/", (req, res) => {
     res.redirect("/login")
   }
 })
+
+// Login page
 
 app.get("/login", (req, res) => {
   res.sendFile(path.join(__dirname, "/frontend/login.html"))
@@ -42,10 +47,7 @@ app.post("/login", (req, res) => {
   })
 })
 
-app.get("/logout", (req, res) => {
-  res.clearCookie('authenticated')
-  res.redirect("/login")
-})
+// Reagistration page
 
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/registration.html"))
@@ -68,6 +70,15 @@ app.post("/register", (req, res) => {
   })
 })
 
+// Logout button
+
+app.get("/logout", (req, res) => {
+  res.clearCookie('authenticated')
+  res.redirect("/login")
+})
+
+// About page
+
 app.get("/about", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
     res.sendFile(path.join(__dirname, "./frontend/about-us.html"))
@@ -76,6 +87,8 @@ app.get("/about", (req, res) => {
     res.redirect("/login")
   }
 })
+
+// Products page
 
 app.get("/products", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
@@ -104,15 +117,6 @@ app.get("/inventory", (req, res) => {
     })
 })
 
-app.get("/more_info", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
-    res.sendFile(path.join(__dirname, "./frontend/more.html"))
-  }
-  else{
-    res.redirect("/login")
-  }
-})
-
 app.get("/search", (req, res) => {
     const query = req.query.q
     console.log(`python3 ./backend/Inventory.py search "${query}" ""`)
@@ -129,24 +133,8 @@ app.get("/search", (req, res) => {
     })
 })
 
-app.get("/cart_search", (req, res) => {
-    const query = req.query.q
-    const userid = req.cookies.userid
-    console.log(`python3 ./backend/Cart.py search "${userid}" "${query}"`)
-    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid, query])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
-})
 
-
+// Cart page
 
 app.get("/cart", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
@@ -207,6 +195,35 @@ app.delete("/cart", (req, res) => {
     })
 })
 
+
+app.get("/cart_search", (req, res) => {
+    const query = req.query.q
+    const userid = req.cookies.userid
+    console.log(`python3 ./backend/Cart.py search "${userid}" "${query}"`)
+    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid, query])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json([])
+      }
+    })
+})
+
+// More info page
+
+app.get("/more_info", (req, res) => {
+  if(req.cookies && req.cookies.authenticated){
+    res.sendFile(path.join(__dirname, "./frontend/more.html"))
+  }
+  else{
+    res.redirect("/login")
+  }
+})
+
 app.get('/product/:id', (req, res) => {
     const id = req.params.id;
     console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
@@ -223,6 +240,7 @@ app.get('/product/:id', (req, res) => {
     })
 });
 
+// Contact us page
 
 app.get("/contact", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
@@ -249,6 +267,8 @@ app.post("/contact", (req, res) => {
     })
 })
 
+// Checkout button
+
 app.get("/checkout", (req, res) => {
   const userid = req.cookies.userid
   console.log(`python3 ./backend/Order.py ${userid}`)
@@ -266,7 +286,8 @@ app.get("/checkout", (req, res) => {
 
 })
 
+// Setup the server
 
 app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`)
+  console.log(`\nWelcome to LawnDepot.com! \nhttp://localhost:${PORT}`)
 })
