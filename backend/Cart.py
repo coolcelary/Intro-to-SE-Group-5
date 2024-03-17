@@ -3,7 +3,7 @@ import sys
 
 
 
-def get_items(userid):
+def get_items(userid, query=""):
     # Connect to the SQLite database
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
@@ -18,6 +18,8 @@ def get_items(userid):
         products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (row[1],))
         product = products.fetchone()
         if not product:
+            continue
+        if query and query not in product[1]:
             continue
         item = dict()
         item["id"] = product[0]
@@ -80,5 +82,7 @@ if __name__ == "__main__":
             print("valid")
     elif command == "remove":
         remove_from_cart(sys.argv[2], sys.argv[3])
-    elif command == "search":
+    elif command == "searchid":
         get_items(sys.argv[2])
+    elif command == "search":
+        get_items(sys.argv[2], sys.argv[3])

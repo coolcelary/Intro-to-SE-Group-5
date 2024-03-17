@@ -120,6 +120,23 @@ app.get("/search", (req, res) => {
     })
 })
 
+app.get("/cart_search", (req, res) => {
+    const query = req.query.q
+    const userid = req.cookies.userid
+    console.log(`python3 ./backend/Cart.py search "${userid}" "${query}"`)
+    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid, query])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json([])
+      }
+    })
+})
+
 
 
 app.get("/cart", (req, res) => {
@@ -132,12 +149,11 @@ app.get("/cart", (req, res) => {
 })
 
 app.get("/cart_items", (req, res) => {
-    console.log(`python3 ./backend/Cart.py search "${req.cookies.userid}"`)
+    console.log(`python3 ./backend/Cart.py get "${req.cookies.userid}"`)
     const userid = req.cookies.userid;
-    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid])
+    const pythonProcess = spawn("python3", ["./backend/Cart.py", "searchid", userid])
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
-      console.log(userid)
       console.log(result)
       if (result) {
         res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
