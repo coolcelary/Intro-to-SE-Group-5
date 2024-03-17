@@ -374,6 +374,7 @@ button {
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  margin: 5px;
 }
 
 button:hover {
@@ -543,6 +544,7 @@ nav ul li a {
 .content {
   flex-grow: 1;
   padding: 20px;
+  min-height: 100vh;
 }
 
 .product {
@@ -625,9 +627,6 @@ nav ul li a {
   border-radius: 5px;
   border: 1px solid #ccc;
   box-sizing: border-box;
-}
-
-.contact-form textarea {
   resize: vertical;
   height: 100px;
 }
@@ -657,3 +656,4 @@ nav ul li a {
     padding: 10px;
     z-index: 1;
   }
+

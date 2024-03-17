@@ -258,7 +258,7 @@ app.post("/contact", (req, res) => {
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
       console.log(result)
-      if (result == "message OK") {
+      if (result) {
         res.status(200)
       }
       else {

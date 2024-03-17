@@ -9,19 +9,20 @@
 </head>
 
 <body>
-  <nav>
+   <nav>
     <a href="#" class="logo">
-      <img src="../assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+      <img src="./assets/Logo.png" alt="Logo">
     </a>
 
     <ul>
       <li><a href="/">Home</a></li>
       <li><a href="/products">Products</a></li>
+      <li><a href="/cart">Cart</a></li>
       <li><a href="/about">About Us</a></li>
       <li><a href="/contact">Contact</a></li>
     </ul>
-    <div class="user-icon" id="userIcon"><img src="../assets/User Icon.png" alt="User Icon"></div>
-    <!-- Unicode character for a user icon -->
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
 
     <div class="user-menu" id="userMenu">
       <ul>
@@ -31,7 +32,6 @@
         <li><a href="/checkout">Checkout</a></li>
       </ul>
     </div>
-
   </nav>
   <div class="about">
     <div class="us">
@@ -41,6 +41,17 @@
         wind chimes, bird baths, you name it! This website is for our Intro to SE class for the Spring 2024 Msstate
         semester.</p>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const userIcon = document.getElementById('userIcon');
+        const userMenu = document.getElementById('userMenu');
+
+        userIcon.addEventListener('click', function () {
+          userMenu.classList.toggle('show');
+        });
+      });
+
+    </script>
 </body>
 
 </html>
