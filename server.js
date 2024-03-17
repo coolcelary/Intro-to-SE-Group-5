@@ -104,6 +104,24 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+app.get("/search", (req, res) => {
+    const query = req.query.q
+    console.log(`python3 ./backend/Inventory.py search "${query}" ""`)
+    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", query, ""])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json([])
+      }
+    })
+})
+
+
+
 app.get("/cart", (req, res) => {
   if(req.cookies && req.cookies.authenticated){
     res.sendFile(path.join(__dirname, "./frontend/cart.html"))
