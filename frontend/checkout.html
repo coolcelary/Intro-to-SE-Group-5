@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout Page</title>
+<style>
+    .container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Checkout</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Quantity</th>
+        <th>Item Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Product A</td>
+        <td>$10.00</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Product B</td>
+        <td>$20.00</td>
+      </tr>
+      <!-- Add more items here if needed -->
+    </tbody>
+  </table>
+  
+  <h3>Personal Information</h3>
+  <form id="personal-info-form">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="address" placeholder="Address" required>
+    <input type="email" name="email" placeholder="Email" required>
+  </form>
+  
+  <h3>Payment Details</h3>
+  <form id="payment-form">
+    <input type="text" name="card-number" placeholder="Card Number" required>
+    <input type="text" name="expiry-date" placeholder="Expiration Date" required>
+    <input type="text" name="card-holder-name" placeholder="Card Holder Name" required>
+    <input type="text" name="cvv" placeholder="CVV" required>
+  </form>
+  
+  <button onclick="confirmCheckout()">Confirm Checkout</button>
+</div>
+
+<script>
+    function confirmCheckout() {
+  // Get form data
+  const personalInfoForm = document.getElementById("personal-info-form");
+  const paymentForm = document.getElementById("payment-form");
+  
+  const personalInfoData = new FormData(personalInfoForm);
+  const paymentData = new FormData(paymentForm);
+  
+  // Convert FormData to JSON
+  const personalInfoJSON = {};
+  for (const [key, value] of personalInfoData.entries()) {
+    personalInfoJSON[key] = value;
+  }
+  
+  const paymentJSON = {};
+  for (const [key, value] of paymentData.entries()) {
+    paymentJSON[key] = value;
+  }
+  
+  // Combine personal info and payment data
+  const checkoutData = {
+    personalInfo: personalInfoJSON,
+    payment: paymentJSON
+  };
+  
+  // Send the data to the server (not implemented in this example)
+  console.log(checkoutData);
+}
+
+</script>
+</body>
+</html>
