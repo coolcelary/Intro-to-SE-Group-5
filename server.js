@@ -13,6 +13,44 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json());
 app.use(cookieParser())
 
+
+// Admin login page
+
+app.get("/admin", (req,res) => {
+  res.sendFile(path.join(__dirname, "/frontend/admin.html"))
+})
+
+app.post("/admin", (req, res) => {
+  const {username, password} = req.body
+  console.log(`./backend/Seller.py login ${username} ${password}`)
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result) {
+      console.log(result)
+      res.cookie("sellerid", result, { maxAge: 900000, httpOnly: true });
+      res.cookie("seller_auth", { maxAge: 900000, httpOnly: true })
+      res.redirect("/")
+    } else {
+      console.log("invalid")
+    }
+  })
+
+})
+
+
+// Sellers page
+//
+app.get("/sellers", (req, res) => {
+  if(req.cookies && req.cookies.seller_auth){
+    res.sendFile(path.join(__dirname, "/frontend/sellerpage.html"))
+  }
+  else{
+    res.redirect("/admin")
+  }
+})
+
+
 // Homepage
 
 app.get("/", (req, res) => {
