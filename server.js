@@ -279,8 +279,9 @@ app.get('/product/:id', (req, res) => {
 
 app.get('/hasPurchased/:id', (req, res) => {
     const id = req.params.id;
-    console.log(`python3 ./backend/Order.py verify "${id}"`)
-    const pythonProcess = spawn("python3", ["./backend/Order.py", "verify", id])
+    const userid = req.cookies.userid;
+    console.log(`python3 ./backend/Order.py verify ${userid} ${id}`)
+    const pythonProcess = spawn("python3", ["./backend/Order.py", "verify", userid, id])
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
       console.log(result)
