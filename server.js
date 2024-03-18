@@ -38,9 +38,8 @@ app.post("/admin", (req, res) => {
 
 })
 
-
 // Sellers page
-//
+
 app.get("/sellers", (req, res) => {
   if(req.cookies && req.cookies.seller_auth){
     res.sendFile(path.join(__dirname, "/frontend/sellerpage.html"))
@@ -277,6 +276,23 @@ app.get('/product/:id', (req, res) => {
       }
     })
 });
+
+app.get('/hasPurchased/:id', (req, res) => {
+    const id = req.params.id;
+    console.log(`python3 ./backend/Order.py verify "${id}"`)
+    const pythonProcess = spawn("python3", ["./backend/Order.py", "verify", id])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "valid") {
+        res.json({valid:true})
+      }
+      else {
+        res.json({valid:false})
+      }
+    })
+
+})
 
 // Contact us page
 
