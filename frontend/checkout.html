@@ -3,53 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout Page</title>
-<style>
-    .container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-table, th, td {
-  border: 1px solid #ddd;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-}
-
-input[type="text"],
-input[type="email"] {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-</style>
+<title>Lawn Depot - Checkout Page</title>
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<div class="container">
+    <nav>
+        <a href="#" class="logo">
+          <img src="./assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+        </a>
+    
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/cart">Cart</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+    
+        
+        <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+        <!-- Unicode character for a user icon -->
+    
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="#">Account Information</a></li>
+            <li><a href="#">Order History</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/checkout">Checkout</a></li>
+          </ul>
+        </div>
+    
+      </nav>
+
+<div class="carttable">
   <h2>Checkout</h2>
   <table>
     <thead>

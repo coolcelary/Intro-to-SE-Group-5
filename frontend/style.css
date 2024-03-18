@@ -657,3 +657,32 @@ nav ul li a {
     z-index: 1;
   }
 }
+
+.carttable {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.carttable h2 {
+  text-align: center;
+}
+
+.carttable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.carttable th, .carttable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.carttable th {
+  background-color: #f2f2f2;
+}
+
+.carttable tbody tr:nth-child(even) {
+  background-color: #fff;
+}
