@@ -662,13 +662,13 @@ nav ul li a {
   font-family: Manrope, sans-serif;
   text-align: center;
   margin: 0 auto;
-  width: 600px; /* Set your desired width */
-  margin: 0 auto; /* Center the card horizontally */
+  max-width: 1500px; 
+  margin: 0 auto; 
   margin-top: 3%;
   padding: 20px;
-  border: 1px solid #ccc; /* Add a border */
-  border-radius: 5px; /* Add rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow */
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   background-color: #fff;
 }
 
