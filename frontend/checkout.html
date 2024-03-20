@@ -75,10 +75,15 @@
     <input type="text" name="cvv" placeholder="CVV" required>
   </form>
   
+  <button onclick="goBack()">Go Back</button>
   <button onclick="confirmCheckout()">Confirm Checkout</button>
 </div>
 
 <script>
+  function goBack() {
+      window.history.back();
+    }
+    
     function confirmCheckout() {
   // Get form data
   const personalInfoForm = document.getElementById("personal-info-form");
