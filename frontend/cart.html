@@ -38,63 +38,23 @@
     </div>
   </nav>
 
-  <div class="content">
-    <h2>Filter Products By</h2>
-    <div class="search-container" id="search-container">
-      <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
-      <input type="text" class="search-input" placeholder="Search Products..." id="search-input">
+  
+    <div class="cartinfo">
+      <h2>Cart Items</h2>
+      <div id="product-container"></div>
+      <button onclick="goBack()">Go Back</button>
+      <button id="checkoutbutton">Checkout</button>
     </div>
-
-    <div class="filters">
-      <div class="filter-section">
-        <span class="filter-label">Price:</span>
-        <div class="filter-options">
-          <select>
-            <option value="all">All</option>
-            <option value="under20">$0 - $20</option>
-            <option value="20to50">$20 - $50</option>
-            <option value="50to100">$50 - $100</option>
-            <option value="over100">Over $100</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <span class="filter-label">Type:</span>
-        <div class="filter-options">
-          <select>
-            <option value="all">All</option>
-            <option value="electronics">Statues and Sculptures</option>
-            <option value="clothing">Water Features</option>
-            <option value="home">Spinners and Chimes</option>
-            <option value="home">Flags and Banners</option>
-            <option value="home">Planters and Pots</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <span class="filter-label">Color:</span>
-        <div class="filter-options">
-          <select>
-            <option value="all">All</option>
-            <option value="red">Red</option>
-            <option value="blue">Blue</option>
-            <option value="green">Green</option>
-            <option value="green">Pink</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div id="productInfo"></div>
-    <div id="product-container"></div>
-    <div class="pagination">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <!-- Add more buttons as needed -->
-    </div>
+  
     <script>
+      const checkoutbutton = document.getElementById('checkoutbutton');
+      checkoutbutton.addEventListener('click', function() {
+        window.location.href = '/checkout';
+      });
+
+      function goBack() {
+      window.history.back();
+    }
       function showPage(pageNumber) {
         previous_cards = document.querySelectorAll('.product-card');
         previous_cards.forEach(function (element) {
