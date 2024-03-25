@@ -11,7 +11,7 @@ def add_review(ProductID, UserID, Rating, review_text):
             cursor = conn.cursor()
 
             # Insert review into the Reviews table
-            cursor.execute("INSERT INTO Reviews (ProductID, UserID, Rating, ReviewText) VALUES (?, ?, ?, ?)",
+            cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, UserID, Rating, ReviewText) VALUES (null, ?, ?, ?, ?)",
                         (ProductID, UserID, Rating, review_text))
 
             # Commit the transaction
