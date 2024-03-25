@@ -656,4 +656,64 @@ nav ul li a {
     padding: 10px;
     z-index: 1;
   }
+}
 
+.cartinfo {
+  font-family: Manrope, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 1500px; 
+  margin: 0 auto; 
+  margin-top: 3%;
+  padding: 20px;
+  border: 1px solid #ccc; 
+  border-radius: 5px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  background-color: #fff;
+}
+
+.cartinfo h2 {
+  color: #12a04d;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.carttable {
+  font-family: Manrope, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  width: 600px; /* Set your desired width */
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 3%;
+  padding: 20px;
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow */
+  background-color: #fff;
+}
+
+.carttable h2 {
+  color: #12a04d;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.carttable table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.carttable th, .carttable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.carttable th {
+  background-color: #f2f2f2;
+}
+
+.carttable tbody tr:nth-child(even) {
+  background-color: #fff;
+}
