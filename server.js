@@ -325,6 +325,14 @@ app.post("/contact", (req, res) => {
 // Checkout button
 
 app.get("/checkout", (req, res) => {
+  
+  if(req.cookies && req.cookies.authenticated){
+    res.sendFile(path.join(__dirname, "frontend/checkout.html"));
+  }
+  else{
+    res.redirect("/login");
+  }
+/*
   const userid = req.cookies.userid
   console.log(`python3 ./backend/Order.py ${userid}`)
   const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid])
@@ -338,7 +346,7 @@ app.get("/checkout", (req, res) => {
         res.redirect("/error")
       }
     })
-
+*/
 })
 
 // Setup the server
