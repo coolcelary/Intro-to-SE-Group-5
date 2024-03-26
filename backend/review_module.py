@@ -2,17 +2,20 @@ import sqlite3
 import sys
 import Order
 
-def add_review(ProductID, Username, Rating, review_text):
+def add_review(UserID, ProductID, Username, Rating, review_text):
     # Check if the user has ordered the item
     try:
-        if has_ordered(UserID, ProductID) == "valid":
+        if has_ordered(UserID, ProductID):
             # Connect to the SQLite database
-            conn = sqlite3.connect('ecommerceDB.db')
+            conn = sqlite3.connect('./backend/EcommerceDB.db')
             cursor = conn.cursor()
 
             # Insert review into the Reviews table
-            cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, Username, Rating, ReviewText) VALUES (null, ?, ?, ?, ?)",
-                        (ProductID, Username, Rating, review_text))
+            try:
+                cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, Username, Rating, ReviewText) VALUES (NULL, ?, '?', ?, '?')",
+                            (ProductID, Username, Rating, review_text))
+            except expression as identifier:
+                print(expression)
 
             # Commit the transaction
             conn.commit()
@@ -26,7 +29,23 @@ def add_review(ProductID, Username, Rating, review_text):
         return "invalid"
 
 def get_reviews(ProductID):
-    conn = sqlite3.connect('ecommerceDB.db')
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
-    cursor.execute("SELECT ")
+    reviews = cursor.execute("SELECT * FROM Reviews WHERE ProductID = ?", (ProductID,)).fetchall()
+    result = list()
+    for row in reviews:
+        item = dict()
+        item["text"] = row[4]
+        item["username"] = row[2]
+        item["stars"] = row[3]
+        result.append(item)
+    print(result)
+
+
+if __name__ == "__main__":
+    command = sys.argv[1]
+    if command == "get":
+        get_reviews(sys.argv[2])
+    if command == "add":
+        add_review(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])

@@ -25,8 +25,10 @@ def has_ordered(userid, itemid):
     cursor = conn.cursor()
     if cursor.execute("SELECT * FROM Orders WHERE UserID = ? AND ProductID = ?", (userid, itemid)).fetchone():
         print("valid")
+        return True
     else:
         print("Invalid")
+        return False
 
 if __name__ == "__main__":
     command = sys.argv[1]
