@@ -2,7 +2,7 @@ import sqlite3
 import sys
 import Order
 
-def add_review(ProductID, UserID, Rating, review_text):
+def add_review(ProductID, Username, Rating, review_text):
     # Check if the user has ordered the item
     try:
         if has_ordered(UserID, ProductID) == "valid":
@@ -11,8 +11,8 @@ def add_review(ProductID, UserID, Rating, review_text):
             cursor = conn.cursor()
 
             # Insert review into the Reviews table
-            cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, UserID, Rating, ReviewText) VALUES (null, ?, ?, ?, ?)",
-                        (ProductID, UserID, Rating, review_text))
+            cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, Username, Rating, ReviewText) VALUES (null, ?, ?, ?, ?)",
+                        (ProductID, Username, Rating, review_text))
 
             # Commit the transaction
             conn.commit()
@@ -21,6 +21,12 @@ def add_review(ProductID, UserID, Rating, review_text):
             conn.close()
             #return "Review added successfully."
         else:
-            return "You have not purchased this item."
-    except sqlite3.Error as e:
-        return "Error: Failed to add review. " + str(e)
+            return "valid"
+    except:
+        return "invalid"
+
+def get_reviews(ProductID):
+    conn = sqlite3.connect('ecommerceDB.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT ")
