@@ -89,9 +89,10 @@
 
           })
           reviewContainer = document.getElementById("reviews");
-          fetch(`/product/${localStorage.getItem("clicked_id")}`)
+          fetch(`/review/${localStorage.getItem("clicked_id")}`)
           .then(response => response.json())
-          .then(item => {
+          .then(data => {
+            data.forEach(item => {
               const title = document.createElement('div');
               title.classList.add('product-title');
               title.textContent = item.username;
@@ -101,7 +102,7 @@
               const description = document.createElement('div');
               description.textContent = item.text;
               reviewContainer.appendChild(description);
-
+})
           })
 
       });
