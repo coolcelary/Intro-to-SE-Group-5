@@ -40,6 +40,7 @@
 
   <div class="content">
       <div id="product" class="product-card"></div>
+      <div id="reviews" class="review-container"></div>
   </div>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
@@ -87,6 +88,22 @@
               productCard.appendChild(cartButton)
 
           })
+          reviewContainer = document.getElementById("reviews");
+          fetch(`/product/${localStorage.getItem("clicked_id")}`)
+          .then(response => response.json())
+          .then(item => {
+              const title = document.createElement('div');
+              title.classList.add('product-title');
+              title.textContent = item.username;
+              reviewContainer.appendChild(title);
+
+
+              const description = document.createElement('div');
+              description.textContent = item.text;
+              reviewContainer.appendChild(description);
+
+          })
+
       });
     </script>
 
