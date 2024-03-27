@@ -37,30 +37,11 @@
                 </div>
                 <div class="form-group">
                     <label for="phonenumber">Phone Number:</label>
-                    <input type="text" id="phonenumber" name="phonenumber">
+                    <input type="text" id="phone_number" name="phone_number">
                 </div>
             <button type="submit" class="btn">Register</button>
         </form>
     </div>
     
-    <!-- You can include JavaScript at the end of the body -->
-    <script>
-        // JavaScript code goes here
-        // This script will toggle the display of additional fields based on user selection
-        const registrationForm = document.getElementById('registrationForm');
-        const additionalFields = document.getElementById('additionalFields');
-
-        registrationForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission for now, we'll handle it later
-            // Here you can add your logic to handle form submission, such as validation and sending data to a server
-            // For now, we'll just log the form data to the console
-            console.log('Form submitted:', new FormData(registrationForm));
-        });
-
-        // Toggle additional fields based on user selection
-        document.getElementById('hasAccount').addEventListener('change', function() {
-            additionalFields.style.display = this.checked ? 'none' : 'block';
-        });
-    </script>
 </body>
 </html>

@@ -72,8 +72,6 @@ app.post("/products", (req,res) => {
       res.redirect("/sellers_add")
     }
   })
-
-
 })
 
 app.get("/seller_products", (req,res) => {
@@ -91,7 +89,6 @@ app.get("/seller_products", (req,res) => {
         res.status(405).json([])
       }
     })
-
 })
 
 
@@ -136,18 +133,18 @@ app.get("/register", (req, res) => {
 })
 
 app.post("/register", (req, res) => {
-  const { username, password, email, phone} = req.body;
-  console.log(phone)
+  const { username, password, email, phone_number } = req.body;
   const user_type = "customer"
-  const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone])
+  console.log(`python3 ./backend/Login.py register ${username} ${password} ${user_type} ${email} ${phone_number}`)
+  const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone_number])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     console.log(result)
     if (result == "True") {
-      res.status(200).json({ "valid": true })
+      res.redirect("/login")
     }
     else {
-      res.status(405).json({ "valid": false })
+      res.redirect("/login")
     }
   })
 })

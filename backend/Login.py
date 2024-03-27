@@ -44,22 +44,22 @@ def login_user(username, password):
 def register_user(username, password, usertype, email, phoneNum):
     # Check if username and password are provided
     if not username or not password:
-        #print("Error: Username and password are required.")
+        print("Error: Username and password are required.")
         return False
     
     # Check if email is provided and has a valid format
     if not email or '@' not in email:
-        #print("Error: Invalid or missing email address.")
+        print("Error: Invalid or missing email address.")
         return False
     
     # Check if phone number is provided and is a valid integer
     try:
         phoneNum = int(phoneNum)
     except ValueError:
-        #print("Error: Phone number must be a valid integer.")
+        print("Error: Phone number must be a valid integer.")
         return False
     # connect to database
-    conn = sqlite3.connect('EcommerceDB.db')
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
     #insert register info into database
@@ -68,6 +68,7 @@ def register_user(username, password, usertype, email, phoneNum):
         conn.commit()
         return True
     except sqlite3.Error as e:
+        print(e)
         return False
     finally:
         conn.close()
