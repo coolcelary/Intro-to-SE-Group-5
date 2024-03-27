@@ -30,7 +30,7 @@ app.post("/admin", (req, res) => {
       console.log(result)
       res.cookie("sellerid", result, { maxAge: 900000, httpOnly: true });
       res.cookie("seller_auth", { maxAge: 900000, httpOnly: true })
-      res.redirect("/")
+      res.redirect("/sellers_view")
     } else {
       console.log("invalid")
     }
@@ -40,9 +40,18 @@ app.post("/admin", (req, res) => {
 
 // Sellers page
 
-app.get("/sellers", (req, res) => {
+app.get("/sellers_add", (req, res) => {
   if(req.cookies && req.cookies.seller_auth){
-    res.sendFile(path.join(__dirname, "/frontend/sellerpage.html"))
+    res.sendFile(path.join(__dirname, "/frontend/selleradd.html"))
+  }
+  else{
+    res.redirect("/admin")
+  }
+})
+
+app.get("/sellers_view", (req, res) => {
+  if(req.cookies && req.cookies.seller_auth){
+    res.sendFile(path.join(__dirname, "/frontend/sellerview.html"))
   }
   else{
     res.redirect("/admin")
@@ -50,7 +59,7 @@ app.get("/sellers", (req, res) => {
 })
 
 app.post("/products", (req,res) => {
-  const {name, price, category, image_url} = req.body
+  const {name, price, category, image_url} = req.body;
   const seller_id = req.cookies.sellerid;
   console.log(`./backend/Seller.py add ${name} ${price} ${category} ${image_url} ${seller_id}`)
   const pythonProcess = spawn("python3", ["./backend/Seller.py", "add", name, price, category, image_url, seller_id])
@@ -58,9 +67,9 @@ app.post("/products", (req,res) => {
     const result = data.toString().trim();
     console.log(result)
     if (result == "valid") {
-      res.status(200).json({ "valid": true })
+      res.redirect("/sellers_view")
     } else {
-      res.status(400).json({ "valid": false })
+      res.redirect("/sellers_add")
     }
   })
 
@@ -71,7 +80,7 @@ app.get("/seller_products", (req,res) => {
   // get a sellets products
     const seller_id = req.cookies.sellerid;
     console.log(`python3 ./backend/Seller.py search "${seller_id}" `)
-    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", seller_id])
+    const pythonProcess = spawn("python3", ["./backend/Seller.py", "search", seller_id])
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
       console.log(result)

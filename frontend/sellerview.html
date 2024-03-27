@@ -19,17 +19,9 @@
     </a>
 
     <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/products">Products</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/contact">Contact</a></li>
-      <li><a href="/new-item">New Item</a></li>
+      <li><a href="/sellers_add">Add</a></li>
+      <li><a href="/sellers_view">Products</a></li>
     </ul>
-
-    <div class="search-container">
-      <button class="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
-      <input type="text" class="search-input" placeholder="Search Products...">
-    </div>
 
     <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
     <!-- Unicode character for a user icon -->
@@ -45,7 +37,7 @@
   </nav>
 
     <div class="content">
-        <div class="product-container">
+        <div id="product-container">
         </div>
       </div>
       
@@ -61,7 +53,7 @@
     fetch('/seller_products')
           .then(response => response.json())
           .then(data => {
-            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+            data.forEach(item => {
               const productContainer = document.getElementById('product-container');
               const productCard = document.createElement('div');
               productCard.classList.add('product-card');
@@ -85,33 +77,20 @@
               image.classList.add('product-image')
               productCard.appendChild(image)
 
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
+              const moreButton = document.createElement('button');
+              moreButton.textContent = "more"
+              moreButton.addEventListener("click", function(){
+                localStorage.setItem("clicked_id",item.id)
+                window.location.href = "/more_info"
               })
-              productCard.appendChild(cartButton)
-            const moreButton = document.createElement('button');
-            moreButton.textContent = "more"
-            moreButton.addEventListener("click", function(){
-              localStorage.setItem("clicked_id",item.id)
-              window.location.href = "/more_info"
-            })
             productCard.appendChild(moreButton)
 
-              productContainer.appendChild(productCard);
+            productContainer.appendChild(productCard);
             });
-                      })
+          })
           .catch(error => console.error('Error fetching data:', error));
-      }
     });
+
   </script>
 
 </body>

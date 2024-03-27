@@ -6,6 +6,7 @@ def search_products(name, category):
     # Connect to your SQL database
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
+    params = ()
 
     # Base SQL query
     sql_query = "SELECT * FROM products WHERE 1"
