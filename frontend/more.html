@@ -9,6 +9,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+        .hidden {
+            display: none;
+        }
+  </style>
 </head>
 
 <body>
@@ -41,9 +46,28 @@
   <div class="content">
       <div id="product" class="product-card"></div>
       <div id="reviews" class="review-container"></div>
-  </div>
+        <form id="reviewForm">
+        <h3>Product Review Form</h3>
+            <div class="form-group">
+                <label for="rating">Rating (1-5):</label>
+                <input type="number" id="rating" name="rating" min="1" max="5" required>
+            </div>
+            <div class="form-group">
+                <label for="review">Review:</label>
+                <textarea id="review" name="review" rows="5" required></textarea>
+            </div>
+            <input type="submit" value="Submit Review" onclick="submitReview(event)">
+        </form>
+    </div>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
+        let isPurchased = true;
+        fetch(`/hasPurchased/${localStorage.getItem("clicked_id")}`)
+          .then(response => response.json)
+          .then(data => isPurchased = data.valid)
+        if(!isPurchased){
+          document.getElementById('reviewForm').classList.add('hidden');
+        }
         const userIcon = document.getElementById('userIcon');
         const userMenu = document.getElementById('userMenu');
 
@@ -106,6 +130,43 @@
           })
 
       });
+
+      function submitReview(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const rating = document.getElementById('rating').value;
+            const reviewText = document.getElementById('review').value;
+
+            // Prepare review data
+            const reviewData = {
+                productId: localStorage.getItem("clicked_id"),
+                username: 'test',
+                text: reviewText,
+                stars: rating,
+            };
+
+            // Make POST request
+        fetch('/review/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Review submitted successfully:', data);
+                document.getElementById("reviewForm").reset();
+            })
+            .catch(error => {
+                console.error('Error submitting review:', error);
+            });
+        }
     </script>
 
 

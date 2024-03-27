@@ -309,7 +309,23 @@ app.get("/review/:id", (req, res) => {
         res.status(500).json([])
       }
     })
+})
 
+app.post("/review", (req, res) => {
+  const { productId, username, text, stars } = req.body;
+  const userid = req.cookies.userid;
+  console.log(`python3 ./backend/review_module.py add ${userid} ${productId} ${username} ${stars} "${text}"`)
+  const pythonProcess = spawn("python3", ["./backend/review_module.py", "add", userid, productId, username, stars, `"${text}"`])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "valid\nvalid") {
+        res.status(200).json({valid:true});
+      }
+      else {
+        res.status(400).json({valid:false});
+      }
+    })
 
 })
 

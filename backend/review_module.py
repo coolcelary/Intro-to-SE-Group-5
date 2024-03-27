@@ -1,32 +1,30 @@
 import sqlite3
 import sys
-import Order
+from Order import has_ordered
 
 def add_review(UserID, ProductID, Username, Rating, review_text):
     # Check if the user has ordered the item
-    try:
-        if has_ordered(UserID, ProductID):
-            # Connect to the SQLite database
-            conn = sqlite3.connect('./backend/EcommerceDB.db')
-            cursor = conn.cursor()
+    if has_ordered(UserID, ProductID):
+        # Connect to the SQLite database
+        conn = sqlite3.connect('./backend/EcommerceDB.db')
+        cursor = conn.cursor()
 
-            # Insert review into the Reviews table
-            try:
-                cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, Username, Rating, ReviewText) VALUES (NULL, ?, '?', ?, '?')",
-                            (ProductID, Username, Rating, review_text))
-            except expression as identifier:
-                print(expression)
+        # Insert review into the Reviews table
+        try:
+            cursor.execute("INSERT INTO Reviews (ReviewID, ProductID, Username, Rating, ReviewText) VALUES (NULL, ?, ?, ?, ?)",
+                        (ProductID, Username, Rating, review_text.replace("\"", '')))
+        except expression as identifier:
+            print(expression)
 
-            # Commit the transaction
-            conn.commit()
+        # Commit the transaction
+        conn.commit()
 
-            # Close the connection
-            conn.close()
-            #return "Review added successfully."
-        else:
-            return "valid"
-    except:
-        return "invalid"
+        # Close the connection
+        conn.close()
+        #return "Review added successfully."
+        print("valid")
+    else:
+        print("invalid")
 
 def get_reviews(ProductID):
     conn = sqlite3.connect('./backend/EcommerceDB.db')
