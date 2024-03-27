@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawn Depot - Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="main-title">
+    <img src="../assets/Logo.png" alt="Logo">
+  </div>
+
+  <div class="title">
+    <em><strong>Sprout Style, Grow Smiles: Your Lawn, Your Canvas!</strong></em>
+  </div>
+
+    <div class="register">
+        <h2 class ="regtitle">Registration</h2>
+        <form id="registrationForm" action="/register" method="post">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full Name:</label>
+                    <input type="text" id="fullname" name="fullname">
+                </div>
+                <div class="form-group">
+                    <label for="phonenumber">Phone Number:</label>
+                    <input type="text" id="phonenumber" name="phonenumber">
+                </div>
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+    
+    <!-- You can include JavaScript at the end of the body -->
+    <script>
+        // JavaScript code goes here
+        // This script will toggle the display of additional fields based on user selection
+        const registrationForm = document.getElementById('registrationForm');
+        const additionalFields = document.getElementById('additionalFields');
+
+        registrationForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission for now, we'll handle it later
+            // Here you can add your logic to handle form submission, such as validation and sending data to a server
+            // For now, we'll just log the form data to the console
+            console.log('Form submitted:', new FormData(registrationForm));
+        });
+
+        // Toggle additional fields based on user selection
+        document.getElementById('hasAccount').addEventListener('change', function() {
+            additionalFields.style.display = this.checked ? 'none' : 'block';
+        });
+    </script>
+</body>
+</html>
