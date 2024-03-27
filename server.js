@@ -50,11 +50,39 @@ app.get("/sellers", (req, res) => {
 })
 
 app.post("/products", (req,res) => {
-  // make a new product
+  const {name, price, category, image_url} = req.body
+  const seller_id = req.cookies.sellerid;
+  console.log(`./backend/Seller.py add ${name} ${price} ${category} ${image_url} ${seller_id}`)
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "add", name, price, category, image_url, seller_id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid") {
+      res.status(200).json({ "valid": true })
+    } else {
+      res.status(400).json({ "valid": false })
+    }
+  })
+
+
 })
 
 app.get("/seller_products", (req,res) => {
   // get a sellets products
+    const seller_id = req.cookies.sellerid;
+    console.log(`python3 ./backend/Seller.py search "${seller_id}" `)
+    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", seller_id])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
+      }
+      else {
+        res.status(405).json([])
+      }
+    })
+
 })
 
 
