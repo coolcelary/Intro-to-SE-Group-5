@@ -61,14 +61,19 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        let isPurchased = true;
         fetch(`/hasPurchased/${localStorage.getItem("clicked_id")}`)
-          .then(response => response.json)
-          .then(data => isPurchased = data.valid)
-        if(!isPurchased){
-          document.getElementById('reviewForm').classList.add('hidden');
-        }
+          .then(response => response.json())
+          .then(data => {
+          console.log(data.valid)
+          if(data.valid == false){
+            document.getElementById('reviewForm').classList.add('hidden');
+            }
+          else {
+            document.getElementById('reviewForm').classList.remove('hidden');
+          }
+        })
         const userIcon = document.getElementById('userIcon');
+
         const userMenu = document.getElementById('userMenu');
 
         userIcon.addEventListener('click', function () {
