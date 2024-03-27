@@ -2,7 +2,7 @@ import sys
 import sqlite3
 
 
-def checkout(userid):
+def checkout(userid, name, address, email, card_number, expiration_date, card_name, cvv):
     if not userid:
         return
     
@@ -14,7 +14,7 @@ def checkout(userid):
         return
     cursor.execute("DELETE FROM Cart WHERE UserID = ?", (userid,))
     for item in cart_items:
-        cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity) VALUES (NULL, ?, ?, ?)", (item[0], item[1], item[2]))
+        cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity, Name, Address, Email, CardNumber, ExpirationDate, CardName, CVV) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (item[0], item[1], item[2], name, address, email, card_number, expiration_date, card_name, cvv))
 
     print("valid")
     conn.commit()
