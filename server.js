@@ -49,6 +49,14 @@ app.get("/sellers", (req, res) => {
   }
 })
 
+app.post("/products", (req,res) => {
+  // make a new product
+})
+
+app.get("/seller_products", (req,res) => {
+  // get a sellets products
+})
+
 
 // Homepage
 
