@@ -30,7 +30,7 @@
       <ul>
         <li><a href="#">Account Information</a></li>
         <li><a href="#">Order History</a></li>
-        <li><a href="#">Logout</a></li>
+        <li><a href="/logout">Logout</a></li>
       </ul>
     </div>
 
@@ -63,7 +63,16 @@
       </div>
     </div>
 </body>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const userIcon = document.getElementById('userIcon');
+    const userMenu = document.getElementById('userMenu');
 
+    userIcon.addEventListener('click', function () {
+      userMenu.classList.toggle('show');
+    });
+  });
+</script>
 </html>
 
 
