@@ -22,7 +22,7 @@ def add_product(name, price, category, image_url, seller_id):
         conn = sqlite3.connect("./backend/EcommerceDB.db")
         cursor = conn.cursor()
         cursor.execute("INSERT INTO Products (product_id, name, price, category, image_url, SellerID) VALUES (NULL, ?, ?, ?, ?, ?)",
-                       (name, price, category, image_url, seller_id))
+                       (name, str(price), category, image_url, seller_id))
         conn.commit()
         print("valid")
     except:
@@ -37,7 +37,7 @@ def get_products(seller_id):
         item = dict()
         item["id"] = row[0]
         item["name"] = row[1].replace("'", "").replace('"', '')
-        item["price"] = row[2]
+        item["price"] = row[2].replace("'", "").replace('"', '')
         item["category"] = row[3].replace("'", "").replace('"', '')
         item["image_url"] = row[4].replace("'", "").replace('"', '')
         results.append(item)
