@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lawn Depot - Checkout Page</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <nav>
+        <a href="#" class="logo">
+          <img src="./assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+        </a>
+    
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/products">Products</a></li>
+          <li><a href="/cart">Cart</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+    
+        
+        <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+        <!-- Unicode character for a user icon -->
+    
+        <div class="user-menu" id="userMenu">
+          <ul>
+            <li><a href="#">Account Information</a></li>
+            <li><a href="#">Order History</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/checkout">Checkout</a></li>
+          </ul>
+        </div>
+    
+      </nav>
+
+<div class="carttable">
+  <h2>Checkout</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Quantity</th>
+        <th>Item Name</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Product A</td>
+        <td>$10.00</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Product B</td>
+        <td>$20.00</td>
+      </tr>
+      <!-- Add more items here if needed -->
+    </tbody>
+  </table>
+  
+  <h3>Personal Information</h3>
+  <form id="payment-form" action="/checkout" method="post">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="address" placeholder="Address" required>
+    <input type="email" name="email" placeholder="Email" required>
+  
+  <h3>Payment Details</h3>
+    <input type="text" name="card_number" placeholder="Card Number" required>
+    <input type="text" name="expiry_date" placeholder="Expiration Date" required>
+    <input type="text" name="card_holder_name" placeholder="Card Holder Name" required>
+    <input type="text" name="cvv" placeholder="CVV" required>
+
+    <button onclick="goBack()">Go Back</button>
+    <button type="submit">Submit</button>
+  </form>
+  
+  
+</div>
+
+<script>
+  function goBack() {
+      window.history.back();
+    }
+    
+</script>
+</body>
+</html>
