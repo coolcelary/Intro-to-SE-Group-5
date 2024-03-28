@@ -35,7 +35,7 @@ def search_products(name, category):
         item = dict()
         item["id"] = row[0]
         item["name"] = row[1].replace("'", "").replace('"', '')
-        item["price"] = row[2].replace("'", "").replace('"', '')
+        item["price"] = str(row[2]).replace("'", "").replace('"', '')
         item["category"] = row[3].replace("'", "").replace('"', '')
         item["image_url"] = row[4].replace("'", "").replace('"', '')
         processed.append(item)
