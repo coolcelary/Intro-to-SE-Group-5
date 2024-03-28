@@ -39,9 +39,15 @@
                     <label for="phonenumber">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number">
                 </div>
-            <button type="submit" class="btn">Register</button>
+                <button onclick="goBack()">Go Back</button> <button type="submit" class="btn">Register</button>
         </form>
     </div>
     
 </body>
+<script>
+    function goBack() {
+  window.history.back();
+}
+
+</script>
 </html>
