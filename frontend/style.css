@@ -284,8 +284,9 @@ nav ul li a {
 .btn {
   color: #fff;
   background-color: #45a049;
-  display: block;
+  display: inline;
   margin: auto;
+  text-align: center;
 }
 
 .btn:hover {
@@ -716,4 +717,8 @@ nav ul li a {
 
 .carttable tbody tr:nth-child(even) {
   background-color: #fff;
+}
+
+.regbtns {
+  margin: auto;
 }
