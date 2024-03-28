@@ -61,18 +61,18 @@
   </table>
   
   <h3>Personal Information</h3>
-  <form id="personal-info-form">
+  <form id="payment-form" action="/checkout" method="post">
     <input type="text" name="name" placeholder="Name" required>
     <input type="text" name="address" placeholder="Address" required>
     <input type="email" name="email" placeholder="Email" required>
-  </form>
   
   <h3>Payment Details</h3>
-  <form id="payment-form">
-    <input type="text" name="card-number" placeholder="Card Number" required>
-    <input type="text" name="expiry-date" placeholder="Expiration Date" required>
-    <input type="text" name="card-holder-name" placeholder="Card Holder Name" required>
+    <input type="text" name="card_number" placeholder="Card Number" required>
+    <input type="text" name="expiry_date" placeholder="Expiration Date" required>
+    <input type="text" name="card_holder_name" placeholder="Card Holder Name" required>
     <input type="text" name="cvv" placeholder="CVV" required>
+
+    <button type="submit">Submit</button>
   </form>
   
   <button onclick="goBack()">Go Back</button>
@@ -84,35 +84,6 @@
       window.history.back();
     }
     
-    function confirmCheckout() {
-  // Get form data
-  const personalInfoForm = document.getElementById("personal-info-form");
-  const paymentForm = document.getElementById("payment-form");
-  
-  const personalInfoData = new FormData(personalInfoForm);
-  const paymentData = new FormData(paymentForm);
-  
-  // Convert FormData to JSON
-  const personalInfoJSON = {};
-  for (const [key, value] of personalInfoData.entries()) {
-    personalInfoJSON[key] = value;
-  }
-  
-  const paymentJSON = {};
-  for (const [key, value] of paymentData.entries()) {
-    paymentJSON[key] = value;
-  }
-  
-  // Combine personal info and payment data
-  const checkoutData = {
-    personalInfo: personalInfoJSON,
-    payment: paymentJSON
-  };
-  
-  // Send the data to the server (not implemented in this example)
-  console.log(checkoutData);
-}
-
 </script>
 </body>
 </html>

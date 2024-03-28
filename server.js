@@ -411,9 +411,13 @@ app.get("/checkout", (req, res) => {
 
 
 app.post("/checkout", (req, res) => {
-  const userid = req.cookies.userid
-  console.log(`python3 ./backend/Order.py ${userid}`)
-  const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid])
+  const {name, address, email, card_number, expiry_date, card_holder_name, cvv} = req.body;
+  const userid = req.cookies.userid;
+  if(userid == undefined){
+    res.redirect("/login")
+  }
+  console.log(`python3 ./backend/Order.py ${userid} ${name} ${address} ${email} ${card_number} ${expiry_date} ${card_holder_name} ${cvv}`)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid, name, address, email, card_number, expiry_date, card_holder_name, cvv])
     pythonProcess.stdout.on('data', (data) => {
       const result = data.toString().trim();
       console.log(result)

@@ -33,7 +33,7 @@ def has_ordered(userid, itemid):
 if __name__ == "__main__":
     command = sys.argv[1]
     if command == "checkout":
-        checkout(sys.argv[2])
+        checkout(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6], sys.argv[7], sys.argv[8], sys.argv[9])
     elif command == "verify":
         has_ordered(sys.argv[2], sys.argv[3])
 
