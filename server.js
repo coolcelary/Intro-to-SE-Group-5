@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 
 
-// Admin login page
+// Admin login
 
 app.get("/admin", (req,res) => {
   res.sendFile(path.join(__dirname, "/frontend/admin.html"))
