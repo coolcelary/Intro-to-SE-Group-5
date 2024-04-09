@@ -150,15 +150,15 @@ app.post("/login", (req, res) => {
   })
 })
 
-// Reagistration page
+// Registration page
 
 app.get("/register", (req, res) => {
   res.sendFile(path.join(__dirname, "./frontend/registration.html"))
 })
 
 app.post("/register", (req, res) => {
-  const { username, password, email, phone_number } = req.body;
-  const user_type = "customer"
+  const { username, password, email, phone_number, customerCheckbox, sellerCheckbox  } = req.body;
+  const user_type = customerCheckbox === "1" ? "customer" : (sellerCheckbox === "1" ? "seller" : "customer");
   console.log(`python3 ./backend/Login.py register ${username} ${password} ${user_type} ${email} ${phone_number}`)
   const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone_number])
   pythonProcess.stdout.on('data', (data) => {
