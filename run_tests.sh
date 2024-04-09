@@ -18,6 +18,7 @@ check_curl() {
 	local url="$1"
 	local response=$(curl -L -X GET -s -o curl.out -w "%{http_code}" "$url")
 	cat ./curl.out
+	echo
 
 	if [ "$response" -eq 200 ]; then
 		print_green "curl to URL $url is successful"
@@ -59,6 +60,9 @@ python3 ./backend/Cart.py add 1 14 >/dev/null
 check_failure
 ./tests/review_test.sh
 check_failure
+
+python3 ./backend/Login.py register "test_user" "testthis" "seller" "test@test.com" 123123123 >/dev/null
+
 ./tests/seller_test.sh
 check_failure
 
@@ -79,5 +83,7 @@ check_curl "http://localhost:3000/hasPurchased/13"
 check_curl "http://localhost:3000/more_info"
 check_curl "http://localhost:3000/cart_search"
 check_curl "http://localhost:3000/search"
+rm -rf ./curl.out ./nohup.out
+print_title "All test completed successfully."
 
 terminate

@@ -16,21 +16,21 @@ app.use(cookieParser())
 
 // Admin login
 
-app.get("/admin", (req,res) => {
+app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "/frontend/admin.html"))
 })
 
 app.post("/admin", (req, res) => {
-  const {username, password} = req.body
-  console.log(`./backend/Seller.py login ${username} ${password}`)
-  const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password]) // Make admin page connection
+  const { username, password } = req.body
+  console.log(`./backend/Admin.py login ${username} ${password}`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "login", username, password]) // Make admin page connection
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     if (result) {
       console.log(result)
-      res.cookie("sellerid", result, { maxAge: 900000, httpOnly: true });
-      res.cookie("seller_auth", { maxAge: 900000, httpOnly: true })
-      res.redirect("/sellers_view")
+      res.cookie("adminid", result, { maxAge: 900000, httpOnly: true });
+      res.cookie("admin_auth", { maxAge: 900000, httpOnly: true })
+      res.redirect("/admin_home")
     } else {
       console.log("invalid")
     }
@@ -40,12 +40,12 @@ app.post("/admin", (req, res) => {
 
 // Seller login
 
-app.get("/seller", (req,res) => {
+app.get("/seller", (req, res) => {
   res.sendFile(path.join(__dirname, "/frontend/seller.html"))
 })
 
 app.post("/seller", (req, res) => {
-  const {username, password} = req.body
+  const { username, password } = req.body
   console.log(`./backend/Seller.py login ${username} ${password}`)
   const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
@@ -65,25 +65,25 @@ app.post("/seller", (req, res) => {
 // Sellers page
 
 app.get("/sellers_add", (req, res) => {
-  if(req.cookies && req.cookies.seller_auth){
+  if (req.cookies && req.cookies.seller_auth) {
     res.sendFile(path.join(__dirname, "/frontend/selleradd.html"))
   }
-  else{
+  else {
     res.redirect("/admin")
   }
 })
 
 app.get("/sellers_view", (req, res) => {
-  if(req.cookies && req.cookies.seller_auth){
+  if (req.cookies && req.cookies.seller_auth) {
     res.sendFile(path.join(__dirname, "/frontend/sellerview.html"))
   }
-  else{
+  else {
     res.redirect("/admin")
   }
 })
 
-app.post("/products", (req,res) => {
-  const {name, price, category, image_url} = req.body;
+app.post("/products", (req, res) => {
+  const { name, price, category, image_url } = req.body;
   const seller_id = req.cookies.sellerid;
   console.log(`./backend/Seller.py add ${name} ${price} ${category} ${image_url} ${seller_id}`)
   const pythonProcess = spawn("python3", ["./backend/Seller.py", "add", name, price, category, image_url, seller_id])
@@ -98,21 +98,21 @@ app.post("/products", (req,res) => {
   })
 })
 
-app.get("/seller_products", (req,res) => {
+app.get("/seller_products", (req, res) => {
   // get a sellets products
-    const seller_id = req.cookies.sellerid;
-    console.log(`python3 ./backend/Seller.py search "${seller_id}" `)
-    const pythonProcess = spawn("python3", ["./backend/Seller.py", "search", seller_id])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
+  const seller_id = req.cookies.sellerid;
+  console.log(`python3 ./backend/Seller.py search "${seller_id}" `)
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "search", seller_id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
 })
 
 
@@ -157,7 +157,7 @@ app.get("/register", (req, res) => {
 })
 
 app.post("/register", (req, res) => {
-  const { username, password, email, phone_number, customerCheckbox, sellerCheckbox  } = req.body;
+  const { username, password, email, phone_number, customerCheckbox, sellerCheckbox } = req.body;
   const user_type = customerCheckbox === "1" ? "customer" : (sellerCheckbox === "1" ? "seller" : "customer");
   console.log(`python3 ./backend/Login.py register ${username} ${password} ${user_type} ${email} ${phone_number}`)
   const pythonProcess = spawn("python3", ["./backend/Login.py", "register", username, password, user_type, email, phone_number])
@@ -183,10 +183,10 @@ app.get("/logout", (req, res) => {
 // About page
 
 app.get("/about", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "./frontend/about-us.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
@@ -194,74 +194,74 @@ app.get("/about", (req, res) => {
 // Products page
 
 app.get("/products", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "./frontend/products.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
 
 app.get("/inventory", (req, res) => {
-    let { name, category } = req.body;
-    if(!name) name = "";
-    if(!category) category = "";
-    console.log(`python3 ./backend/Inventory.py search "${name}" "${category}"`)
-    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", name, category])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
+  let { name, category } = req.body;
+  if (!name) name = "";
+  if (!category) category = "";
+  console.log(`python3 ./backend/Inventory.py search "${name}" "${category}"`)
+  const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", name, category])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
 })
 
 app.get("/search", (req, res) => {
-    const query = req.query.q
-    console.log(`python3 ./backend/Inventory.py search "${query}" ""`)
-    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", query, ""])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
+  const query = req.query.q
+  console.log(`python3 ./backend/Inventory.py search "${query}" ""`)
+  const pythonProcess = spawn("python3", ["./backend/Inventory.py", "search", query, ""])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
 })
 
 
 // Cart page
 
 app.get("/cart", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "./frontend/cart.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
 
 app.get("/cart_items", (req, res) => {
-    console.log(`python3 ./backend/Cart.py get "${req.cookies.userid}"`)
-    const userid = req.cookies.userid;
-    const pythonProcess = spawn("python3", ["./backend/Cart.py", "searchid", userid])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
+  console.log(`python3 ./backend/Cart.py get "${req.cookies.userid}"`)
+  const userid = req.cookies.userid;
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "searchid", userid])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
 })
 
 app.post("/cart", (req, res) => {
@@ -269,16 +269,16 @@ app.post("/cart", (req, res) => {
   const userid = req.cookies.userid
   console.log(`python3 ./backend/Cart.py add ${userid} ${itemid}`)
   const pythonProcess = spawn("python3", ["./backend/Cart.py", "add", userid, itemid])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "valid") {
-        res.status(200)
-      }
-      else {
-        res.status(500)
-      }
-    })
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid") {
+      res.status(200)
+    }
+    else {
+      res.status(500)
+    }
+  })
 })
 
 app.delete("/cart", (req, res) => {
@@ -286,95 +286,95 @@ app.delete("/cart", (req, res) => {
   const userid = req.cookies.userid
   console.log(`python3 ./backend/Cart.py remove ${userid} ${itemid}`)
   const pythonProcess = spawn("python3", ["./backend/Cart.py", "remove", userid, itemid])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "valid") {
-        res.status(200).json({"valid":true})
-      }
-      else {
-        res.status(500).json({"valid":false})
-      }
-    })
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid") {
+      res.status(200).json({ "valid": true })
+    }
+    else {
+      res.status(500).json({ "valid": false })
+    }
+  })
 })
 
 
 app.get("/cart_search", (req, res) => {
-    const query = req.query.q
-    const userid = req.cookies.userid
-    console.log(`python3 ./backend/Cart.py search "${userid}" "${query}"`)
-    const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid, query])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json([])
-      }
-    })
+  const query = req.query.q
+  const userid = req.cookies.userid
+  console.log(`python3 ./backend/Cart.py search "${userid}" "${query}"`)
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "search", userid, query])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
 })
 
 // More info page
 
 app.get("/more_info", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "./frontend/more.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
 
 app.get('/product/:id', (req, res) => {
-    const id = req.params.id;
-    console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
-    const pythonProcess = spawn("python3", ["./backend/Inventory.py", "idsearch", id])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(405).json({})
-      }
-    })
+  const id = req.params.id;
+  console.log(`python3 ./backend/Inventory.py idsearch "${id}"`)
+  const pythonProcess = spawn("python3", ["./backend/Inventory.py", "idsearch", id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json({})
+    }
+  })
 });
 
 app.get('/hasPurchased/:id', (req, res) => {
-    const id = req.params.id;
-    const userid = req.cookies.userid;
-    console.log(`python3 ./backend/Order.py verify ${userid} ${id}`)
-    const pythonProcess = spawn("python3", ["./backend/Order.py", "verify", userid, id])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "valid") {
-        res.json({valid:true})
-      }
-      else {
-        res.json({valid:false})
-      }
-    })
+  const id = req.params.id;
+  const userid = req.cookies.userid;
+  console.log(`python3 ./backend/Order.py verify ${userid} ${id}`)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "verify", userid, id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid") {
+      res.json({ valid: true })
+    }
+    else {
+      res.json({ valid: false })
+    }
+  })
 
 })
 
 app.get("/review/:id", (req, res) => {
   const product_id = req.params.id;
   console.log(`python3 ./backend/review_module.py get ${product_id}`)
-    const pythonProcess = spawn("python3", ["./backend/review_module.py", "get", product_id])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g,"\"")))
-      }
-      else {
-        res.status(500).json([])
-      }
-    })
+  const pythonProcess = spawn("python3", ["./backend/review_module.py", "get", product_id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(500).json([])
+    }
+  })
 })
 
 app.post("/review", (req, res) => {
@@ -382,76 +382,76 @@ app.post("/review", (req, res) => {
   const userid = req.cookies.userid;
   console.log(`python3 ./backend/review_module.py add ${userid} ${productId} ${username} ${stars} "${text}"`)
   const pythonProcess = spawn("python3", ["./backend/review_module.py", "add", userid, productId, username, stars, `"${text}"`])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "valid\nvalid") {
-        res.status(200).json({valid:true});
-      }
-      else {
-        res.status(400).json({valid:false});
-      }
-    })
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid\nvalid") {
+      res.status(200).json({ valid: true });
+    }
+    else {
+      res.status(400).json({ valid: false });
+    }
+  })
 
 })
 
 // Contact us page
 
 app.get("/contact", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "./frontend/contact.html"))
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
 
 app.post("/contact", (req, res) => {
-  const {name, email, message} = req.body;
+  const { name, email, message } = req.body;
   console.log(`python3 ./backend/Contact.py ${name} ${email} ${message}`)
   const pythonProcess = spawn("python3", ["./backend/Contact.py", name, email, `"${message}"`])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result) {
-        res.status(200)
-      }
-      else {
-        res.status(500)
-      }
-    })
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200)
+    }
+    else {
+      res.status(500)
+    }
+  })
 })
 
 // Checkout page and button
 
 app.get("/checkout", (req, res) => {
-  if(req.cookies && req.cookies.authenticated){
+  if (req.cookies && req.cookies.authenticated) {
     res.sendFile(path.join(__dirname, "frontend/checkout.html"));
   }
-  else{
+  else {
     res.redirect("/login")
   }
 })
 
 
 app.post("/checkout", (req, res) => {
-  const {name, address, email, card_number, expiry_date, card_holder_name, cvv} = req.body;
+  const { name, address, email, card_number, expiry_date, card_holder_name, cvv } = req.body;
   const userid = req.cookies.userid;
-  if(userid == undefined){
+  if (userid == undefined) {
     res.redirect("/login")
   }
   console.log(`python3 ./backend/Order.py ${userid} ${name} ${address} ${email} ${card_number} ${expiry_date} ${card_holder_name} ${cvv}`)
   const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid, name, address, email, card_number, expiry_date, card_holder_name, cvv])
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result)
-      if (result == "valid") {
-        res.redirect("/")
-      }
-      else {
-        res.redirect("/error")
-      }
-    })
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result == "valid") {
+      res.redirect("/")
+    }
+    else {
+      res.redirect("/error")
+    }
+  })
 
 })
 

@@ -12,13 +12,13 @@ print_red() {
 	echo -e "\033[31m$@\033[0m"
 }
 
-login_result=$(python3 ./backend/Seller.py login "testing" "testing")
+login_result=$(python3 ./backend/Seller.py login "test_user" "testthis")
 add_result=$(python3 ./backend/Seller.py add "Test Product" 100 "birhouses" "https://test.com" 1)
 search_result=$(python3 ./backend/Seller.py search 1)
 
 echo "Testing Seller Module:"
 
-if [[ $login_result = "1" ]]; then
+if [[ ! -z $login_result ]]; then
 	print_green "Seller Login Works"
 else
 	print_red "Seller Login Failed"

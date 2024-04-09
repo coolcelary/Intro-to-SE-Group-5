@@ -10,7 +10,7 @@ def seller_login(username, password):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
     cursor = conn.cursor()
 
-    userid = cursor.execute("SELECT * FROM Authentication WHERE username = ? AND password = ?", (username, password)).fetchone()
+    userid = cursor.execute("SELECT * FROM Authentication WHERE Username = ? AND Password = ? AND UserType = 'seller'", (username, password)).fetchone()
     if userid:
         print(userid[0])
         return
