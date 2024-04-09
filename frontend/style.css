@@ -722,3 +722,16 @@ nav ul li a {
 .regbtns {
   margin: auto;
 }
+
+.form-group .checkbox-options {
+  display: flex;
+  align-items: center;
+}
+
+.form-group .checkbox-options input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+.form-group .checkbox-options label {
+  margin-right: 15px;
+}
