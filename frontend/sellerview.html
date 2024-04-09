@@ -77,6 +77,18 @@
               image.classList.add('product-image')
               productCard.appendChild(image)
 
+              const orders_box = document.createElement('div');
+              fetch(`/productOrders/${item.id}`)
+                .then(response => response.json())
+                .then(orders => {
+                orders.forEach(order => {
+                  const new_order = document.createElement('li');
+                  new_order.textContent = `${order.name} : ${order.quantity}`
+                  orders_box.appendChild(new_order)
+                })
+              })
+              productCard.appendChild(orders_box);
+
               const moreButton = document.createElement('button');
               moreButton.textContent = "more"
               moreButton.addEventListener("click", function(){

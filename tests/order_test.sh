@@ -14,6 +14,7 @@ print_red() {
 
 checkout_result=$(python3 ./backend/Order.py checkout 1 "test" "4444 test avenue." "test@test.com" "1234 1234 1234 1234" "23/23" "test" "697")
 verify_result=$(python3 ./backend/Order.py verify 1 13)
+get_result=$(python3 ./backend/Order.py get 13)
 
 echo "Testing Order Module:"
 
@@ -28,5 +29,12 @@ if [[ $verify_result = "valid" ]]; then
 	print_green "Order Verification Works"
 else
 	print_red "Order Verification Failed"
+	exit 1
+fi
+
+if [[ ! -z $get_result ]]; then
+	print_green "Order Info Works"
+else
+	print_red "Order Info Failed"
 	exit 1
 fi

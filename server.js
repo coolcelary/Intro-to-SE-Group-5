@@ -115,6 +115,22 @@ app.get("/seller_products", (req, res) => {
   })
 })
 
+app.get("/productOrders/:id", (req, res) => {
+  const product_id = req.params.id;
+  console.log(`python3 ./backend/Order.py get "${product_id}" `)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "get", product_id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
+
 
 // Homepage
 
