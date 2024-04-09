@@ -48,10 +48,21 @@
                 <label for="price">Price:</label>
                 <input type="text" id="price" name="price"  required>
             </div>
+
             <div>
-                <label for="category">Category:</label>
-                <input type="text" id="category" name="category" required>
-            </div>
+                <label for="category-selection">Category:</label>
+                  <div class="filter-options">
+                    <select>
+                      <option value="all">All</option>
+                      <option value="electronics">Statues and Sculptures</option>
+                      <option value="clothing">Water Features</option>
+                      <option value="home">Spinners and Chimes</option>
+                      <option value="home">Flags and Banners</option>
+                      <option value="home">Planters and Pots</option>
+                      <option value="home">Other</option>
+                    </select>
+                  </div>
+
             <div>
                 <label for="image_url">Image URL:</label>
                 <input type="url" id="image_url" name="image_url" required>
