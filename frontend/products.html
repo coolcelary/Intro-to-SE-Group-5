@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -68,6 +68,7 @@
             <option value="home">Spinners and Chimes</option>
             <option value="home">Flags and Banners</option>
             <option value="home">Planters and Pots</option>
+            <option value="home">Other</option>
           </select>
         </div>
       </div>
@@ -235,7 +236,7 @@
           .catch(error => console.error('Error fetching data:', error));
       }
       searchButton = document.getElementById("search-button")
-      searchinput = document.getElementById("search-input")
+      //searchinput = document.getElementById("search-input")
       searchButton.addEventListener("click", function(){
         console.log(searchinput.value)
         if(searchinput.value){
