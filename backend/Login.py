@@ -66,6 +66,7 @@ def register_user(username, password, usertype, email, phoneNum):
     try:
         cursor.execute("INSERT INTO Authentication (Username, Password, UserType, Email, PhoneNumber) VALUES (?, ?, ?, ?, ?)", (username, password, usertype, email, phoneNum))
         conn.commit()
+        conn.close()
         return True
     except sqlite3.Error as e:
         print(e)
@@ -79,7 +80,7 @@ def register_user(username, password, usertype, email, phoneNum):
             return False
 
         # connect to database
-        conn = sqlite3.connect('EcommerceDB.db')
+        conn = sqlite3.connect('./backend/EcommerceDB.db')
         cursor = conn.cursor()
 
         #delete user info from database
