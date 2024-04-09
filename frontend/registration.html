@@ -36,13 +36,14 @@
                     <input type="text" id="phone_number" name="phone_number">
                 </div>
                 <div class="form-group">
+                    <label for="usertype">Account Selection:</label>
                     <div class="checkbox-options">
-                        <input type="checkbox" id="customer" name="account_type" value="customer">
+                        <input type="checkbox" id="customer" name="customer" value="customer">
                         <label for="customer">Customer</label>
-                        <input type="checkbox" id="seller" name="account_type" value="seller">
+                        <input type="checkbox" id="seller" name="seller" value="seller">
                         <label for="seller">Seller</label>
                     </div>
-                </div>
+                </div>                
 
                 <input type="hidden" id="customerCheckbox" name="customerCheckbox" value="0">
                 <input type="hidden" id="sellerCheckbox" name="sellerCheckbox" value="0">
@@ -66,5 +67,20 @@
     document.getElementById("seller").addEventListener("click", function() {
         document.getElementById("sellerCheckbox").value = this.checked ? "1" : "0";
     });
+
+    const customerCheckbox = document.getElementById("customer");
+const sellerCheckbox = document.getElementById("seller");
+
+customerCheckbox.addEventListener("click", function() {
+    if (this.checked) {
+        sellerCheckbox.checked = false;
+    }
+});
+
+sellerCheckbox.addEventListener("click", function() {
+    if (this.checked) {
+        customerCheckbox.checked = false;
+    }
+});
 </script>
 </html>

@@ -23,7 +23,7 @@ app.get("/admin", (req,res) => {
 app.post("/admin", (req, res) => {
   const {username, password} = req.body
   console.log(`./backend/Seller.py login ${username} ${password}`)
-  const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password])
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password]) // Make admin page connection
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     if (result) {
