@@ -18,18 +18,22 @@ else
 	echo "Python3 already installed"
 fi
 
+echo "Testing Login Module:"
+
 sqlite3 ./backend/EcommerceDB.db "DELETE FROM Authentication;"
 register_result=$(python3 ./backend/Login.py register "test" "testpass" "customer" "test@test.com" "1001001000")
 login_result=$(python3 ./backend/Login.py login "test" "testpass")
 
 if [[ $register_result = "True" ]]; then
-	print_green "Test 1 Passed..."
+	print_green "Register Works"
 else
-	print_red "Test 1 Failed..."
+	print_red "Register Failed"
+	exit 1
 fi
 
 if [ ! -z $login_result ]; then
-	print_green "Test 2 Passed..."
+	print_green "Login Works"
 else
-	print_red "Test 2 Failed..."
+	print_red "Login Failed"
+	exit 1
 fi

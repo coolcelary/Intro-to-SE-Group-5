@@ -12,30 +12,29 @@ print_red() {
 	echo -e "\033[31m$@\033[0m"
 }
 
-if ! command_exists python3; then
-	sudo apt install python3 python3-pip
-else
-	echo "Python3 already installed"
-fi
-
 add_result=$(python3 ./backend/Cart.py add 1 13)
 search_result=$(python3 ./backend/Cart.py searchid 1)
 remove_result=$(python3 ./backend/Cart.py remove 1 13)
 
+echo "Testing Cart Module:"
+
 if [[ $add_result = "valid" ]]; then
-	print_green "Test 1 Passed..."
+	print_green "Add to Cart Works"
 else
-	print_red "Test 1 Failed..."
+	print_red "Add to Cart Failed"
+	exit 1
 fi
 
 if [[ ! -z $search_result ]]; then
-	print_green "Test 2 Passed..."
+	print_green "Search Cart Works"
 else
-	print_red "Test 2 Failed..."
+	print_red "Search Cart Failed"
+	exit 1
 fi
 
 if [[ $remove_result = "valid" ]]; then
-	print_green "Test 3 Passed..."
+	print_green "Remove from Cart Works"
 else
-	print_red "Test 3 Failed..."
+	print_red "Remove from Cart Failed"
+	exit 1
 fi

@@ -12,23 +12,21 @@ print_red() {
 	echo -e "\033[31m$@\033[0m"
 }
 
-if ! command_exists python3; then
-	sudo apt install python3 python3-pip
-else
-	echo "Python3 already installed"
-fi
-
 search_result=$(python3 ./backend/Inventory.py search "Flower" "birdhouses")
 idsearch_result=$(python3 ./backend/Inventory.py idsearch "1")
 
+echo "Testing Inventory Module:"
+
 if [[ ! -z $search_result ]]; then
-	print_green "Test 1 Passed..."
+	print_green "Search Inventory Works"
 else
-	print_red "Test 1 Failed..."
+	print_red "Search Inventory Failed"
+	exit 1
 fi
 
 if [[ ! -z $idsearch_result ]]; then
-	print_green "Test 2 Passed..."
+	print_green "Search by ID Works"
 else
-	print_red "Test 2 Failed..."
+	print_red "Search by ID Failed"
+	exit 1
 fi
