@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Depot - About Us</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+   <nav>
+    <a href="#" class="logo">
+      <img src="./assets/Logo.png" alt="Logo">
+    </a>
+
+    <ul>
+      <li><a href="/admin_home">Users</a></li>
+    </ul>
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+
+    <div class="user-menu" id="userMenu">
+      <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="#">Order History</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li><a href="/checkout">Checkout</a></li>
+      </ul>
+    </div>
+  </nav>
+    <div class="content">
+      <ul class="user-list" id="user-list"></ul>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const userIcon = document.getElementById('userIcon');
+        const userMenu = document.getElementById('userMenu');
+        userIcon.addEventListener('click', function () {
+          userMenu.classList.toggle('show');
+        });
+
+        const userList = document.getElementById('user-list')
+        fetch("/userlist")
+          .then(response => response.json())
+          .then(data => {
+              data.forEach(item => {
+                const userItem = document.createElement('li')
+                userItem.textContent = `User #${item.id} username: ${item.username} password: ${item.password} type: ${item.user_type} email: ${item.email} phone: ${item.phone}`
+                userList.appendChild(userItem);
+              });
+            })
+          .catch(error => console.error(error))
+      });
+
+    </script>
+</body>
+
+</html>

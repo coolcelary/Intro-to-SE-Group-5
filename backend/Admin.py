@@ -15,10 +15,30 @@ def admin_login(username, password):
     else:
         return
 
+def list_users():
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    users = cursor.execute("SELECT * FROM Authentication").fetchall()
+    result = list()
+    for user in users:
+        item = dict()
+        item["id"] = user[0]
+        item["username"] = user[1]
+        item["password"] = user[2]
+        item["user_type"] = user[3]
+        item["email"] = user[4]
+        item["phone"] = user[5]
+        result.append(item)
+    if result:
+        print(result)
+
+
 def main():
     command = sys.argv[1]
     if command == "login":
         admin_login(sys.argv[2], sys.argv[3])
+    elif command == "listall":
+        list_users()
 
 if __name__ == "__main__":
     main()

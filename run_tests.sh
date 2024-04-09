@@ -65,6 +65,8 @@ python3 ./backend/Login.py register "test_user" "testthis" "seller" "test@test.c
 
 ./tests/seller_test.sh
 check_failure
+./tests/admin_test.sh
+check_failure
 
 print_title "Running Server Tests:"
 nohup ./start_server.sh &

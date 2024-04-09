@@ -28,7 +28,6 @@ app.post("/admin", (req, res) => {
     const result = data.toString().trim();
     if (result) {
       console.log(result)
-      res.cookie("adminid", result, { maxAge: 900000, httpOnly: true });
       res.cookie("admin_auth", { maxAge: 900000, httpOnly: true })
       res.redirect("/admin_home")
     } else {
@@ -131,6 +130,35 @@ app.get("/productOrders/:id", (req, res) => {
   })
 })
 
+
+// Admin Page
+
+app.get("/admin_home", (req, res) => {
+  if (!req.cookies || !req.cookies.admin_auth) {
+    res.redirect("/login")
+  }
+  else {
+    res.sendFile(path.join(__dirname, "/frontend/control.html"))
+  }
+})
+
+app.get("/userlist", (req, res) => {
+  if (!req.cookies || !req.cookies.admin_auth) {
+    res.status(403).json([])
+  }
+  console.log(`python3 ./backend/Admin.py listall`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "listall"])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
 
 // Homepage
 
