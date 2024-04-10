@@ -47,6 +47,27 @@
                 const userItem = document.createElement('li')
                 userItem.textContent = `User #${item.id} username: ${item.username} password: ${item.password} type: ${item.user_type} email: ${item.email} phone: ${item.phone}`
                 userList.appendChild(userItem);
+                const banButton = document.createElement('button')
+                banButton.addEventListener('click', function(event) {
+                    fetch('/ban/' + item.id, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Ban Failed');
+                        }
+                        console.log('User banned successfully');
+                      location.reload()
+                    })
+                    .catch(function(error) {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+                });
+                banButton.textContent = "Ban User";
+                userList.appendChild(banButton);
               });
             })
           .catch(error => console.error(error))

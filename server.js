@@ -160,6 +160,25 @@ app.get("/userlist", (req, res) => {
   })
 })
 
+app.post("/ban/:id", (req, res) => {
+  if(!req.cookies && !res.cookies.admin_auth){
+    res.status(403).json({valid:false})
+  } else{
+    const id = req.params.id;
+    console.log(`python3 ./backend/Admin.py ban ${id}`)
+    const pythonProcess = spawn("python3", ["./backend/Admin.py", "ban", id])
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result)
+      if (result == "valid") {
+        res.status(200).json({valid:true})
+      } else {
+        res.status(405).json({valid:false})
+      }
+    })
+  }
+  })
+
 // Homepage
 
 app.get("/", (req, res) => {
