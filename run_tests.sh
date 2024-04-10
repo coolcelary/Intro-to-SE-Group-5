@@ -149,8 +149,53 @@ check_failure
 check_failure
 
 print_title "Running Server Tests:"
-nohup ./start_server.sh &
-sleep 5
+command_exists() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+if ! command_exists node; then
+	echo "Node.js is not installed. Installing..."
+	if command_exists apt; then
+		sudo apt update
+		sudo apt install -y nodejs
+	elif command_exists yum; then
+		sudo yum install -y nodejs
+	else
+		print_red "Cannot install Node.js. Package manager not found."
+		exit 1
+	fi
+fi
+
+if ! command_exists npm; then
+	echo "npm is not installed. Installing..."
+	if command_exists apt; then
+		sudo apt update
+		sudo apt install -y npm
+	elif command_exists yum; then
+		sudo yum install -y npm
+	else
+		print_red "Cannot install npm. Package manager not found."
+		exit 1
+	fi
+fi
+
+print_green "Installing required Node.js modules..."
+npm install
+
+print_green "Starting Node.js Express server..."
+nohup node server.js >./server.out &
+
+while true; do
+	done=$(cat ./server.out | grep -o "localhost")
+	if [ ! -z $done ]; then
+		print_green "Server Ready"
+		break
+	fi
+	echo "Waiting"
+	sleep 0.1
+done
+
+sleep 2
 check_curl "http://localhost:3000/login"
 check_curl "http://localhost:3000/register"
 check_curl "http://localhost:3000/inventory"
