@@ -45,18 +45,8 @@
         <th>Price</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>1</td>
-        <td>Product A</td>
-        <td>$10.00</td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Product B</td>
-        <td>$20.00</td>
-      </tr>
-      <!-- Add more items here if needed -->
+    <tbody id="cartItems">
+      <!-- Items will be dynamically added here -->
     </tbody>
   </table>
   
@@ -83,6 +73,23 @@
       window.history.back();
     }
     
+    fetch('/cart_items')
+    .then(response => response.json())
+    .then(data => {
+      const cartItems = document.getElementById('cartItems');
+      cartItems.innerHTML = ''; // Clear existing items
+      
+      data.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.quantity}</td>
+          <td>${item.name}</td>
+          <td>${item.price}</td>
+        `;
+        cartItems.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error fetching cart items:', error));
 </script>
 </body>
 </html>
