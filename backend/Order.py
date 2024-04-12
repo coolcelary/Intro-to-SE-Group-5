@@ -13,7 +13,7 @@ def checkout(userid, name, address, email, card_number, expiration_date, card_na
         return
     cursor.execute("DELETE FROM Cart WHERE UserID = ?", (userid,))
     for item in cart_items:
-        cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity, Name, Address, Email, CardNumber, ExpirationDate, CardName, CVV) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (userid, item[2], item[3], name, address, email, card_number, expiration_date, card_name, cvv))
+        cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity, Name, Address, Email, CardNumber, ExpirationDate, CardName, CVV) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (userid, item[1], item[2], name, address, email, card_number, expiration_date, card_name, cvv,))
 
     print("valid")
     conn.commit()
