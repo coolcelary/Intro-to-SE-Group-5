@@ -15,6 +15,9 @@ print_red() {
 login_result=$(python3 ./backend/Admin.py login testing testing)
 get_result=$(python3 ./backend/Admin.py listall)
 
+test_user_id=$(sqlite3 ./backend/EcommerceDB.db "SELECT * FROM Authentication;" | awk -F"|" '/test_user/{print $1}')
+ban_result=$(python3 ./backend/Admin.py ban $test_user_id)
+
 echo "Testing Review Module:"
 
 if [[ $login_result = "1" ]]; then
@@ -28,5 +31,12 @@ if [[ ! -z $get_result ]]; then
 	print_green "Get Users Works"
 else
 	print_red "Get Users Failed"
+	exit 1
+fi
+
+if [[ $ban_result = "valid" ]]; then
+	print_green "Ban User Works"
+else
+	print_red "Ban User Failed"
 	exit 1
 fi

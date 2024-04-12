@@ -32,6 +32,22 @@ def list_users():
     if result:
         print(result)
 
+def ban_user(userid):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM Authentication WHERE UserID = ?", (userid,))
+        user = cursor.execute("SELECT * FROM Authentication WHERE UserID = ?", (userid,)).fetchone()
+        if user:
+            print("invalid")
+            return
+        print("valid")
+        conn.commit()
+    except:
+        print("invalid")
+
+
+
 
 def main():
     command = sys.argv[1]
@@ -39,6 +55,8 @@ def main():
         admin_login(sys.argv[2], sys.argv[3])
     elif command == "listall":
         list_users()
+    elif command == "ban":
+        ban_user(sys.argv[2])
 
 if __name__ == "__main__":
     main()
