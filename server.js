@@ -439,6 +439,27 @@ app.post("/review", (req, res) => {
 
 })
 
+// Order History Page
+
+app.get("/orderHistory", (req, res) => {
+  if (req.cookies && req.cookies.authenticated) {
+    const userid = req.cookies.userid;
+    console.log(`python3 ./backend/Order.py getOrdersForUser "${userid}"`);
+    const pythonProcess = spawn("python3", ["./backend/Order.py", "getOrdersForUser", userid]);
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result);
+      if (result) {
+        res.status(200).json(JSON.parse(result.replace(/'/g, "\"")));
+      } else {
+        res.status(405).json([]);
+      }
+    });
+  } else {
+    res.redirect("/");
+  }
+});
+
 // Contact us page
 
 app.get("/contact", (req, res) => {

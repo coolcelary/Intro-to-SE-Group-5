@@ -43,6 +43,27 @@ def get_orders(productID):
     if result:
         print(result)
 
+def get_user_orders(userid):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    user_orders = cursor.execute("SELECT * FROM Orders WHERE UserID = ?", (userid,)).fetchall()
+    result = []
+    for order in user_orders:
+        item = {
+            "order_id": order[0],
+            "product_id": order[2],
+            "quantity": order[3],
+            "name": order[4],
+            "address": order[5],
+            "email": order[6],
+            "card_number": order[7],
+            "expiration_date": order[8],
+            "card_name": order[9],
+            "cvv": order[10]
+        }
+        result.append(item)
+    return result
+
 if __name__ == "__main__":
     command = sys.argv[1]
     if command == "checkout":
