@@ -17,6 +17,7 @@ def checkout(userid, name, address, email, card_number, expiration_date, card_na
 
     print("valid")
     conn.commit()
+    conn.close()
 
 def has_ordered(userid, itemid):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
@@ -27,6 +28,7 @@ def has_ordered(userid, itemid):
     else:
         print("Invalid")
         return False
+    conn.close()
 
 def get_orders(productID):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
@@ -42,6 +44,7 @@ def get_orders(productID):
         return result
     else:
         return []
+    conn.close()
 
 def get_user_orders(userid):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
@@ -63,6 +66,7 @@ def get_user_orders(userid):
         }
         result.append(item)
     return result
+    conn.close()
 
 if __name__ == "__main__":
     command = sys.argv[1]
