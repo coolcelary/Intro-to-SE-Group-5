@@ -43,26 +43,37 @@ def get_orders(productID):
     if result:
         print(result)
 
-def get_user_orders(userid):
-    conn = sqlite3.connect("./backend/EcommerceDB.db")
+def getuserhistory(userid, query=""):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
-    user_orders = cursor.execute("SELECT * FROM Orders WHERE UserID = ?", (userid,)).fetchall()
-    result = []
-    for order in user_orders:
-        item = {
-            "order_id": order[0],
-            "product_id": order[2],
-            "quantity": order[3],
-            "name": order[4],
-            "address": order[5],
-            "email": order[6],
-            "card_number": order[7],
-            "expiration_date": order[8],
-            "card_name": order[9],
-            "cvv": order[10]
-        }
+
+    # Execute a SELECT query to fetch all rows from the Authentication table
+    cursor.execute("SELECT * FROM Orders WHERE UserID = ?", (userid,))
+    rows = cursor.fetchall()
+
+    # Display the retrieved rows
+    result = list()
+    for row in rows:
+        products = cursor.execute("SELECT * FROM Orders WHERE UserID = ?", (row[1],))
+        product = products.fetchone()
+        if not product:
+            continue
+        if query and query not in product[1]:
+            continue
+        item = dict()
+        item["user_id"] = product[0]
+        item["product_id"] = product[1]
+        item["quantity"] = product[2]
+        item["name"] = product[3]
+        item["address"] = product[4]
+        item["email"] = product[5]
+        item["card_number"] = product[6]
         result.append(item)
-    return result
+    print(result)
+
+    # Close the database connection
+    conn.close()
 
 if __name__ == "__main__":
     command = sys.argv[1]

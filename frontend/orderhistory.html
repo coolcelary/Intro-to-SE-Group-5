@@ -27,7 +27,7 @@
         <div class="user-menu" id="userMenu">
           <ul>
             <li><a href="#">Account Information</a></li>
-            <li><a href="#">Order History</a></li>
+            <li><a href="/orderhistory">Order History</a></li>
             <li><a href="/logout">Logout</a></li>
             <li><a href="/checkout">Checkout</a></li>
           </ul>
@@ -36,27 +36,23 @@
       </nav>
 
 <div class="orderHistory">
-  <h2>Checkout</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>Product ID</th>
-        <th>Quantity</th>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Card Number</th>
-      </tr>
-    </thead>
-    <tbody id="orderHistoryTable">
-      <!-- Items will be dynamically added here -->
-    </tbody>
-  </table>
-
-    <button onclick="goBack()">Go Back</button>
-
-  
+    <h1>Order History</h1>
+    <table id="orderHistoryTable">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Card Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -64,9 +60,10 @@
       window.history.back();
     }
     
-    fetch('/orderHistory')
+    fetch('/userorders')
     .then(response => response.json())
     .then(data => {
+      console.log('Data received from server:', data);
       const orderHistoryTable = document.getElementById('orderHistoryTable');
       orderHistoryTable.innerHTML = ''; // Clear existing table
       
