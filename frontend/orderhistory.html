@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lawn Depot - Checkout</title>
+<title>Lawn Depot - Order History</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -60,10 +60,9 @@
       window.history.back();
     }
     
-    fetch('/userorders')
+    fetch('/userOrders')
     .then(response => response.json())
     .then(data => {
-      console.log('Data received from server:', data);
       const orderHistoryTable = document.getElementById('orderHistoryTable');
       orderHistoryTable.innerHTML = ''; // Clear existing table
       
@@ -77,6 +76,9 @@
           <td>${order.address}</td>
           <td>${order.email}</td>
           <td>${order.card_number}</td>
+          <td>${order.expiration_date}</td>
+          <td>${order.card_name}</td>
+          <td>${order.cvv}</td>
         `;
         orderHistoryTable.appendChild(row);
       });
