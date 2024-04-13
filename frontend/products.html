@@ -122,6 +122,12 @@
               description.textContent = item.description;
               productCard.appendChild(description);
 
+              // Quantity box
+              const quantityBox = document.createElement('div');
+              quantityBox.classList.add('quantity-box');
+              quantityBox.textContent = `Qty: ${item.quantity}`;
+              productCard.appendChild(quantityBox);
+
               const image = document.createElement('img');
               image.src = item.image_url
               image.classList.add('product-image')
