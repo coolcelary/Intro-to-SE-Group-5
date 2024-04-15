@@ -69,6 +69,15 @@
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    });
+
   function goBack() {
       window.history.back();
     }
