@@ -49,16 +49,26 @@ def add_to_cart(userID, productID):
     existing_entry = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID)).fetchone()
     if existing_entry:
         quantity = int(existing_entry[0]) + 1
+        try:
+            cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID = ?", (quantity, userID, productID,))
+            conn.commit()
+            return True
+        except:
+            return False
+        finally:
+            conn.close()
+    
+
     else:
         quantity = 1
-    try:
-        cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
-        conn.commit()
-        return True
-    except:
-        return False
-    finally:
-        conn.close()
+        try:
+            cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
+            conn.commit()
+            return True
+        except:
+            return False
+        finally:
+            conn.close()
     
 def remove_from_cart(userID, productID):
     # Check if username and password are provided
