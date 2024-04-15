@@ -21,8 +21,8 @@ def add_product(name, price, category, image_url, seller_id):
     try:
         conn = sqlite3.connect("./backend/EcommerceDB.db")
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO Products (product_id, name, price, category, image_url, SellerID) VALUES (NULL, ?, ?, ?, ?, ?)",
-                       (name, str(price), category, image_url, seller_id))
+        cursor.execute("INSERT INTO Products (product_id, name, price, category, image_url, SellerID, quantity) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
+                       (name, str(price), category, image_url, seller_id, 5))
         conn.commit()
         print("valid")
     except:

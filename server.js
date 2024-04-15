@@ -121,7 +121,7 @@ app.get("/productOrders/:id", (req, res) => {
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     console.log(result)
-    if (result) {
+    if (result != "Invalid") {
       res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
     }
     else {
