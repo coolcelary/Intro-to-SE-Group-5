@@ -88,6 +88,23 @@ def remove_from_cart(userID, productID):
     finally:
         conn.close()
 
+def decrement_cart(userID, productID):
+    if not userID or not productID:
+        return False
+
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
+    cursor = conn.cursor()
+    quantity = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID,)).fetchone()
+    if not quantity or quantity[0] <= 1:
+        cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ProductID + ?", (userID, productID,))
+        print("0")
+    else:
+        new_quantity = int(quantity[0]) - 1
+        print(new_quantity)
+        cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID + ?", (new_quantity, userID, productID))
+    conn.commit()
+
+
 
 if __name__ == "__main__":
     command = sys.argv[1]
@@ -100,4 +117,6 @@ if __name__ == "__main__":
         get_items(sys.argv[2])
     elif command == "search":
         get_items(sys.argv[2], sys.argv[3])
+    elif command == "decrement":
+        decrement_cart(sys.argv[2], sys.argv[3])
 
