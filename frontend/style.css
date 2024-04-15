@@ -782,3 +782,17 @@ nav ul li a {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow */
   background-color: #fff;
 }
+
+.orders-box {
+  border: 1px solid #ccc; /* Add a border */
+  padding: 10px; /* Add padding */
+  margin-bottom: 20px; /* Add margin to separate from other elements */
+}
+
+.orders-box > div {
+  margin-bottom: 5px; /* Add margin between label and value */
+}
+
+.orders-box > div:last-child {
+  margin-bottom: 0; /* Remove margin from the last value to avoid extra space */
+}
