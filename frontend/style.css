@@ -796,3 +796,31 @@ nav ul li a {
 .orders-box > div:last-child {
   margin-bottom: 0; /* Remove margin from the last value to avoid extra space */
 }
+
+.edit-product {
+  background-color: #fff;
+  display: block;
+  width: 400px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+.edit-product h1 {
+  color: #12a04d;
+}
+
+.create-product {
+  background-color: #fff;
+  display: block;
+  width: 400px;
+  margin: auto;
+  padding: 10px;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+.create-product h1 {
+  color: #12a04d;
+}

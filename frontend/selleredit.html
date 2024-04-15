@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lawn Depot - Seller Item</title>
+  <title>Lawn Depot - Seller Edit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
@@ -35,61 +35,51 @@
   </nav>
 
     <div class="content">
-        <div id="product-container">
-        </div>
+      <div class="edit-product">
+        <h1>Edit product</h1>
+         <form action="/products/edit" method="post">
+            <div>
+                <label for="product_name">Product Name:</label>
+                <input type="text" id="product_name" name="name" required>
+            </div>
+            <div>
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price"  required>
+            </div>
+
+            <div>
+                <label for="category-selection">Category:</label>
+                  <div class="filter-options">
+                    <select>
+                      <option value="all">All</option>
+                      <option value="electronics">Statues and Sculptures</option>
+                      <option value="clothing">Water Features</option>
+                      <option value="home">Spinners and Chimes</option>
+                      <option value="home">Flags and Banners</option>
+                      <option value="home">Planters and Pots</option>
+                      <option value="home">Other</option>
+                    </select>
+                  </div>
+
+            <div>
+                <label for="image_url">Image URL:</label>
+                <input type="url" id="image_url" name="image_url" required>
+            </div>
+            <div>
+                <input type="submit" value="Submit">
+            </div>
+        </form>      
       </div>
-      
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const userIcon = document.getElementById('userIcon');
-      const userMenu = document.getElementById('userMenu');
-
-      userIcon.addEventListener('click', function () {
-        userMenu.classList.toggle('show');
-      });
-    
-      productCard = document.getElementById("product");
-        fetch(`/product/${localStorage.getItem("clicked_id")}`)
-          .then(response => response.json())
-          .then(item => {
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-              })
-              productCard.appendChild(cartButton)
-
-          })
-        })
-  </script>
-
+    </div>
 </body>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const userIcon = document.getElementById('userIcon');
+    const userMenu = document.getElementById('userMenu');
 
+    userIcon.addEventListener('click', function () {
+      userMenu.classList.toggle('show');
+    });
+  });
+</script>
 </html>
