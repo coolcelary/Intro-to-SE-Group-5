@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -9,6 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .notification {
+      position: absolute;
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -79,7 +89,7 @@
               const description = document.createElement('div');
               description.textContent = item.description;
               productCard.appendChild(description);
-              
+
               // Quantity
               const quantity = document.createElement('div');
               quantity.classList.add('quantity');
@@ -93,7 +103,7 @@
 
               const cartButton = document.createElement('button');
               cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
+              cartButton.addEventListener('click', function(event) {
                 const body = { itemid : `${item.id}` }
                 fetch("/cart", {
                     method: 'POST',
@@ -102,22 +112,40 @@
                     },
                     body: JSON.stringify(body)
                 });
+                showNotification(event.target);
               })
-              productCard.appendChild(cartButton)
-            const moreButton = document.createElement('button');
-            moreButton.textContent = "more"
-            moreButton.addEventListener("click", function(){
-              localStorage.setItem("clicked_id",item.id)
-              window.location.href = "/more_info"
-            })
-            productCard.appendChild(moreButton)
+              productCard.appendChild(cartButton);
+
+              const moreButton = document.createElement('button');
+              moreButton.textContent = "more"
+              moreButton.addEventListener("click", function(){
+                localStorage.setItem("clicked_id",item.id)
+                window.location.href = "/more_info"
+              })
+              productCard.appendChild(moreButton);
 
               productContainer.appendChild(productCard);
             });
-                      })
+          })
           .catch(error => console.error('Error fetching data:', error));
       }
 
+      function showNotification(target) {
+        const notification = document.createElement('div');
+        notification.classList.add('notification');
+        notification.textContent = 'Item added to cart!';
+        document.body.appendChild(notification);
+        
+        // Position the notification next to the button
+        const rect = target.getBoundingClientRect();
+        notification.style.top = rect.top + 'px';
+        notification.style.left = rect.right + 'px';
+        
+        notification.style.display = 'block';
+        setTimeout(() => {
+          notification.remove();
+        }, 3000); // Hide notification after 3 seconds
+      }
 
       document.addEventListener('DOMContentLoaded', function () {
         const userIcon = document.getElementById('userIcon');
@@ -126,13 +154,12 @@
         userIcon.addEventListener('click', function () {
           userMenu.classList.toggle('show');
         });
-        showPage(1)
+        showPage(1);
       });
 
       const productsPerPage = 20; // Number of products to display per page
       const productListContainer = document.querySelector('.product-list');
       const paginationButtons = document.querySelectorAll('.pagination button');
-
 
       // Attach click event listeners to pagination buttons
       paginationButtons.forEach((button, index) => {
@@ -182,23 +209,24 @@
                     },
                     body: JSON.stringify(body)
                 });
+                showNotification(cartButton);
               })
-              productCard.appendChild(cartButton)
+              productCard.appendChild(cartButton);
 
-            const moreButton = document.createElement('button');
-            moreButton.textContent = "more"
-            moreButton.addEventListener("click", function(){
-              localStorage.setItem("clicked_id",item.id)
-              window.location.href = "/more_info"
-            })
-            productCard.appendChild(moreButton)
-
+              const moreButton = document.createElement('button');
+              moreButton.textContent = "more"
+              moreButton.addEventListener("click", function(){
+                localStorage.setItem("clicked_id",item.id)
+                window.location.href = "/more_info"
+              })
+              productCard.appendChild(moreButton);
 
               productContainer.appendChild(productCard);
             });
           })
           .catch(error => console.error('Error fetching data:', error));
       }
+
       searchButton = document.getElementById("search-button")
       searchinput = document.getElementById("search-input")
       searchButton.addEventListener("click", function(){
@@ -208,8 +236,6 @@
         }
       })
     </script>
-
-
 
 </body>
 
