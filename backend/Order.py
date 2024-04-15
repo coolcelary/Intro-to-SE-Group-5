@@ -80,14 +80,12 @@ if __name__ == "__main__":
     elif command == "get":
         orders = get_user_orders(sys.argv[2])
         if orders:
-            for order in orders:
-                print(order)
+            print(orders)
         else:
             print("Invalid")
     elif command == "getorders":
         orders = get_orders(sys.argv[2])
         if orders:
-            for order in orders:
-                print(order)
+            print(orders)
         else:
-            print("No orders found for the product ID.")
+            print("Invalid")

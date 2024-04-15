@@ -129,7 +129,7 @@ app.get("/productOrders/:id", (req, res) => {
   const pythonProcess = spawn("python3", ["./backend/Order.py", "getorders", product_id])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    console.log(result)
+    console.log(result != "Invalid")
     if (result != "Invalid") {
       res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
     }
