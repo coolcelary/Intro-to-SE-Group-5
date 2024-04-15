@@ -39,6 +39,7 @@ def get_orders(productID):
     result = list()
     for order in orders:
         item = dict()
+        item["userid"] = order[1]
         item["quantity"] = order[3]
         item["name"] = order[4]
         result.append(item)
@@ -82,4 +83,15 @@ if __name__ == "__main__":
             for order in orders:
                 print(order)
         else:
+<<<<<<< HEAD
             print("Invalid")
+=======
+            print("No orders found for the user.")
+    elif command == "getorders":
+        orders = get_orders(sys.argv[2])
+        if orders:
+            for order in orders:
+                print(order)
+        else:
+            print("No orders found for the product ID.")
+>>>>>>> refs/remotes/origin/main

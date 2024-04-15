@@ -81,6 +81,15 @@ app.get("/sellers_view", (req, res) => {
   }
 })
 
+app.get("/sellers_edit", (req, res) => {
+  if (req.cookies && req.cookies.seller_auth) {
+    res.sendFile(path.join(__dirname, "/frontend/selleredit.html"))
+  }
+  else {
+    res.redirect("/admin")
+  }
+})
+
 app.post("/products", (req, res) => {
   const { name, price, category, image_url } = req.body;
   const seller_id = req.cookies.sellerid;
@@ -116,8 +125,8 @@ app.get("/seller_products", (req, res) => {
 
 app.get("/productOrders/:id", (req, res) => {
   const product_id = req.params.id;
-  console.log(`python3 ./backend/Order.py get "${product_id}" `)
-  const pythonProcess = spawn("python3", ["./backend/Order.py", "get", product_id])
+  console.log(`python3 ./backend/Order.py getorders "${product_id}" `)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "getorders", product_id])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     console.log(result)
