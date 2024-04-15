@@ -563,13 +563,13 @@ app.post("/contact", (req, res) => {
     const result = data.toString().trim();
     console.log(result)
     if (result) {
-      res.status(200)
+      res.status(200).send("Success");
+    } else {
+      res.status(500).send("Failure");
     }
-    else {
-      res.status(500)
-    }
-  })
-})
+  });
+});
+
 
 // Checkout page and button
 
