@@ -95,6 +95,7 @@ sqlite3 ./backend/EcommerceDB.db "CREATE TABLE products (
     price REAL NOT NULL,
     category TEXT NOT NULL,
     image_url TEXT,
+    quantity INTEGER,
     SellerID INTEGER,
     FOREIGN KEY (SellerID) REFERENCES Sellers(SellerID)
 );"
@@ -110,7 +111,7 @@ sqlite3 ./backend/Products.db "SELECT * FROM products;" | while IFS="|" read -r 
 	ct=$(echo $category | sed "s/'//g")
 	img=$(echo $image_url | sed "s/'//g")
 	sel=$(echo $SellerID | sed "s/'//g")
-	insert_stmt="INSERT INTO products (product_id, name, price, category, image_url, SellerID) VALUES (NULL, '$nm', '$pr', '$ct', '$img', '$sel')"
+	insert_stmt="INSERT INTO products (product_id, name, price, category, image_url, SellerID, quantity) VALUES (NULL, '$nm', '$pr', '$ct', '$img', '$sel', '3')"
 	echo $insert_stmt
 	sqlite3 ./backend/EcommerceDB.db "$insert_stmt"
 done
