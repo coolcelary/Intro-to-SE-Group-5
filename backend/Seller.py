@@ -22,9 +22,9 @@ def add_product(name, price, category, image_url, seller_id):
         cursor.execute("INSERT INTO Products (product_id, name, price, category, image_url, SellerID, quantity) VALUES (NULL, ?, ?, ?, ?, ?, ?)",
                        (name, str(price), category, image_url, seller_id, 5))
         conn.commit()
-        print("Product added successfully")
-    except Exception as e:
-        print("Error adding product:", e)
+        print("valid")
+    except:
+        print("Invalid")
 
 def edit_product(product_id, name, price, category, image_url, seller_id):
     try:
