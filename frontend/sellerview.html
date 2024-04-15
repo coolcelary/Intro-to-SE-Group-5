@@ -42,103 +42,70 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      const userIcon = document.getElementById('userIcon');
-      const userMenu = document.getElementById('userMenu');
+  const userIcon = document.getElementById('userIcon');
+  const userMenu = document.getElementById('userMenu');
 
-      userIcon.addEventListener('click', function () {
-        userMenu.classList.toggle('show');
-      });
-    fetch('/seller_products')
-          .then(response => response.json())
-          .then(data => {
-            data.forEach(item => {
-              const productContainer = document.getElementById('product-container');
-              const productCard = document.createElement('div');
-              productCard.classList.add('product-card');
+  userIcon.addEventListener('click', function () {
+    userMenu.classList.toggle('show');
+  });
 
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const orders_box = document.createElement('div');
-              fetch(`/productOrders/${item.id}`)
+  fetch('/seller_products')
     .then(response => response.json())
-    .then(orders => {
-        console.log("Orders:", orders); // Log the orders data to the console
-        // Create orders_box
+    .then(data => {
+      data.forEach(item => {
+        const productContainer = document.getElementById('product-container');
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+
+        const title = document.createElement('div');
+        title.classList.add('product-title');
+        title.textContent = item.name;
+        productCard.appendChild(title);
+
+        const price = document.createElement('div');
+        price.classList.add('product-price');
+        price.textContent = `${item.price}`;
+        productCard.appendChild(price);
+
+        const description = document.createElement('div');
+        description.textContent = item.description;
+        productCard.appendChild(description);
+
+        const image = document.createElement('img');
+        image.src = item.image_url;
+        image.classList.add('product-image');
+        productCard.appendChild(image);
+
         const orders_box = document.createElement('div');
-        orders_box.classList.add('orders-box'); // Add a class for styling
-
-        // Iterate over the orders dictionary
-        for (const userId in orders) {
-            if (Object.hasOwnProperty.call(orders, userId)) {
-                // Create a section for each user's orders
-                const userSection = document.createElement('div');
-                userSection.classList.add('user-section');
-
-                // Create a header for the user's orders
-                const userHeader = document.createElement('h3');
-                userHeader.textContent = `User ID: ${userId}`;
-                userSection.appendChild(userHeader);
-
-                // Iterate over the orders for the current user
-                orders[userId].forEach(order => {
-                    // Create and append div elements for each label and value pair
-                    appendLabelAndValue(userSection, "Name: ", order.name);
-                    appendLabelAndValue(userSection, "Quantity: ", order.quantity);
-                });
-
-                // Append userSection to orders_box
-                orders_box.appendChild(userSection);
-            }
-        }
-
-        // Function to create label and value elements and append them to a parent element
-        function appendLabelAndValue(parentElement, labelText, valueText) {
-            const label = document.createElement('div');
-            label.textContent = labelText;
-            parentElement.appendChild(label);
-
-            const value = document.createElement('div');
-            value.textContent = valueText;
-            parentElement.appendChild(value);
-        }
-
-        // Append orders_box to the productCard
-        productCard.appendChild(orders_box);
-    })
-    .catch(error => console.error('Error fetching orders:', error)); // Log any errors
-
-              const editButton = document.createElement('button');
-              editButton.textContent = "Edit"
-              editButton.addEventListener("click", function(){
-                localStorage.setItem("clicked_id",item.id)
-                window.location.href = "/sellers_edit"
-              })
-            productCard.appendChild(editButton)
-
-            productContainer.appendChild(productCard);
+        fetch(`/productOrders/${item.id}`)
+          .then(response => response.json())
+          .then(orders => {
+            console.log("Orders:", orders);
+            const orders_box = document.createElement('div');
+            orders_box.classList.add('orders-box'); 
+            orders.forEach(order => {
+              const orderItem = document.createElement('li');
+              orderItem.textContent = `${order.name}: purchased ${order.quantity}`;
+              orders_box.appendChild(orderItem);
             });
+            productCard.appendChild(orders_box);
           })
-          .catch(error => console.error('Error fetching data:', error));
-    });
+          .catch(error => console.error('Error fetching orders:', error));
 
-  </script>
+        const editButton = document.createElement('button');
+        editButton.textContent = "Edit";
+        editButton.addEventListener("click", function(){
+          localStorage.setItem("clicked_id",item.id);
+          window.location.href = "/sellers_edit";
+        });
+        productCard.appendChild(editButton);
+
+        productContainer.appendChild(productCard);
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+});
+    </script>
 
 </body>
 
