@@ -38,6 +38,7 @@ def search_products(name, category):
         item["price"] = str(row[2]).replace("'", "").replace('"', '')
         item["category"] = row[3].replace("'", "").replace('"', '')
         item["image_url"] = row[4].replace("'", "").replace('"', '')
+        item["quantity"] = str(row[5]).replace("'", "").replace('"','')
         processed.append(item)
     return processed
 
@@ -46,7 +47,7 @@ def search_by_id(id):
     cursor = conn.cursor()
     items = cursor.execute("SELECT * FROM products WHERE product_id = ?", (id,))
     for item in items:
-        return {"id" : item[0], "name" : item[1], "price" : item[2], "category": item[3], "image_url" : item[4]}
+        return {"id" : item[0], "name" : item[1], "price" : item[2], "category": item[3], "image_url" : item[4], "quantity" : item[5]}
 
 
 if __name__ == "__main__":
