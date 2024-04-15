@@ -160,6 +160,24 @@ app.get("/userlist", (req, res) => {
   })
 })
 
+app.get("/productlist", (req, res) => {
+  if (!req.cookies || !req.cookies.admin_auth) {
+    res.status(403).json([])
+  }
+  console.log(`python3 ./backend/Admin.py listall`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "listall"])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
+
 app.post("/ban/:id", (req, res) => {
   if(!req.cookies && !res.cookies.admin_auth){
     res.status(403).json({valid:false})
