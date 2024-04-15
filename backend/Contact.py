@@ -11,6 +11,7 @@ def post_massage(name, email, message):
     try:
         cursor.execute("INSERT INTO contact (id, name, email, message) VALUES (NULL, ?, ?, ?)", (name, email, message))
         conn.commit()
+        print("Message has been submitted!")
     except:
         print("message invalid")
         return

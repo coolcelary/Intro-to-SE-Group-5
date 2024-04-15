@@ -8,7 +8,7 @@ def checkout(userid, name, address, email, card_number, expiration_date, card_na
     conn = sqlite3.connect("./backend/EcommerceDB.db")
     cursor = conn.cursor()
     cart_items = cursor.execute("SELECT * FROM Cart WHERE UserID = ?", (userid,)).fetchall()
-    if len(cart_items) < 0:
+    if len(cart_items) < 1:
         print("Invalid")
         return
     cursor.execute("DELETE FROM Cart WHERE UserID = ?", (userid,))
