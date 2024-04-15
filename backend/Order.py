@@ -43,10 +43,7 @@ def get_orders(productID):
         item["quantity"] = order[3]
         item["name"] = order[4]
         result.append(item)
-    if result:
-        return result
-    else:
-        return []
+    print(result)
     conn.close()
 
 def get_user_orders(userid):
@@ -68,7 +65,7 @@ def get_user_orders(userid):
             "cvv": order[10]
         }
         result.append(item)
-    return result
+    print(result)
     conn.close()
 
 if __name__ == "__main__":
@@ -78,14 +75,6 @@ if __name__ == "__main__":
     elif command == "verify":
         has_ordered(sys.argv[2], sys.argv[3])
     elif command == "get":
-        orders = get_user_orders(sys.argv[2])
-        if orders:
-            print(orders)
-        else:
-            print("Invalid")
+        get_user_orders(sys.argv[2])
     elif command == "getorders":
-        orders = get_orders(sys.argv[2])
-        if orders:
-            print(orders)
-        else:
-            print("Invalid")
+        get_orders(sys.argv[2])
