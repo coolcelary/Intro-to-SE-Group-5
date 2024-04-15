@@ -53,15 +53,33 @@
         </form>
   </div>
   </div>
+  <div id="message"></div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const userIcon = document.getElementById('userIcon');
-        const userMenu = document.getElementById('userMenu');
+    const userIcon = document.getElementById('userIcon');
+    const userMenu = document.getElementById('userMenu');
 
-        userIcon.addEventListener('click', function () {
-          userMenu.classList.toggle('show');
-        });
-      });
+    userIcon.addEventListener('click', function () {
+      userMenu.classList.toggle('show');
+    });
+
+    document.querySelector('.contact-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = this;
+      fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+      })
+      .then(response => response.text())
+      .then(message => {
+        const messageDiv = document.getElementById('message');
+        messageDiv.textContent = message;
+        messageDiv.style.display = 'block'; // Make sure the message div is visible
+      })
+      .catch(error => console.error('Error submitting form:', error));
+    });
+  });
   </script>
   </body>
 

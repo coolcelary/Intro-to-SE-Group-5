@@ -542,7 +542,7 @@ app.post("/checkout", (req, res) => {
       res.redirect("/")
     }
     else {
-      res.redirect("/error")
+      res.send("<script>alert('You have no items. Cannot checkout.')</script>")
     }
   })
 
