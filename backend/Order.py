@@ -83,10 +83,7 @@ if __name__ == "__main__":
             for order in orders:
                 print(order)
         else:
-<<<<<<< HEAD
             print("Invalid")
-=======
-            print("No orders found for the user.")
     elif command == "getorders":
         orders = get_orders(sys.argv[2])
         if orders:
@@ -94,4 +91,3 @@ if __name__ == "__main__":
                 print(order)
         else:
             print("No orders found for the product ID.")
->>>>>>> refs/remotes/origin/main
