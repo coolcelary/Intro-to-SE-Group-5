@@ -488,6 +488,33 @@ app.get("/userOrders", (req, res) => {
   }
 });
 
+// Account Information Page
+
+app.get("/accountinfo", (req, res) => {
+  if (req.cookies && req.cookies.authenticated) {
+    res.sendFile(path.join(__dirname, "./frontend/accountinfo.html"))
+  }
+  else {
+    res.redirect("/login")
+  }
+})
+
+app.get("/accountdetails", (req, res) => {
+  console.log(`python3 ./backend/Account.py"${req.cookies.userid}"`)
+  const userid = req.cookies.userid;
+  const pythonProcess = spawn("python3", ["./backend/Account.py", userid])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
+
 // Contact us page
 
 app.get("/contact", (req, res) => {

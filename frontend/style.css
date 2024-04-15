@@ -768,3 +768,19 @@ nav ul li a {
 #orderHistoryTable tbody tr:hover {
   background-color: #ddd;
 }
+
+.user-list {
+  font-family: Manrope, sans-serif;
+  text-align: center;
+  margin: 0 auto;
+  width: 600px; /* Set your desired width */
+  margin: 0 auto; /* Center the card horizontally */
+  margin-top: 3%;
+  padding: 20px;
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow */
+  background-color: #fff;
+}
+
+

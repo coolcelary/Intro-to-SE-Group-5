@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Depot - Account Info</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo">
+      <img src="./assets/Logo.png" alt="Logo">
+    </a>
+
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/cart">Cart</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+
+    <div class="user-menu" id="userMenu">
+      <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="/orderhistory">Order History</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li><a href="/checkout">Checkout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <h2>Account Information</h2>
+
+<table id="accountTable">
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Table body will be dynamically populated with JavaScript -->
+    </tbody>
+</table>
+  
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    });
+
+    fetch('/accountdetails')
+    .then(response => response.json())
+    .then(data => {
+        // Get the table body element
+        document.getElementById('accountInfo').innerHTML = `
+                    <p>User ID: ${data.userid}</p>
+                    <p>Username: ${data.username}</p>
+                    <p>User Type: ${data.userType}</p>
+                    <p>Email: ${data.email}</p>
+                    <p>Phone Number: ${data.phone}</p>
+                `;
+            })
+            .catch(error => console.error('Error fetching account information:', error));
+      
+
+    </script>
+
+</body>
+
+</html>

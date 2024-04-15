@@ -13,17 +13,17 @@ def get_info(userid, query=""):
     result = list();
     
     for row in rows:
-        Authentication = cursor.execute("SELECT * FROM Authentication WHERE product_id = ?", (row[1],))
-        Authentication = Authentication.fetchone()
-        if not Authentication:
+        information = cursor.execute("SELECT * FROM Authentication WHERE product_id = ?", (row[1],))
+        info = information.fetchone()
+        if not info:
             continue
-        if query and query not in Authentication[1]:
+        if query and query not in info[1]:
             continue
         userInfo = dict()
-        userInfo["username"] = Authentication[1]
-        userInfo["password"] = Authentication[2]
-        userInfo["email"] = Authentication[4]
-        userInfo["phoneNum"] = Authentication[5]
+        userInfo["username"] = info[1]
+        userInfo["password"] = info[2]
+        userInfo["email"] = info[4]
+        userInfo["phoneNum"] = info[5]
         result.append(userInfo)
     print(result)
 
