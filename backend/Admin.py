@@ -45,6 +45,38 @@ def ban_user(userid):
         conn.commit()
     except:
         print("invalid")
+        
+def list_products():
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    products = cursor.execute("SELECT * FROM products").fetchall()
+    result = list()
+    for product in products:
+        item = dict()
+        item["product_id"] = product[0]
+        item["name"] = product[1]
+        item["price"] = product[2]
+        item["category"] = product[3]
+        result.append(item)
+    if result:
+        print(result)
+        
+def ban_product(product_id):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM products WHERE product_id = ?", (product_id,))
+        product = cursor.execute("SELECT * FROM products WHERE product_id = ?", (product_id,)).fetchone()
+        if product:
+            print("invalid")
+            return
+        print("valid")
+        
+        conn.commit()
+    except:
+        print("invalid")
+
+    
 
 
 
@@ -55,6 +87,7 @@ def main():
         admin_login(sys.argv[2], sys.argv[3])
     elif command == "listall":
         list_users()
+        list_products()
     elif command == "ban":
         ban_user(sys.argv[2])
 
