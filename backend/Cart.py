@@ -27,6 +27,10 @@ def get_items(userid, query=""):
         item["price"] = product[2]
         item["category"] = product[3]
         item["image_url"] = product[4]
+        quantity = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userid, row[1])).fetchone()[0]
+        if not quantity:
+            quantity = "0"
+        item["quantity"] = quantity
         result.append(item)
     print(result)
 
