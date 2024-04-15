@@ -106,6 +106,26 @@ app.post("/products", (req, res) => {
   })
 })
 
+app.post("/products/edit", (req, res) => {
+  if (req.cookies && req.cookies.seller_auth) {
+    const { product_id, name, price, category, image_url } = req.body;
+    const seller_id = req.cookies.sellerid;
+    console.log(`./backend/Seller.py edit ${product_id} ${name} ${price} ${category} ${image_url} ${seller_id}`);
+    const pythonProcess = spawn("python3", ["./backend/Seller.py", "edit", product_id, name, price, category, image_url, seller_id]);
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result);
+      if (result == "valid") {
+        res.redirect("/sellers_view");
+      } else {
+        res.redirect("/sellers_edit");
+      }
+    });
+  } else {
+    res.redirect("/admin");
+  }
+});
+
 app.get("/seller_products", (req, res) => {
   // get a sellets products
   const seller_id = req.cookies.sellerid;
