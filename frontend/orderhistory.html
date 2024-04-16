@@ -24,12 +24,12 @@
         <!-- Unicode character for a user icon -->
 
         <div class="user-menu" id="userMenu">
-            <ul>
-                <li><a href="#">Account Information</a></li>
-                <li><a href="/orderhistory">Order History</a></li>
-                <li><a href="/logout">Logout</a></li>
-                <li><a href="/checkout">Checkout</a></li>
-            </ul>
+          <ul>
+            <li><a href="#">Account Information</a></li>
+            <li><a href="/orderhistory">Order History</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/checkout">Checkout</a></li>
+          </ul>
         </div>
     </nav>
 
@@ -54,31 +54,36 @@
         </table>
     </div>
 
-    <!-- Replace the existing script block with the following -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('/userOrders')
-                .then(response => response.json())
-                .then(data => {
-                    const orderHistoryBody = document.getElementById('orderHistoryBody');
+<script>
+  function goBack() {
+      window.history.back();
+    }
+    
+    fetch('/userOrders')
+    .then(response => response.json())
+    .then(data => {
+      const orderHistoryTable = document.getElementById('orderHistoryTable');
+      orderHistoryTable.innerHTML = ''; // Clear existing table
+      
+      data.forEach(order => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${order.order_id}</td>
+          <td>${order.product_id}</td>
+          <td>${order.quantity}</td>
+          <td>${order.name}</td>
+          <td>${order.address}</td>
+          <td>${order.email}</td>
+          <td>${order.card_number}</td>
+          <td>${order.expiration_date}</td>
+          <td>${order.card_name}</td>
+          <td>${order.cvv}</td>
+        `;
+        orderHistoryTable.appendChild(row);
+      });
+    })
+    .catch(error => console.error('Error fetching order history:', error));
 
-                    data.forEach(order => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${order.order_id}</td>
-                            <td>${order.product_id}</td>
-                            <td>${order.quantity}</td>
-                            <td>${order.name}</td>
-                            <td>${order.address}</td>
-                            <td>${order.email}</td>
-                            <td>${order.card_number}</td>
-                            <!-- Add additional cells for other order details -->
-                        `;
-                        orderHistoryBody.appendChild(row);
-                    });
-                })
-                .catch(error => console.error('Error fetching order history:', error));
-        });
-    </script>
+</script>
 </body>
 </html>

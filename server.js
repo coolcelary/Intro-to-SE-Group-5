@@ -81,6 +81,15 @@ app.get("/sellers_view", (req, res) => {
   }
 })
 
+app.get("/sellers_edit", (req, res) => {
+  if (req.cookies && req.cookies.seller_auth) {
+    res.sendFile(path.join(__dirname, "/frontend/selleredit.html"))
+  }
+  else {
+    res.redirect("/admin")
+  }
+})
+
 app.post("/products", (req, res) => {
   const { name, price, category, image_url } = req.body;
   const seller_id = req.cookies.sellerid;
@@ -96,6 +105,26 @@ app.post("/products", (req, res) => {
     }
   })
 })
+
+app.post("/products/edit", (req, res) => {
+  if (req.cookies && req.cookies.seller_auth) {
+    const { product_id, name, price, category, image_url } = req.body;
+    const seller_id = req.cookies.sellerid;
+    console.log(`./backend/Seller.py edit ${product_id} ${name} ${price} ${category} ${image_url} ${seller_id}`);
+    const pythonProcess = spawn("python3", ["./backend/Seller.py", "edit", product_id, name, price, category, image_url, seller_id]);
+    pythonProcess.stdout.on('data', (data) => {
+      const result = data.toString().trim();
+      console.log(result);
+      if (result == "valid") {
+        res.redirect("/sellers_view");
+      } else {
+        res.redirect("/sellers_edit");
+      }
+    });
+  } else {
+    res.redirect("/admin");
+  }
+});
 
 app.get("/seller_products", (req, res) => {
   // get a sellets products
@@ -116,8 +145,8 @@ app.get("/seller_products", (req, res) => {
 
 app.get("/productOrders/:id", (req, res) => {
   const product_id = req.params.id;
-  console.log(`python3 ./backend/Order.py get "${product_id}" `)
-  const pythonProcess = spawn("python3", ["./backend/Order.py", "get", product_id])
+  console.log(`python3 ./backend/Order.py getorders "${product_id}" `)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "getorders", product_id])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
     console.log(result)
@@ -534,13 +563,13 @@ app.post("/contact", (req, res) => {
     const result = data.toString().trim();
     console.log(result)
     if (result) {
-      res.status(200)
+      res.status(200).send("Success");
+    } else {
+      res.status(500).send("Failure");
     }
-    else {
-      res.status(500)
-    }
-  })
-})
+  });
+});
+
 
 // Checkout page and button
 

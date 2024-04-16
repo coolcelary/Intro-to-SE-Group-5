@@ -1,216 +1,244 @@
   <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lawn Depot - Products</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-  <nav>
-    <a href="/" class="logo">
-      <img src="./assets/Logo.png" alt="Logo">
-    </a>
-
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/products">Products</a></li>
-      <li><a href="/cart">Cart</a></li>
-      <li><a href="/about">About Us</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-
-    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
-
-    <div class="user-menu" id="userMenu">
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lawn Depot - Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+      .notification {
+        position: absolute;
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        display: none;
+      }
+    </style>
+  </head>
+  
+  <body>
+  
+    <nav>
+      <a href="/" class="logo">
+        <img src="./assets/Logo.png" alt="Logo">
+      </a>
+  
       <ul>
-        <li><a href="#">Account Information</a></li>
-        <li><a href="/orderhistory">Order History</a></li>
-        <li><a href="/logout">Logout</a></li>
-        <li><a href="/checkout">Checkout</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/products">Products</a></li>
+        <li><a href="/cart">Cart</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
       </ul>
-    </div>
-  </nav>
-
-  <div class="content">
-    <h2>Filter Products By</h2>
-    <div class="search-container">
-      <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
-      <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
-    </div>
-    <div id="productInfo"></div>
-    <div id="product-container"></div>
-    <div class="pagination">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <!-- Add more buttons as needed -->
-    </div>
-    <script>
-      function showPage(pageNumber) {
-        previous_cards = document.querySelectorAll('.product-card');
-        previous_cards.forEach(function (element) {
-          element.remove()
-        })
-        fetch('/inventory')
-          .then(response => response.json())
-          .then(data => {
-            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
-              const productContainer = document.getElementById('product-container');
-              const productCard = document.createElement('div');
-              productCard.classList.add('product-card');
-
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-              
-              // Quantity
-              const quantity = document.createElement('div');
-              quantity.classList.add('quantity');
-              quantity.textContent = `Qty: ${item.quantity}`;
-              productCard.appendChild(quantity);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-              })
-              productCard.appendChild(cartButton)
-            const moreButton = document.createElement('button');
-            moreButton.textContent = "more"
-            moreButton.addEventListener("click", function(){
-              localStorage.setItem("clicked_id",item.id)
-              window.location.href = "/more_info"
-            })
-            productCard.appendChild(moreButton)
-
-              productContainer.appendChild(productCard);
-            });
-                      })
-          .catch(error => console.error('Error fetching data:', error));
-      }
-
-
-      document.addEventListener('DOMContentLoaded', function () {
-        const userIcon = document.getElementById('userIcon');
-        const userMenu = document.getElementById('userMenu');
-
-        userIcon.addEventListener('click', function () {
-          userMenu.classList.toggle('show');
-        });
-        showPage(1)
-      });
-
-      const productsPerPage = 20; // Number of products to display per page
-      const productListContainer = document.querySelector('.product-list');
-      const paginationButtons = document.querySelectorAll('.pagination button');
-
-
-      // Attach click event listeners to pagination buttons
-      paginationButtons.forEach((button, index) => {
-        button.addEventListener('click', () => {showPage(index + 1); window.scroll(0, 0)});
-      });
-
-      function searchItems(pageNumber, query){
-        previous_cards = document.querySelectorAll('.product-card');
-        previous_cards.forEach(function (element) {
-          element.remove()
-        })
-        fetch(`/search?q=${query}`)
-          .then(response => response.json())
-          .then(data => {
-            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
-              const productContainer = document.getElementById('product-container');
-              const productCard = document.createElement('div');
-              productCard.classList.add('product-card');
-
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-              })
-              productCard.appendChild(cartButton)
-
-            const moreButton = document.createElement('button');
-            moreButton.textContent = "more"
-            moreButton.addEventListener("click", function(){
-              localStorage.setItem("clicked_id",item.id)
-              window.location.href = "/more_info"
-            })
-            productCard.appendChild(moreButton)
-
-
-              productContainer.appendChild(productCard);
-            });
+  
+      <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+  
+      <div class="user-menu" id="userMenu">
+        <ul>
+          <li><a href="#">Account Information</a></li>
+          <li><a href="/orderhistory">Order History</a></li>
+          <li><a href="/logout">Logout</a></li>
+          <li><a href="/checkout">Checkout</a></li>
+        </ul>
+      </div>
+    </nav>
+  
+    <div class="content">
+      <h2>Filter Products By</h2>
+      <div class="search-container">
+        <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
+        <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
+      </div>
+      <div id="productInfo"></div>
+      <div id="product-container"></div>
+      <div class="pagination">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <!-- Add more buttons as needed -->
+      </div>
+      <script>
+        function showPage(pageNumber) {
+          previous_cards = document.querySelectorAll('.product-card');
+          previous_cards.forEach(function (element) {
+            element.remove()
           })
-          .catch(error => console.error('Error fetching data:', error));
-      }
-      searchButton = document.getElementById("search-button")
-      searchinput = document.getElementById("search-input")
-      searchButton.addEventListener("click", function(){
-        console.log(searchinput.value)
-        if(searchinput.value){
-        searchItems(1, searchinput.value)
+          fetch('/inventory')
+            .then(response => response.json())
+            .then(data => {
+              data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+                const productContainer = document.getElementById('product-container');
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+  
+                const title = document.createElement('div');
+                title.classList.add('product-title');
+                title.textContent = item.name;
+                productCard.appendChild(title);
+  
+                const price = document.createElement('div');
+                price.classList.add('product-price');
+                price.textContent = `${item.price}`;
+                productCard.appendChild(price);
+  
+                const description = document.createElement('div');
+                description.textContent = item.description;
+                productCard.appendChild(description);
+  
+                // Quantity
+                const quantity = document.createElement('div');
+                quantity.classList.add('quantity');
+                quantity.textContent = `Qty: ${item.quantity}`;
+                productCard.appendChild(quantity);
+  
+                const image = document.createElement('img');
+                image.src = item.image_url
+                image.classList.add('product-image')
+                productCard.appendChild(image)
+  
+                const cartButton = document.createElement('button');
+                cartButton.textContent = "add to cart"
+                cartButton.addEventListener('click', function(event) {
+                  const body = { itemid : `${item.id}` }
+                  fetch("/cart", {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(body)
+                  });
+                  showNotification(event.target);
+                })
+                productCard.appendChild(cartButton);
+  
+                const moreButton = document.createElement('button');
+                moreButton.textContent = "more"
+                moreButton.addEventListener("click", function(){
+                  localStorage.setItem("clicked_id",item.id)
+                  window.location.href = "/more_info"
+                })
+                productCard.appendChild(moreButton);
+  
+                productContainer.appendChild(productCard);
+              });
+            })
+            .catch(error => console.error('Error fetching data:', error));
         }
-      })
-    </script>
-
-
-
-</body>
-
-</html>
+  
+        function showNotification(target) {
+          const notification = document.createElement('div');
+          notification.classList.add('notification');
+          notification.textContent = 'Item added to cart!';
+          document.body.appendChild(notification);
+          
+          // Position the notification next to the button
+          const rect = target.getBoundingClientRect();
+          notification.style.top = rect.top + 'px';
+          notification.style.left = rect.right + 'px';
+          
+          notification.style.display = 'block';
+          setTimeout(() => {
+            notification.remove();
+          }, 3000); // Hide notification after 3 seconds
+        }
+  
+        document.addEventListener('DOMContentLoaded', function () {
+          const userIcon = document.getElementById('userIcon');
+          const userMenu = document.getElementById('userMenu');
+  
+          userIcon.addEventListener('click', function () {
+            userMenu.classList.toggle('show');
+          });
+          showPage(1);
+        });
+  
+        const productsPerPage = 20; // Number of products to display per page
+        const productListContainer = document.querySelector('.product-list');
+        const paginationButtons = document.querySelectorAll('.pagination button');
+  
+        // Attach click event listeners to pagination buttons
+        paginationButtons.forEach((button, index) => {
+          button.addEventListener('click', () => {showPage(index + 1); window.scroll(0, 0)});
+        });
+  
+        function searchItems(pageNumber, query){
+          previous_cards = document.querySelectorAll('.product-card');
+          previous_cards.forEach(function (element) {
+            element.remove()
+          })
+          fetch(`/search?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+              data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+                const productContainer = document.getElementById('product-container');
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+  
+                const title = document.createElement('div');
+                title.classList.add('product-title');
+                title.textContent = item.name;
+                productCard.appendChild(title);
+  
+                const price = document.createElement('div');
+                price.classList.add('product-price');
+                price.textContent = `${item.price}`;
+                productCard.appendChild(price);
+  
+                const description = document.createElement('div');
+                description.textContent = item.description;
+                productCard.appendChild(description);
+  
+                const image = document.createElement('img');
+                image.src = item.image_url
+                image.classList.add('product-image')
+                productCard.appendChild(image)
+  
+                const cartButton = document.createElement('button');
+                cartButton.textContent = "add to cart"
+                cartButton.addEventListener('click', function() {
+                  const body = { itemid : `${item.id}` }
+                  fetch("/cart", {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify(body)
+                  });
+                  showNotification(cartButton);
+                })
+                productCard.appendChild(cartButton);
+  
+                const moreButton = document.createElement('button');
+                moreButton.textContent = "more"
+                moreButton.addEventListener("click", function(){
+                  localStorage.setItem("clicked_id",item.id)
+                  window.location.href = "/more_info"
+                })
+                productCard.appendChild(moreButton);
+  
+                productContainer.appendChild(productCard);
+              });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        }
+  
+        searchButton = document.getElementById("search-button")
+        searchinput = document.getElementById("search-input")
+        searchButton.addEventListener("click", function(){
+          console.log(searchinput.value)
+          if(searchinput.value){
+          searchItems(1, searchinput.value)
+          }
+        })
+      </script>
+  
+  </body>
+  
+  </html>
+  
