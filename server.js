@@ -586,40 +586,23 @@ app.get("/checkout", (req, res) => {
 app.post("/checkout", (req, res) => {
   const { name, address, email, card_number, expiry_date, card_holder_name, cvv } = req.body;
   const userid = req.cookies.userid;
-  
-  // Check if userid is undefined or null
-  if (!userid) {
-    return res.redirect("/login");
+  if (userid == undefined) {
+    res.redirect("/login")
   }
-
-  // Execute the Python script to check if the user has items in their cart
-  const pythonProcess = spawn("python3", ["./backend/Cart.py", "searchid", userid]);
-
+  console.log(`python3 ./backend/Order.py ${userid} ${name} ${address} ${email} ${card_number} ${expiry_date} ${card_holder_name} ${cvv}`)
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "checkout", userid, name, address, email, card_number, expiry_date, card_holder_name, cvv])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    console.log(result);
-    if (result !== "") {
-      // If the user has items, proceed with the checkout process
-      const orderProcess = spawn("python3", ["./backend/Order.py", "checkout", userid, name, address, email, card_number, expiry_date, card_holder_name, cvv]);
-
-      orderProcess.stdout.on('data', (orderData) => {
-        const orderResult = orderData.toString().trim();
-        console.log(orderResult);
-        if (orderResult === "valid") {
-          // If checkout is successful, redirect to homepage
-          res.redirect("/");
-        } else {
-          // If checkout fails, send an error response
-          res.status(500).send("Checkout failed. Please try again.");
-        }
-      });
-    } else {
-      // If the user has no items, redirect to homepage with notification
-      res.send("<script>alert('You have no items. Cannot checkout.'); window.location='/';</script>");
+    console.log(result)
+    if (result == "valid") {
+      res.redirect("/")
     }
-  });
-});
+    else {
+      res.send("<script>alert('You have no items. Cannot checkout.')</script>")
+    }
+  })
 
+})
 
 // Setup the server
 

@@ -1,13 +1,7 @@
 import sqlite3
 import sys
 
-def has_items_in_cart(userid):
-    conn = sqlite3.connect('./backend/EcommerceDB.db')
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM Cart WHERE UserID = ?", (userid,))
-    count = cursor.fetchone()[0]
-    conn.close()
-    return count > 0
+
 
 def get_items(userid, query=""):
     # Connect to the SQLite database
@@ -125,6 +119,4 @@ if __name__ == "__main__":
         get_items(sys.argv[2], sys.argv[3])
     elif command == "decrement":
         decrement_cart(sys.argv[2], sys.argv[3])
-    elif command == "has_items":
-        if has_items_in_cart(sys.argv[2]):
-            print("valid")
+
