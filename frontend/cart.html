@@ -47,7 +47,7 @@
     </div>
       <div id="product-container"></div>
       <button onclick="goBack()">Go Back</button>
-      <button id="checkoutbutton">Checkout</button>
+      <button id="checkoutButton" onclick="checkCartAndProceed()">Checkout</button>
     </div>
   
     <script>
@@ -59,6 +59,23 @@
       function goBack() {
       window.history.back();
     }
+    function checkCartAndProceed() {
+            // Make an AJAX request to check if the user has items in their cart
+            fetch('/cart_items')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        // User has items in cart, proceed to checkout
+                        window.location.href = '/checkout';
+                    } else {
+                        // User does not have items in cart, disable checkout button
+                        alert('Your cart is empty. Please add items to your cart before proceeding to checkout.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking cart:', error);
+                });
+        }
       function showPage(pageNumber) {
         previous_cards = document.querySelectorAll('.product-card');
         previous_cards.forEach(function (element) {
