@@ -8,14 +8,24 @@ def get_items(userid, query=""):
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
-    # Execute a SELECT query to fetch all rows from the Authentication table
+    # Execute a SELECT query to fetch all rows from the Cart table
     cursor.execute("SELECT * FROM Cart WHERE UserID = ?", (userid,))
     rows = cursor.fetchall()
+
+    # Count occurrences of each product_id to get quantity
+    product_counts = {}
+    for row in rows:
+        product_id = row[1]  # Assuming product_id is at index 1
+        if product_id in product_counts:
+            product_counts[product_id] += 1
+        else:
+            product_counts[product_id] = 1
 
     # Display the retrieved rows
     result = list()
     for row in rows:
-        products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (row[1],))
+        product_id = row[1]  # Assuming product_id is at index 1
+        products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (product_id,))
         product = products.fetchone()
         if not product:
             continue
@@ -27,8 +37,13 @@ def get_items(userid, query=""):
         item["price"] = product[2]
         item["category"] = product[3]
         item["image_url"] = product[4]
+        
+        # Append quantity to item
+        item["quantity"] = product_counts.get(product_id, 0)  # Get quantity from product_counts dictionary
+        
         result.append(item)
     print(result)
+
 
     # Close the database connection
     conn.close()
