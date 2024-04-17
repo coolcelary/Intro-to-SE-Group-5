@@ -36,8 +36,9 @@ def login_user(username, password):
         users = cursor.execute("SELECT UserID, Username FROM Authentication WHERE Username = ? AND Password = ?", (username, password))
         for user in users:
             return user[0]
+        return "invalid"
     except sqlite3.Error as e:
-        return
+        return "invalid"
     finally:
         conn.close()
 

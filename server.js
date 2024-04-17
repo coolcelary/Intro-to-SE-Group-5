@@ -231,7 +231,7 @@ app.post("/login", (req, res) => {
   const pythonProcess = spawn("python3", ["./backend/Login.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    if (result) {
+    if (result && result !== "invalid") {
       console.log(result)
       res.cookie("userid", result, { maxAge: 900000, httpOnly: true });
       res.cookie("authenticated", { maxAge: 900000, httpOnly: true })
