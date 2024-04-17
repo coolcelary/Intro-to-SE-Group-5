@@ -8,24 +8,14 @@ def get_items(userid, query=""):
     conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
-    # Execute a SELECT query to fetch all rows from the Cart table
+    # Execute a SELECT query to fetch all rows from the Authentication table
     cursor.execute("SELECT * FROM Cart WHERE UserID = ?", (userid,))
     rows = cursor.fetchall()
-
-    # Count occurrences of each product_id to get quantity
-    product_counts = {}
-    for row in rows:
-        product_id = row[1]  # Assuming product_id is at index 1
-        if product_id in product_counts:
-            product_counts[product_id] += 1
-        else:
-            product_counts[product_id] = 1
 
     # Display the retrieved rows
     result = list()
     for row in rows:
-        product_id = row[1]  # Assuming product_id is at index 1
-        products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (product_id,))
+        products = cursor.execute("SELECT * FROM products WHERE product_id = ?", (row[1],))
         product = products.fetchone()
         if not product:
             continue
@@ -37,13 +27,12 @@ def get_items(userid, query=""):
         item["price"] = product[2]
         item["category"] = product[3]
         item["image_url"] = product[4]
-        
-        # Append quantity to item
-        item["quantity"] = product_counts.get(product_id, 0)  # Get quantity from product_counts dictionary
-        
+        quantity = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userid, row[1])).fetchone()[0]
+        if not quantity:
+            quantity = "0"
+        item["quantity"] = quantity
         result.append(item)
     print(result)
-
 
     # Close the database connection
     conn.close()
@@ -60,16 +49,26 @@ def add_to_cart(userID, productID):
     existing_entry = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID)).fetchone()
     if existing_entry:
         quantity = int(existing_entry[0]) + 1
+        try:
+            cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID = ?", (quantity, userID, productID,))
+            conn.commit()
+            return True
+        except:
+            return False
+        finally:
+            conn.close()
+    
+
     else:
         quantity = 1
-    try:
-        cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
-        conn.commit()
-        return True
-    except:
-        return False
-    finally:
-        conn.close()
+        try:
+            cursor.execute("INSERT INTO Cart (UserID, ProductID, Quantity) VALUES (?, ?, ?)", (userID, productID, quantity))
+            conn.commit()
+            return True
+        except:
+            return False
+        finally:
+            conn.close()
     
 def remove_from_cart(userID, productID):
     # Check if username and password are provided
@@ -89,6 +88,23 @@ def remove_from_cart(userID, productID):
     finally:
         conn.close()
 
+def decrement_cart(userID, productID):
+    if not userID or not productID:
+        return False
+
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
+    cursor = conn.cursor()
+    quantity = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID,)).fetchone()
+    if not quantity or quantity[0] <= 1:
+        cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ProductID + ?", (userID, productID,))
+        print("0")
+    else:
+        new_quantity = int(quantity[0]) - 1
+        print(new_quantity)
+        cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID + ?", (new_quantity, userID, productID))
+    conn.commit()
+
+
 
 if __name__ == "__main__":
     command = sys.argv[1]
@@ -101,4 +117,6 @@ if __name__ == "__main__":
         get_items(sys.argv[2])
     elif command == "search":
         get_items(sys.argv[2], sys.argv[3])
+    elif command == "decrement":
+        decrement_cart(sys.argv[2], sys.argv[3])
 

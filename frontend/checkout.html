@@ -43,7 +43,6 @@
         <th>Quantity</th>
         <th>Item Name</th>
         <th>Price</th>
-        <th>Total</th>
       </tr>
     </thead>
     <tbody id="cartItems">
@@ -87,34 +86,17 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => response.json())
     .then(data => {
       const cartItems = document.getElementById('cartItems');
-      let total = 0; // Initialize total
-      
       cartItems.innerHTML = ''; // Clear existing items
       
       data.forEach(item => {
         const row = document.createElement('tr');
-        
-        // Calculate item total
-        const itemTotal = item.quantity * item.price;
-        total += itemTotal;
-        
         row.innerHTML = `
           <td>${item.quantity}</td>
           <td>${item.name}</td>
           <td>${item.price}</td>
-          <td>$${itemTotal.toFixed(2)}</td> <!-- Display item total -->
         `;
-        
         cartItems.appendChild(row);
       });
-
-      // Add total row at the end of the table
-      const totalRow = document.createElement('tr');
-      totalRow.innerHTML = `
-        <td colspan="3"><strong>Total</strong></td>
-        <td><strong>$${total.toFixed(2)}</strong></td> <!-- Display overall total -->
-      `;
-      cartItems.appendChild(totalRow);
     })
     .catch(error => console.error('Error fetching cart items:', error));
 </script>
