@@ -17,15 +17,16 @@ Users-
 * remove items from cart
 * purchase items
 * add a review to a purchased item
+* checkout and view orders
+
+Sellers-
+* Create and edit products
+* View product purchases
 
 Admins-
 * login
-* edit product prices
-* edit product descriptions
-* add products
-* remove products
-* remove product reviews
-* remove user accounts
+* ban users
+* approve sellers
 
 ## Group 5 members:
 * Hunter Pope (hntrpope@gmail.com) Team Leader
@@ -37,14 +38,11 @@ Admins-
 ## Languages and Tools:
 
 ### frontend:
-* Reactjs
-* Nodejs
-* Typescript + SWC
 * HTML
 * CSS
   
 ### backend:
 * SQLite3
 * Nodejs
-* cors
+* Python3
 
