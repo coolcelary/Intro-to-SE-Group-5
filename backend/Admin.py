@@ -15,7 +15,6 @@ def admin_login(username, password):
     else:
         return
 
-
 def list_users():
     conn = sqlite3.connect("./backend/EcommerceDB.db")
     cursor = conn.cursor()
@@ -46,7 +45,7 @@ def ban_user(userid):
         conn.commit()
     except:
         print("invalid")
-
+        
 def list_products():
     conn = sqlite3.connect("./backend/EcommerceDB.db")
     cursor = conn.cursor()
@@ -61,7 +60,7 @@ def list_products():
         result.append(item)
     if result:
         print(result)
-
+        
 def ban_product(product_id):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
     cursor = conn.cursor()
@@ -72,9 +71,14 @@ def ban_product(product_id):
             print("invalid")
             return
         print("valid")
+        
         conn.commit()
     except:
         print("invalid")
+
+    
+
+
 
 
 def main():
@@ -83,7 +87,7 @@ def main():
         admin_login(sys.argv[2], sys.argv[3])
     elif command == "listall":
         list_users()
-        #list_products()
+        list_products()
     elif command == "ban":
         ban_user(sys.argv[2])
 

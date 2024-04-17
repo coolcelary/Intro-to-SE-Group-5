@@ -68,6 +68,39 @@
               });
             })
           .catch(error => console.error(error))
+
+          const productList = document.getElementById('product-list')
+        fetch("/productlist")
+          .then(response => response.json())
+          .then(data => {
+              data.forEach(item => {
+                const productItem = document.createElement('li')
+                productItem.textContent = `productID #${item.product_id} name: ${item.name} price: ${item.price} category: ${item.category}`
+                productList.appendChild(productItem);
+                const banButton = document.createElement('button')
+                banButton.addEventListener('click', function(event) {
+                    fetch('/ban/' + item.id, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Ban Failed');
+                        }
+                        console.log('Product banned successfully');
+                      location.reload()
+                    })
+                    .catch(function(error) {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+                });
+                banButton.textContent = "Ban Product";
+                productList.appendChild(banButton);
+              });
+            })
+          .catch(error => console.error(error))
       });
 
     </script>

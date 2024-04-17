@@ -14,8 +14,6 @@ def checkout(userid, name, address, email, card_number, expiration_date, card_na
     cursor.execute("DELETE FROM Cart WHERE UserID = ?", (userid,))
     for item in cart_items:
         cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity, Name, Address, Email, CardNumber, ExpirationDate, CardName, CVV) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (userid, item[1], item[2], name, address, email, card_number, expiration_date, card_name, cvv,))
-        # Subtract quantity from the product in the Products table
-        cursor.execute("UPDATE products SET quantity = Quantity - ? WHERE product_id = ?", (item[2], item[1]))
 
     print("valid")
     conn.commit()
@@ -39,11 +37,13 @@ def get_orders(productID):
     result = list()
     for order in orders:
         item = dict()
-        item["userid"] = order[1]
         item["quantity"] = order[3]
         item["name"] = order[4]
         result.append(item)
-    print(result)
+    if result:
+        return result
+    else:
+        return []
     conn.close()
 
 def get_user_orders(userid):
@@ -65,7 +65,7 @@ def get_user_orders(userid):
             "cvv": order[10]
         }
         result.append(item)
-    print(result)
+    return result
     conn.close()
 
 if __name__ == "__main__":
@@ -75,6 +75,9 @@ if __name__ == "__main__":
     elif command == "verify":
         has_ordered(sys.argv[2], sys.argv[3])
     elif command == "get":
-        get_user_orders(sys.argv[2])
-    elif command == "getorders":
-        get_orders(sys.argv[2])
+        orders = get_user_orders(sys.argv[2])
+        if orders:
+            for order in orders:
+                print(order)
+        else:
+            print("No orders found for the user.")

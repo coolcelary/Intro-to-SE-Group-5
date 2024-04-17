@@ -41,10 +41,6 @@
   
     <div class="cartinfo">
       <h2>Cart Items</h2>
-    <div class="search-container">
-      <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
-      <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
-    </div>
       <div id="product-container"></div>
       <button onclick="goBack()">Go Back</button>
       <button id="checkoutbutton">Checkout</button>
@@ -105,26 +101,6 @@
                 location.reload()
                 })
                 productCard.appendChild(removeButton)
-
-
-            const quant = document.createElement('div')
-            quant.textContent = `Quantity: ${item.quantity}`
-            productCard.appendChild(quant)
-
-            const incButton = document.createElement('button')
-            incButton.textContent = "+"
-            incButton.addEventListener('click', function() {
-                const body = { itemid: `${item.id}` }
-                const result = fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-                location.reload()
-              })
-              productCard.appendChild(incButton)
 
             const moreButton = document.createElement('button');
             moreButton.textContent = "more"
@@ -211,26 +187,6 @@
               image.src = item.image_url
               image.classList.add('product-image')
               productCard.appendChild(image)
-
-              const quant = document.createElement('div')
-              quant.textContent = `Quantity: ${item.quantity}`
-              productCard.appendChild(quant)
-
-              const incButton = document.createElement('button')
-              incButton.textContent = "+"
-              incButton.addEventListener('click', function() {
-              const body = { itemid: `${item.id}` }
-              const result = fetch("/cart", {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify(body)
-              });
-              })
-              productCard.appendChild(incButton)
-
-
 
               const cartButton = document.createElement('button');
               cartButton.textContent = "add to cart"
