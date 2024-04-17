@@ -108,6 +108,16 @@
       cartItems.appendChild(totalRow);
     })
     .catch(error => console.error('Error fetching cart items:', error));
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+      showPage(1)
+    });
 </script>
 </body>
 </html>
