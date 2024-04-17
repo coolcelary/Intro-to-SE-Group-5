@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lawn Depot - Checkout</title>
+<title>Lawn Depot - Checkout Page</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
         <div class="user-menu" id="userMenu">
           <ul>
             <li><a href="#">Account Information</a></li>
-            <li><a href="/orderhistory">Order History</a></li>
+            <li><a href="#">Order History</a></li>
             <li><a href="/logout">Logout</a></li>
             <li><a href="/checkout">Checkout</a></li>
           </ul>
@@ -45,8 +45,18 @@
         <th>Price</th>
       </tr>
     </thead>
-    <tbody id="cartItems">
-      <!-- Items will be dynamically added here -->
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>Product A</td>
+        <td>$10.00</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Product B</td>
+        <td>$20.00</td>
+      </tr>
+      <!-- Add more items here if needed -->
     </tbody>
   </table>
   
@@ -66,6 +76,7 @@
     <button type="submit">Submit</button>
   </form>
   
+  
 </div>
 
 <script>
@@ -73,23 +84,6 @@
       window.history.back();
     }
     
-    fetch('/cart_items')
-    .then(response => response.json())
-    .then(data => {
-      const cartItems = document.getElementById('cartItems');
-      cartItems.innerHTML = ''; // Clear existing items
-      
-      data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.quantity}</td>
-          <td>${item.name}</td>
-          <td>${item.price}</td>
-        `;
-        cartItems.appendChild(row);
-      });
-    })
-    .catch(error => console.error('Error fetching cart items:', error));
 </script>
 </body>
 </html>

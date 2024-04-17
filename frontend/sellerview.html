@@ -28,6 +28,8 @@
 
     <div class="user-menu" id="userMenu">
       <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="#">Order History</a></li>
         <li><a href="/logout">Logout</a></li>
       </ul>
     </div>
@@ -42,70 +44,66 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-  const userIcon = document.getElementById('userIcon');
-  const userMenu = document.getElementById('userMenu');
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
 
-  userIcon.addEventListener('click', function () {
-    userMenu.classList.toggle('show');
-  });
-
-  fetch('/seller_products')
-    .then(response => response.json())
-    .then(data => {
-      data.forEach(item => {
-        const productContainer = document.getElementById('product-container');
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-
-        const title = document.createElement('div');
-        title.classList.add('product-title');
-        title.textContent = item.name;
-        productCard.appendChild(title);
-
-        const price = document.createElement('div');
-        price.classList.add('product-price');
-        price.textContent = `${item.price}`;
-        productCard.appendChild(price);
-
-        const description = document.createElement('div');
-        description.textContent = item.description;
-        productCard.appendChild(description);
-
-        const image = document.createElement('img');
-        image.src = item.image_url;
-        image.classList.add('product-image');
-        productCard.appendChild(image);
-
-        const orders_box = document.createElement('div');
-        fetch(`/productOrders/${item.id}`)
-          .then(response => response.json())
-          .then(orders => {
-            console.log("Orders:", orders);
-            const orders_box = document.createElement('div');
-            orders_box.classList.add('orders-box'); 
-            orders.forEach(order => {
-              const orderItem = document.createElement('li');
-              orderItem.textContent = `${order.name}: purchased ${order.quantity}`;
-              orders_box.appendChild(orderItem);
-            });
-            productCard.appendChild(orders_box);
-          })
-          .catch(error => console.error('Error fetching orders:', error));
-
-        const editButton = document.createElement('button');
-        editButton.textContent = "Edit";
-        editButton.addEventListener("click", function(){
-          localStorage.setItem("clicked_id",item.id);
-          window.location.href = "/sellers_edit";
-        });
-        productCard.appendChild(editButton);
-
-        productContainer.appendChild(productCard);
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
       });
-    })
-    .catch(error => console.error('Error fetching data:', error));
-});
-    </script>
+    fetch('/seller_products')
+          .then(response => response.json())
+          .then(data => {
+            data.forEach(item => {
+              const productContainer = document.getElementById('product-container');
+              const productCard = document.createElement('div');
+              productCard.classList.add('product-card');
+
+              const title = document.createElement('div');
+              title.classList.add('product-title');
+              title.textContent = item.name;
+              productCard.appendChild(title);
+
+              const price = document.createElement('div');
+              price.classList.add('product-price');
+              price.textContent = `${item.price}`;
+              productCard.appendChild(price);
+
+              const description = document.createElement('div');
+              description.textContent = item.description;
+              productCard.appendChild(description);
+
+              const image = document.createElement('img');
+              image.src = item.image_url
+              image.classList.add('product-image')
+              productCard.appendChild(image)
+
+              const orders_box = document.createElement('div');
+              fetch(`/productOrders/${item.id}`)
+                .then(response => response.json())
+                .then(orders => {
+                orders.forEach(order => {
+                  const new_order = document.createElement('li');
+                  new_order.textContent = `${order.name} : ${order.quantity}`
+                  orders_box.appendChild(new_order)
+                })
+              })
+              productCard.appendChild(orders_box);
+
+              const moreButton = document.createElement('button');
+              moreButton.textContent = "more"
+              moreButton.addEventListener("click", function(){
+                localStorage.setItem("clicked_id",item.id)
+                window.location.href = "/more_info"
+              })
+            productCard.appendChild(moreButton)
+
+            productContainer.appendChild(productCard);
+            });
+          })
+          .catch(error => console.error('Error fetching data:', error));
+    });
+
+  </script>
 
 </body>
 

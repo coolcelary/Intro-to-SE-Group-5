@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lawn Depot - Seller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <nav>
+    <a href="#" class="logo">
+      <img src="./assets/Logo.png" alt="Logo"> <!-- Replace with your image URL -->
+    </a>
+
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+      <li><a href="/about">About Us</a></li>
+      <li><a href="/contact">Contact</a></li>
+      <li><a href="/new-item">New Item</a></li>
+    </ul>
+
+    <div class="search-container">
+      <button class="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
+      <input type="text" class="search-input" placeholder="Search Products...">
+    </div>
+
+    <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
+    <!-- Unicode character for a user icon -->
+
+    <div class="user-menu" id="userMenu">
+      <ul>
+        <li><a href="#">Account Information</a></li>
+        <li><a href="#">Order History</a></li>
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+
+  </nav>
+
+    <div class="content">
+        <div class="product-container">
+        </div>
+      </div>
+      
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    fetch('/seller_products')
+          .then(response => response.json())
+          .then(data => {
+            data.slice((pageNumber - 1) * productsPerPage, pageNumber * productsPerPage).forEach(item => {
+              const productContainer = document.getElementById('product-container');
+              const productCard = document.createElement('div');
+              productCard.classList.add('product-card');
+
+              const title = document.createElement('div');
+              title.classList.add('product-title');
+              title.textContent = item.name;
+              productCard.appendChild(title);
+
+              const price = document.createElement('div');
+              price.classList.add('product-price');
+              price.textContent = `${item.price}`;
+              productCard.appendChild(price);
+
+              const description = document.createElement('div');
+              description.textContent = item.description;
+              productCard.appendChild(description);
+
+              const image = document.createElement('img');
+              image.src = item.image_url
+              image.classList.add('product-image')
+              productCard.appendChild(image)
+
+              const cartButton = document.createElement('button');
+              cartButton.textContent = "add to cart"
+              cartButton.addEventListener('click', function() {
+                const body = { itemid : `${item.id}` }
+                fetch("/cart", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+              })
+              productCard.appendChild(cartButton)
+            const moreButton = document.createElement('button');
+            moreButton.textContent = "more"
+            moreButton.addEventListener("click", function(){
+              localStorage.setItem("clicked_id",item.id)
+              window.location.href = "/more_info"
+            })
+            productCard.appendChild(moreButton)
+
+              productContainer.appendChild(productCard);
+            });
+                      })
+          .catch(error => console.error('Error fetching data:', error));
+      }
+    );
+  </script>
+
+</body>
+
+</html>
