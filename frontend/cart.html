@@ -41,20 +41,37 @@
   
     <div class="cartinfo">
       <h2>Cart Items</h2>
+    <div class="search-container">
+      <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
+      <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
+    </div>
       <div id="product-container"></div>
       <button onclick="goBack()">Go Back</button>
-      <button id="checkoutbutton">Checkout</button>
+      <button id="checkoutButton" onclick="checkCartAndProceed()">Checkout</button>
     </div>
   
     <script>
-      const checkoutbutton = document.getElementById('checkoutbutton');
-      checkoutbutton.addEventListener('click', function() {
-        window.location.href = '/checkout';
-      });
-
       function goBack() {
       window.history.back();
     }
+    function checkCartAndProceed() {
+            // Make an AJAX request to check if the user has items in their cart
+            fetch('/cart_items')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        // User has items in cart, proceed to checkout
+                        window.location.href = '/checkout';
+                    } else {
+                        // User does not have items in cart, disable checkout button
+                        alert('Your cart is empty. Please add items to your cart before proceeding to checkout.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking cart:', error);
+                });
+        }
+
       function showPage(pageNumber) {
         previous_cards = document.querySelectorAll('.product-card');
         previous_cards.forEach(function (element) {
@@ -101,6 +118,26 @@
                 location.reload()
                 })
                 productCard.appendChild(removeButton)
+
+
+            const quant = document.createElement('div')
+            quant.textContent = `Quantity: ${item.quantity}`
+            productCard.appendChild(quant)
+
+            const incButton = document.createElement('button')
+            incButton.textContent = "+"
+            incButton.addEventListener('click', function() {
+                const body = { itemid: `${item.id}` }
+                const result = fetch("/cart", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                location.reload()
+              })
+              productCard.appendChild(incButton)
 
             const moreButton = document.createElement('button');
             moreButton.textContent = "more"
@@ -187,6 +224,26 @@
               image.src = item.image_url
               image.classList.add('product-image')
               productCard.appendChild(image)
+
+              const quant = document.createElement('div')
+              quant.textContent = `Quantity: ${item.quantity}`
+              productCard.appendChild(quant)
+
+              const incButton = document.createElement('button')
+              incButton.textContent = "+"
+              incButton.addEventListener('click', function() {
+              const body = { itemid: `${item.id}` }
+              const result = fetch("/cart", {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(body)
+              });
+              })
+              productCard.appendChild(incButton)
+
+
 
               const cartButton = document.createElement('button');
               cartButton.textContent = "add to cart"
