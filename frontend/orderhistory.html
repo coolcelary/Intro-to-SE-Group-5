@@ -62,7 +62,7 @@
     fetch('/userOrders')
     .then(response => response.json())
     .then(data => {
-      const orderHistoryTable = document.getElementById('orderHistoryTable');
+      const orderHistoryTable = document.getElementById('orderHistoryBody');
       orderHistoryTable.innerHTML = ''; // Clear existing table
       
       data.forEach(order => {
