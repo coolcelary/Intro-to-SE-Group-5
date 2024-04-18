@@ -100,6 +100,21 @@
         });
         productCard.appendChild(editButton);
 
+        const deleteButton = document.createElement("button")
+        deleteButton.textContent = "delete"
+            deleteButton.addEventListener("click", function() {
+              fetch(`/deleteProduct/${item.id}`)
+              .then(response => response.json())
+                .then(data => {
+                  if(data.valid){
+                    alert("Item Deleted")
+                  }
+                  window.location.reload()
+                })
+              .catch(error => console.error(error))
+            })
+
+        productCard.appendChild(deleteButton)
         productContainer.appendChild(productCard);
       });
     })

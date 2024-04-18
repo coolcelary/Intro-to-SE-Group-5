@@ -57,6 +57,14 @@ def get_products(seller_id):
         results.append(item)
     print(results)
 
+def delete_product(product_id):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE product_id = ?", (product_id,))
+    conn.commit()
+    print("valid")
+
+
 
 if __name__ == "__main__":
     command = sys.argv[1]
@@ -76,3 +84,6 @@ if __name__ == "__main__":
     
     elif command == "search":
         get_products(sys.argv[2])
+    elif command == "delete":
+        delete_product(sys.argv[2])
+

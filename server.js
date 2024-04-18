@@ -93,6 +93,23 @@ app.get("/sellers_edit", (req, res) => {
   }
 })
 
+app.get("/deleteProduct/:id", (req, res) => {
+  const product_id = req.params.id
+  if(!req.cookies || !req.cookies.seller_auth){
+    res.status(400).json({valid:false})
+  }
+  console.log(`./backend/Seller.py delete ${product_id}`)
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "delete", product_id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result) {
+      res.status(200).json({valid:true})
+    } else {
+      res.status(500).json({valid:false})
+    }
+  })
+})
+
 app.post("/products", (req, res) => {
   const { name, price, category, image_url } = req.body;
   const seller_id = req.cookies.sellerid;
