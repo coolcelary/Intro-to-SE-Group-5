@@ -365,6 +365,22 @@ nav ul li a {
           <td>${order.card_name}</td>
           <td>${order.cvv}</td>
         `;
+        const returnTd = document.createElement("td");
+        const returnButton = document.createElement("button")
+        returnButton.textContent = "Return Item"
+        returnButton.addEventListener("click", function(){
+          fetch(`/returnOrder/${order.product_id}`)
+          .then(response => response.json())
+            .then(data => {
+              if(data.valid === true){
+                alert("Item Returned To Seller")
+              }
+              window.location.reload()
+            })
+          .catch(error => console.error(error))
+        })
+        returnTd.appendChild(returnButton)
+        row.appendChild(returnTd)
         orderHistoryTable.appendChild(row);
       });
     })

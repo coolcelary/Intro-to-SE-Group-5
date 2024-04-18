@@ -68,6 +68,17 @@ def get_user_orders(userid):
     print(result)
     conn.close()
 
+def return_item(product_id, userid):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    order_count = cursor.execute("SELECT Quantity FROM Orders WHERE ProductID = ? AND UserID = ?", (product_id,userid,)).fetchone()
+    cursor.execute("DELETE FROM Orders WHERE ProductID = ? AND UserID = ?", (product_id,userid,))
+    inventory_count = cursor.execute("SELECT quantity FROM products WHERE product_id = ?", (product_id,)).fetchone()
+    if inventory_count and order_count:
+        cursor.execute("UPDATE products SET quantity = ? WHERE product_id = ?", (order_count[0] + inventory_count[0], product_id))
+    conn.commit()
+    print("valid")
+
 if __name__ == "__main__":
     command = sys.argv[1]
     if command == "checkout":
@@ -78,3 +89,5 @@ if __name__ == "__main__":
         get_user_orders(sys.argv[2])
     elif command == "getorders":
         get_orders(sys.argv[2])
+    elif command == "return":
+        return_item(sys.argv[2], sys.argv[3])
