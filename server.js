@@ -356,6 +356,21 @@ app.get("/cart_items", (req, res) => {
   })
 })
 
+app.get("/cart_total", (req, res) => {
+  const userid = req.cookies.userid;
+  console.log(`python3 ./backend/Cart.py total "${userid}"`);
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "total", userid]);
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result);
+    if (!isNaN(result)) {
+      res.status(200).json({ "total": parseFloat(result) });
+    } else {
+      res.status(500).json({ "error": "Failed to retrieve total price" });
+    }
+  });
+});
+
 app.post("/cart", (req, res) => {
   const { itemid } = req.body
   const userid = req.cookies.userid
