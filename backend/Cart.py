@@ -2,7 +2,6 @@ import sqlite3
 import sys
 
 
-
 def get_items(userid, query=""):
     # Connect to the SQLite database
     conn = sqlite3.connect('./backend/EcommerceDB.db')
@@ -57,7 +56,6 @@ def add_to_cart(userID, productID):
             return False
         finally:
             conn.close()
-    
 
     else:
         quantity = 1
@@ -104,7 +102,36 @@ def decrement_cart(userID, productID):
         cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID + ?", (new_quantity, userID, productID))
     conn.commit()
 
+def get_total(userID):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
+    cursor = conn.cursor()
+    total_price = 0
 
+    try:
+        # Query to fetch ProductID and Quantity from Cart table for the given UserID
+        cursor.execute("SELECT ProductID, Quantity FROM Cart WHERE UserID = ?", (userID,))
+        cart_items = cursor.fetchall()
+        print("Cart Items:", cart_items)
+        # Iterate through cart items and fetch price for each product from the products table
+        for item in cart_items:
+            product_id, quantity = item
+
+            # Query to fetch price for the product from the products table
+            cursor.execute("SELECT price FROM products WHERE product_id = ?", (product_id,))
+            product_price = cursor.fetchone()
+            print("Product Price:", product_price)
+            if product_price:
+                price_value = float(product_price[0].replace('$', ''))
+                total_price += price_value * quantity
+                print(total_price)
+        return total_price
+    except sqlite3.Error as e:
+        print("Error calculating total price:", e)
+        return None
+    finally:
+        # Close the database connection
+        conn.close()
 
 if __name__ == "__main__":
     command = sys.argv[1]
@@ -119,4 +146,5 @@ if __name__ == "__main__":
         get_items(sys.argv[2], sys.argv[3])
     elif command == "decrement":
         decrement_cart(sys.argv[2], sys.argv[3])
-
+    elif command == "total":
+        total = get_total(sys.argv[2])
