@@ -41,10 +41,10 @@
   
     <div class="cartinfo">
       <h2>Cart Items</h2>
-    <!--<div class="search-container">
+    <div class="search-container">
       <button class="search-button" id="search-button"><img src="./assets/Search Icon.png" alt="Search"></button>
       <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
-    </div> -->
+    </div>
       <div id="product-container"></div>
       <button onclick="goBack()">Go Back</button>
       <button id="checkoutButton" onclick="checkCartAndProceed()">Checkout</button>
@@ -175,6 +175,11 @@
         button.addEventListener('click', () => {showPage(index + 1); window.scroll(0, 0)});
       });
 
+      function searchItems(pageNumber, query){
+        previous_cards = document.querySelectorAll('.product-card');
+        previous_cards.forEach(function (element) {
+          element.remove()
+        })
         fetch(`/cart_search?q=${query}`)
           .then(response => response.json())
           .then(data => {
@@ -258,7 +263,7 @@
             });
           })
           .catch(error => console.error('Error fetching data:', error));
-      
+      }
       searchButton = document.getElementById("search-button")
       searchinput = document.getElementById("search-input")
       searchButton.addEventListener("click", function(){
