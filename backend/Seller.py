@@ -72,10 +72,10 @@ if __name__ == "__main__":
     
     if command == "login":
         seller_id = seller_login(sys.argv[2], sys.argv[3])
-        if seller_id:
-            print("Login successful. Seller ID:", seller_id)
-        else:
-            print("Login failed")
+        #if seller_id:
+           # print("Login successful. Seller ID:", seller_id)
+       # else:
+            #print("Login failed")
     
     elif command == "add":
         add_product(sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], sys.argv[6])
