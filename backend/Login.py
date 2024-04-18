@@ -33,7 +33,7 @@ def login_user(username, password):
     cursor = conn.cursor()
 
     try:
-        users = cursor.execute("SELECT UserID, Username FROM Authentication WHERE Username = ? AND Password = ?", (username, password))
+        users = cursor.execute("SELECT UserID, Username FROM Authentication WHERE Username = ? AND Password = ? AND UserType = 'customer'", (username, password))
         for user in users:
             return user[0]
         return "invalid"

@@ -2,18 +2,23 @@ import sys
 import sqlite3
 
 def seller_login(username, password):
+    # Check if username and password are provided
     if not username or not password:
+        #print("Error: Username and password are required.")
         return
-    
-    conn = sqlite3.connect("./backend/EcommerceDB.db")
+
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
     cursor = conn.cursor()
 
-    userid = cursor.execute("SELECT * FROM Authentication WHERE Username = ? AND Password = ? AND UserType = 'seller'", (username, password)).fetchone()
-    if userid:
-        print(userid[0])
-        return userid[0]  # Returning the seller_id
-    else:
-        return None
+    try:
+        users = cursor.execute("SELECT UserID, Username FROM Authentication WHERE Username = ? AND Password = ? AND UserType = 'seller'", (username, password))
+        for user in users:
+            return user[0]
+        return "invalid"
+    except sqlite3.Error as e:
+        return "invalid"
+    finally:
+        conn.close()
 
 def add_product(name, price, category, image_url, seller_id):
     try:
@@ -59,7 +64,7 @@ if __name__ == "__main__":
     if command == "login":
         seller_id = seller_login(sys.argv[2], sys.argv[3])
         if seller_id:
-            print("Login successful. Seller ID:", seller_id)
+            print(seller_id)
         else:
             print("Login failed")
     

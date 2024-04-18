@@ -49,13 +49,16 @@ app.post("/seller", (req, res) => {
   const pythonProcess = spawn("python3", ["./backend/Seller.py", "login", username, password])
   pythonProcess.stdout.on('data', (data) => {
     const result = data.toString().trim();
-    if (result) {
+    if (result && result !== "invalid") {
       console.log(result)
       res.cookie("sellerid", result, { maxAge: 900000, httpOnly: true });
       res.cookie("seller_auth", { maxAge: 900000, httpOnly: true })
       res.redirect("/sellers_view")
     } else {
-      console.log("invalid")
+      console.log("Login failed")
+      // Handle login failure here, maybe redirect to login page again or show an error message
+      // For now, let's just send a response indicating login failure
+      res.redirect("/seller");
     }
   })
 
