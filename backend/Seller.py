@@ -36,6 +36,20 @@ def edit_product(product_id, name, price, category, image_url, seller_id):
         print("Product edited successfully")
     except Exception as e:
         print("Error editing product:", e)
+        
+def delete_product(product_id):
+    try:
+        conn = sqlite3.connect("./backend/EcommerceDB.db")
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM products WHERE product_id =?", (product_id,))
+        product = cursor.execute("SELECT * FROM products WHERE product_id", (product_id))
+        
+        if product:
+            print("Error deleting product")
+        else: 
+            print("Successfully deleted product")
+    except:
+        print("invalid")
 
 def get_products(seller_id):
     conn = sqlite3.connect("./backend/EcommerceDB.db")
@@ -71,3 +85,7 @@ if __name__ == "__main__":
     
     elif command == "search":
         get_products(sys.argv[2])
+        
+        # Ask Chase for correct Sys argv value
+    #elif command =="delete":
+        #delete_product(sys.argv[?]))
