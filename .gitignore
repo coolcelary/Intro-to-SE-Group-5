@@ -4,3 +4,4 @@ nohup.out
 curl.out
 backend/__pycache__
 server.out
+backend/EcommerceDB.db
