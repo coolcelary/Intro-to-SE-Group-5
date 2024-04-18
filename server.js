@@ -241,6 +241,7 @@ app.post("/login", (req, res) => {
       res.redirect("/")
     } else {
       console.log("invalid")
+      res.redirect("/login")
     }
   })
 })
