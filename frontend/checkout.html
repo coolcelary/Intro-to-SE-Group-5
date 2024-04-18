@@ -69,46 +69,73 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-      const userIcon = document.getElementById('userIcon');
-      const userMenu = document.getElementById('userMenu');
+  document.addEventListener('DOMContentLoaded', function () {
+    const userIcon = document.getElementById('userIcon');
+    const userMenu = document.getElementById('userMenu');
 
-      userIcon.addEventListener('click', function () {
-        userMenu.classList.toggle('show');
+    userIcon.addEventListener('click', function () {
+      userMenu.classList.toggle('show');
+    });
+
+    fetch('/cart_items')
+      .then(response => response.json())
+      .then(data => {
+        const cartItems = document.getElementById('cartItems');
+        cartItems.innerHTML = ''; // Clear existing items
+
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.quantity}</td>
+            <td>${item.name}</td>
+            <td>${item.price}</td>
+          `;
+          cartItems.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error fetching cart items:', error));
+
+    const paymentForm = document.getElementById('payment-form');
+    paymentForm.addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Serialize form data into JSON format
+      const formData = new FormData(paymentForm);
+      const formDataJSON = {};
+      formData.forEach((value, key) => {
+        formDataJSON[key] = value;
+      });
+
+      // Send form data to server
+      fetch('/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formDataJSON)
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(data => {
+        // Handle successful response from server if needed
+        console.log('Checkout successful:', data);
+        // Redirect or show a success message
+      })
+      .catch(error => {
+        // Handle error response from server
+        console.error('Error during checkout:', error.message);
+        // Show an error message to the user
       });
     });
+  });
 
   function goBack() {
-      window.history.back();
-    }
-    
-    fetch('/cart_items')
-    .then(response => response.json())
-    .then(data => {
-      const cartItems = document.getElementById('cartItems');
-      cartItems.innerHTML = ''; // Clear existing items
-      
-      data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.quantity}</td>
-          <td>${item.name}</td>
-          <td>${item.price}</td>
-        `;
-        cartItems.appendChild(row);
-      });
-    })
-    .catch(error => console.error('Error fetching cart items:', error));
-
-    document.addEventListener('DOMContentLoaded', function () {
-      const userIcon = document.getElementById('userIcon');
-      const userMenu = document.getElementById('userMenu');
-
-      userIcon.addEventListener('click', function () {
-        userMenu.classList.toggle('show');
-      });
-      showPage(1)
-    });
+    window.history.back();
+  }
 </script>
 </body>
 </html>
