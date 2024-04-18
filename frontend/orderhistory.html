@@ -4,7 +4,281 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lawn Depot - Order History</title>
-    <link rel="stylesheet" href="./style.css">
+    <style>
+      body {
+  font-family: Manrope, sans-serif;
+  background-color: #ffffff;
+  background: url('https://outdoorgardendecorationblog.weebly.com/uploads/1/3/4/3/134339470/4_orig.jpg') center/cover no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(5px);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+nav {
+  background-color: #12a04d;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+nav .logo img {
+  width: 100px;
+  height: auto;
+  margin-right: 30px;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 0px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-input {
+  padding: 10px;
+  width: 400px;
+  font-size: large;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: none;
+}
+
+.search-button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.search-button img {
+  width: 40px;
+  height: auto;
+}
+
+.search-button:hover {
+  background-color: #45a049;
+}
+
+.user-icon {
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  margin-right: 15px;
+  width: 40px;
+  height: auto;
+}
+
+.user-icon img {
+  width: 55px;
+  height: auto;
+}
+
+.user-menu {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 15px;
+  background-color: #0b6430;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu li {
+  margin-bottom: 5px;
+}
+
+.user-menu a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.user-menu.show {
+  display: block;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+nav {
+  background-color: #12a04d;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+
+nav .logo img {
+  width: 100px;
+  /* Adjust the width as needed */
+  height: auto;
+  /* Maintain the aspect ratio */
+  margin-right: 30px;
+  /* Add some spacing between the image and text */
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  /* Align items to the left */
+  align-items: center;
+  /* Center items vertically */
+  margin-left: 0px;
+  /* Push the ul all the way to the left */
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.user-icon {
+  display: block;
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #fff;
+  margin-right: 15px;
+  width: 40px;
+  /* Adjust the width as needed */
+  height: auto;
+}
+
+.user-icon img {
+  width: 55px;
+  /* Adjust the width as needed */
+  height: auto;
+  /* Maintain aspect ratio */
+}
+
+.user-menu {
+  display: none;
+  position: absolute;
+  top: 70px;
+  right: 15px;
+  background-color: #0b6430;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu li {
+  margin-bottom: 5px;
+}
+
+.user-menu a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.user-menu.show {
+  display: block;
+}
+
+.orderHistory {
+    margin: 20px;
+}
+
+.orderHistory h1 {
+  justify-content: center;
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+#orderHistoryTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#orderHistoryTable th,
+#orderHistoryTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#orderHistoryTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+#orderHistoryTable tbody tr {
+    background-color: #f2f2f2;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .product-card {
+    width: calc(50% - 40px);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .product-card {
+    width: 100%;
+  }
+}
+
+    </style>
 </head>
 <body>
     <nav>
@@ -45,6 +319,9 @@
                     <th>Address</th>
                     <th>Email</th>
                     <th>Card Number</th>
+                    <th>Expiration Date</th>
+                    <th>Card Name</th>
+                    <th>CVV</th>
                     <!-- Additional columns if needed -->
                 </tr>
             </thead>
@@ -59,6 +336,15 @@
       window.history.back();
     }
     
+    document.addEventListener('DOMContentLoaded', function () {
+      const userIcon = document.getElementById('userIcon');
+      const userMenu = document.getElementById('userMenu');
+
+      userIcon.addEventListener('click', function () {
+        userMenu.classList.toggle('show');
+      });
+    });
+
     fetch('/userOrders')
     .then(response => response.json())
     .then(data => {

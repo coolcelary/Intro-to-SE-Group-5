@@ -824,3 +824,33 @@ nav ul li a {
 .create-product h1 {
   color: #12a04d;
 }
+
+.orderHistory {
+    margin: 20px;
+}
+
+.orderHistory h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#orderHistoryTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#orderHistoryTable th,
+#orderHistoryTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#orderHistoryTable th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+#orderHistoryTable tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

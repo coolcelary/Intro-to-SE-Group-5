@@ -518,23 +518,20 @@ app.get("/orderhistory", (req, res) => {
 })
 
 app.get("/userOrders", (req, res) => {
-  if (req.cookies && req.cookies.authenticated) {
-    const userid = req.cookies.userid;
-    console.log(`python3 ./backend/Order.py getOrdersForUser "${userid}"`);
-    const pythonProcess = spawn("python3", ["./backend/Order.py", "getOrdersForUser", userid]);
-    pythonProcess.stdout.on('data', (data) => {
-      const result = data.toString().trim();
-      console.log(result);
-      if (result) {
-        res.status(200).json(JSON.parse(result.replace(/'/g, "\"")));
-      } else {
-        res.status(405).json([]);
-      }
-    });
-  } else {
-    res.redirect("/login");
-  }
-});
+  console.log(`python3 ./backend/Order.py get "${req.cookies.userid}"`)
+  const userid = req.cookies.userid;
+  const pythonProcess = spawn("python3", ["./backend/Order.py", "get", userid])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
 
 // Account Information Page
 
