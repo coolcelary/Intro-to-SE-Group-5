@@ -139,6 +139,21 @@
               })
               productCard.appendChild(incButton)
 
+            const decButton = document.createElement("button")
+            decButton.textContent = "-"
+            decButton.addEventListener('click', function() {
+                const result = fetch(`/cartDecrement/${item.id}`, {
+                  method: 'DELETE',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+              });
+              location.reload()
+            })
+            productCard.appendChild(decButton)
+
+
+
             const moreButton = document.createElement('button');
             moreButton.textContent = "more"
             moreButton.addEventListener("click", function(){

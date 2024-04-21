@@ -211,7 +211,7 @@ check_curl "http://localhost:3000/hasPurchased/13"
 check_curl "http://localhost:3000/more_info"
 check_curl "http://localhost:3000/cart_search"
 check_curl "http://localhost:3000/search"
-rm -rf ./curl.out ./nohup.out
+rm -rf ./curl.out ./nohup.out ./server.out
 print_title "All test completed successfully."
 
 terminate

@@ -444,6 +444,24 @@ app.get("/cart_search", (req, res) => {
   })
 })
 
+app.delete("/cartDecrement/:id", (req,res) => {
+  const id = req.params.id
+  const userid = req.cookies.userid
+  console.log(`python3 ./backend/Cart.py decrement "${userid}" "${id}"`)
+  const pythonProcess = spawn("python3", ["./backend/Cart.py", "decrement", userid, id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json({valid:true})
+    }
+    else {
+      res.status(405).json({valid:false})
+    }
+  })
+
+})
+
 // More info page
 
 app.get("/more_info", (req, res) => {

@@ -68,6 +68,32 @@ def add_to_cart(userID, productID):
         finally:
             conn.close()
     
+
+def decrement_cart(userID, productID):
+    if not userID or not productID:
+        return False
+
+    conn = sqlite3.connect('./backend/EcommerceDB.db')
+    cursor = conn.cursor()
+    existing_entry = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID)).fetchone()
+    if existing_entry:
+        quantity = int(existing_entry[0]) - 1
+        try:
+            if quantity == 0:
+                cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID,))
+            else:
+                cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID = ?", (quantity, userID, productID,))
+            conn.commit()
+            return True
+        except:
+            return False
+        finally:
+            conn.close()
+
+    else:
+        return False
+
+
 def remove_from_cart(userID, productID):
     # Check if username and password are provided
     if not userID or not productID:
@@ -85,22 +111,6 @@ def remove_from_cart(userID, productID):
         print("Error removing item from cart:", e)
     finally:
         conn.close()
-
-def decrement_cart(userID, productID):
-    if not userID or not productID:
-        return False
-
-    conn = sqlite3.connect('./backend/EcommerceDB.db')
-    cursor = conn.cursor()
-    quantity = cursor.execute("SELECT Quantity FROM Cart WHERE UserID = ? AND ProductID = ?", (userID, productID,)).fetchone()
-    if not quantity or quantity[0] <= 1:
-        cursor.execute("DELETE FROM Cart WHERE UserID = ? AND ProductID + ?", (userID, productID,))
-        print("0")
-    else:
-        new_quantity = int(quantity[0]) - 1
-        print(new_quantity)
-        cursor.execute("UPDATE Cart SET Quantity = ? WHERE UserID = ? AND ProductID + ?", (new_quantity, userID, productID))
-    conn.commit()
 
 def get_total(userID):
     # Connect to the SQLite database
@@ -145,6 +155,10 @@ if __name__ == "__main__":
     elif command == "search":
         get_items(sys.argv[2], sys.argv[3])
     elif command == "decrement":
-        decrement_cart(sys.argv[2], sys.argv[3])
+        if decrement_cart(sys.argv[2], sys.argv[3]):
+            print("valid")
+        else:
+            print("Invalid")
     elif command == "total":
         total = get_total(sys.argv[2])
+    
