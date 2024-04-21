@@ -95,6 +95,18 @@ def approve(seller_id):
     except:
         print("Invalid")
 
+def get_pending():
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    pending = cursor.execute("SELECT UserID, Username, Approved FROM Authentication WHERE UserType = 'seller'").fetchall()
+    result = list()
+    for user in pending:
+        if not user[2]:
+            item = dict()
+            item["id"] = user[0]
+            item["name"] = user[1]
+            result.append(item)
+    print(result)
 
 
 
@@ -110,6 +122,8 @@ def main():
         check_approved(sys.argv[2])
     elif command == "approve":
         approve(sys.argv[2])
+    elif command == "getpending":
+        get_pending()
 
 if __name__ == "__main__":
     main()

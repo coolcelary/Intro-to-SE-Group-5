@@ -27,6 +27,7 @@
   </nav>
     <div class="content">
       <ul class="user-list" id="user-list"></ul>
+      <ul class="user-list" id ="approve-list"></ul>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -65,6 +66,40 @@
                 });
                 banButton.textContent = "Ban User";
                 userList.appendChild(banButton);
+              });
+            })
+          .catch(error => console.error(error))
+        
+      const approveList = document.getElementById('approve-list')
+        fetch("/pending")
+          .then(response => response.json())
+          .then(data => {
+              data.forEach(item => {
+                const userItem = document.createElement('li')
+                userItem.textContent = `User #${item.id} username: ${item.name}`
+                userList.appendChild(userItem);
+                const approveButton = document.createElement('button')
+                approveButton.addEventListener('click', function(event) {
+                    fetch('/approve/' + item.id, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                    .then(function(response) {
+                        if (!response.ok) {
+                            throw new Error('Approve Failed');
+                        }
+                        console.log('User banned successfully');
+                      location.reload()
+                    })
+                    .catch(function(error) {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+                });
+                approveButton.textContent = "Approve User";
+                userItem.appendChild(approveButton)
+                approveList.appendChild(userItem);
               });
             })
           .catch(error => console.error(error))

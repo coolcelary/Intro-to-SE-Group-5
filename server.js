@@ -164,7 +164,6 @@ app.post("/products/edit", (req, res) => {
 });
 
 app.get("/seller_products", (req, res) => {
-  // get a sellets products
   const seller_id = req.cookies.sellerid;
   console.log(`python3 ./backend/Seller.py search "${seller_id}" `)
   const pythonProcess = spawn("python3", ["./backend/Seller.py", "search", seller_id])
@@ -244,6 +243,41 @@ app.post("/ban/:id", (req, res) => {
     })
   }
   })
+
+app.get("/pending", (req,res) => {
+  console.log(`python3 ./backend/Admin.py getpending `)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "getpending"])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json(JSON.parse(result.replace(/'/g, "\"")))
+    }
+    else {
+      res.status(405).json([])
+    }
+  })
+})
+
+app.post("/approve/:id", (req, res) => {
+  const id = req.params.id
+  console.log(`python3 ./backend/Admin.py approve "${id}"`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "approve", id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.status(200).json({valid:true})
+    }
+    else {
+      res.status(405).json({valid:false})
+    }
+  })
+
+})
+
+
+
 
 // Homepage
 
