@@ -14,10 +14,28 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 
 
+async function isApproved(sellerid){
+  console.log(`./backend/Admin.py isapproved ${sellerid}`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "isapproved", sellerid]) // Make admin page connection
+  let valid = false
+  await pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result === "yes") {
+      console.log(result)
+      valid = true
+    } else {
+      console.log("no")
+    }
+  })
+  return valid
+}
+
+
 // Admin login
 
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "/frontend/admin.html"))
+
 })
 
 app.post("/admin", (req, res) => {
@@ -56,8 +74,6 @@ app.post("/seller", (req, res) => {
       res.redirect("/sellers_view")
     } else {
       console.log("Login failed")
-      // Handle login failure here, maybe redirect to login page again or show an error message
-      // For now, let's just send a response indicating login failure
       res.redirect("/seller");
     }
   })
@@ -76,20 +92,21 @@ app.get("/sellers_add", (req, res) => {
 })
 
 app.get("/sellers_view", (req, res) => {
-  if (req.cookies && req.cookies.seller_auth) {
+  if(req.cookies && req.cookies.sellerid && isApproved(req.cookies.sellerid)){
+    console.log("here")
     res.sendFile(path.join(__dirname, "/frontend/sellerview.html"))
   }
-  else {
-    res.redirect("/admin")
+  else{
+    res.redirect("/seller")
   }
 })
 
 app.get("/sellers_edit", (req, res) => {
-  if (req.cookies && req.cookies.seller_auth) {
+  if(req.cookies && req.cookies.seller_auth && isApproved(req.cookies.sellerid)){
     res.sendFile(path.join(__dirname, "/frontend/selleredit.html"))
   }
-  else {
-    res.redirect("/admin")
+  else{
+    res.redirect("/seller")
   }
 })
 

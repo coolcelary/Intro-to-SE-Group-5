@@ -76,6 +76,27 @@ def ban_product(product_id):
     except:
         print("invalid")
 
+def check_approved(seller_id):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    approved_user = cursor.execute("SELECT * FROM Authentication WHERE UserID = ? AND Approved = TRUE", (seller_id,)).fetchone()
+    if approved_user:
+        print("yes")
+    else:
+        print("no")
+
+def approve(seller_id):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE Authentication SET Approved = TRUE WHERE UserID = ?", (seller_id,))
+        conn.commit()
+        print("valid")
+    except:
+        print("Invalid")
+
+
+
 
 def main():
     command = sys.argv[1]
@@ -83,9 +104,12 @@ def main():
         admin_login(sys.argv[2], sys.argv[3])
     elif command == "listall":
         list_users()
-        #list_products()
     elif command == "ban":
         ban_user(sys.argv[2])
+    elif command == "isapproved":
+        check_approved(sys.argv[2])
+    elif command == "approve":
+        approve(sys.argv[2])
 
 if __name__ == "__main__":
     main()
