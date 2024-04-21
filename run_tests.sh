@@ -49,7 +49,8 @@ sqlite3 ./backend/EcommerceDB.db "CREATE TABLE Authentication (
     UserType TEXT NOT NULL,
     Email TEXT,
     PhoneNumber TEXT,
-    Approved BOOLEAN
+    Approved BOOLEAN,
+    Money INTEGER
 );"
 sqlite3 ./backend/EcommerceDB.db "CREATE TABLE Orders (
     OrderID INTEGER PRIMARY KEY,
