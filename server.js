@@ -276,6 +276,14 @@ app.post("/approve/:id", (req, res) => {
 
 })
 
+app.get("/admin_products", (req, res) => {
+  if(req.cookies && req.cookies.admin_auth){
+    res.sendFile(path.join(__dirname, "/frontend/adminproducts.html"))
+  } else{
+    res.redirect("/admin")
+  }
+})
+
 
 
 
@@ -398,6 +406,23 @@ app.get("/search", (req, res) => {
       res.status(405).json([])
     }
   })
+})
+
+app.delete("/blockProduct/:id", (req,res) => {
+  const id = req.params.id
+  console.log(`python3 ./backend/Admin.py block "${id}" `)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "block", id])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result === "valid") {
+      res.status(200).json({valid:true})
+    }
+    else {
+      res.status(405).json({valid:false})
+    }
+  })
+
 })
 
 

@@ -108,6 +108,13 @@ def get_pending():
             result.append(item)
     print(result)
 
+def block_product(product_id):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM products WHERE product_id = ?", (product_id,))
+    conn.commit()
+    print("valid")
+
 
 
 def main():
@@ -124,6 +131,8 @@ def main():
         approve(sys.argv[2])
     elif command == "getpending":
         get_pending()
+    elif command == "block":
+        block_product(sys.argv[2])
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <html lang="en">
   
   <head>
@@ -29,11 +29,8 @@
       </a>
   
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/cart">Cart</a></li>
-        <li><a href="/about">About Us</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="/admin_home">Users</a></li>
+        <li><a href="/admin_products">Products</a></li>
       </ul>
   
       <div class="user-icon" id="userIcon"><img src="./assets/User Icon.png" alt="User Icon"></div>
@@ -101,28 +98,18 @@
                 image.classList.add('product-image')
                 productCard.appendChild(image)
   
-                const cartButton = document.createElement('button');
-                cartButton.textContent = "add to cart"
-                cartButton.addEventListener('click', function(event) {
-                  const body = { itemid : `${item.id}` }
-                  fetch("/cart", {
-                      method: 'POST',
+                const blockButton = document.createElement('button');
+                blockButton.textContent = "Block Product"
+                blockButton.addEventListener('click', function(event) {
+                  fetch(`/blockProduct/${item.id}`, {
+                      method: 'DELETE',
                       headers: {
                           'Content-Type': 'application/json'
                       },
-                      body: JSON.stringify(body)
                   });
-                  showNotification(event.target);
+                  location.reload()
                 })
-                productCard.appendChild(cartButton);
-  
-                const moreButton = document.createElement('button');
-                moreButton.textContent = "more"
-                moreButton.addEventListener("click", function(){
-                  localStorage.setItem("clicked_id",item.id)
-                  window.location.href = "/more_info"
-                })
-                productCard.appendChild(moreButton);
+                productCard.appendChild(blockButton);
   
                 productContainer.appendChild(productCard);
               });
@@ -193,33 +180,29 @@
                 description.textContent = item.description;
                 productCard.appendChild(description);
   
+                // Quantity
+                const quantity = document.createElement('div');
+                quantity.classList.add('quantity');
+                quantity.textContent = `Qty: ${item.quantity}`;
+                productCard.appendChild(quantity);
+  
                 const image = document.createElement('img');
                 image.src = item.image_url
                 image.classList.add('product-image')
                 productCard.appendChild(image)
   
-                const cartButton = document.createElement('button');
-                cartButton.textContent = "add to cart"
-                cartButton.addEventListener('click', function() {
-                  const body = { itemid : `${item.id}` }
-                  fetch("/cart", {
-                      method: 'POST',
+                const blockButton = document.createElement('button');
+                blockButton.textContent = "Block Product"
+                blockButton.addEventListener('click', function(event) {
+                  fetch(`/blockProduct/${item.id}`, {
+                      method: 'DELETE',
                       headers: {
                           'Content-Type': 'application/json'
                       },
-                      body: JSON.stringify(body)
                   });
-                  showNotification(cartButton);
+                  location.reload()
                 })
-                productCard.appendChild(cartButton);
-  
-                const moreButton = document.createElement('button');
-                moreButton.textContent = "more"
-                moreButton.addEventListener("click", function(){
-                  localStorage.setItem("clicked_id",item.id)
-                  window.location.href = "/more_info"
-                })
-                productCard.appendChild(moreButton);
+                productCard.appendChild(blockButton);
   
                 productContainer.appendChild(productCard);
               });
