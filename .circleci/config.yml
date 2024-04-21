@@ -13,7 +13,7 @@ jobs:
           pkg-manager: npm
       - run:
           name: Install dependencies
-          command: sudo apt-get install sqlite3 python3
+          command: sudo apt-get update && sudo apt-get install sqlite3 python3
       - run:
           name: Run tests
           command: ./run_tests.sh
