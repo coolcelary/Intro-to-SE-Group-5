@@ -58,9 +58,13 @@
             </div>
             <input type="submit" value="Submit Review" onclick="submitReview(event)">
         </form>
+      <h1 style="color: white">Similar Products:</h1>
+      <div id="compare-container" class="compare-container" ></div>
     </div>
     <script>
+
       document.addEventListener('DOMContentLoaded', function () {
+          let productName = ""
           // Fetch information about the clicked product
           const productId = localStorage.getItem("clicked_id");
       
@@ -92,6 +96,7 @@
                   title.classList.add('product-title');
                   title.textContent = item.name;
                   productCard.appendChild(title);
+                  productName = item.name
       
                   const price = document.createElement('div');
                   price.classList.add('product-price');
@@ -120,30 +125,6 @@
                       });
                   });
                   productCard.appendChild(cartButton);
-      
-                  // Fetch products from the same category
-                  fetch(`/products/category/${item.category_id}`)
-                      .then(response => response.json())
-                      .then(products => {
-                          const comparisonContainer = document.createElement('div');
-                          comparisonContainer.classList.add('comparison-container');
-                          products.forEach(product => {
-                              if (product.id !== item.id) {
-                                  const productComparison = document.createElement('div');
-                                  productComparison.classList.add('product-comparison');
-                                  productComparison.innerHTML = `
-                                      <h3>${product.name}</h3>
-                                      <p>${product.description}</p>
-                                      <button>Add to compare</button>
-                                  `;
-                                  comparisonContainer.appendChild(productComparison);
-                              }
-                          });
-                          productCard.appendChild(comparisonContainer);
-                      })
-                      .catch(error => {
-                          console.error('Error fetching products from the same category:', error);
-                      });
               })
               .catch(error => {
                   console.error('Error fetching product details:', error);
@@ -165,10 +146,53 @@
                       reviewContainer.appendChild(description);
                   });
               });
+      const compareContainer = document.getElementById("compare-container")
+      fetch(`/search?q=${productName}`)
+      .then(response => response.json())
+        .then(data => {
+            const compareDiv = document.createElement('div')
+            compareDiv.classList.add("product-card")
+          data.slice(0,4).forEach(item => {
+            const title = document.createElement('div');
+            title.classList.add('product-title');
+            title.textContent = item.name;
+            compareDiv.appendChild(title);
+
+            const price = document.createElement('div');
+            price.classList.add('product-price');
+            price.textContent = `${item.price}`;
+            compareDiv.appendChild(price);
+
+            const description = document.createElement('div');
+            description.textContent = item.description;
+            compareDiv.appendChild(description);
+
+            const image = document.createElement('img');
+            image.src = item.image_url;
+            image.classList.add('product-image');
+            compareDiv.appendChild(image);
+
+            const cartButton = document.createElement('button');
+            cartButton.textContent = "add to cart";
+            cartButton.addEventListener('click', function() {
+                const body = { itemid: `${item.id}` };
+                fetch("/cart", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+            });
+            compareDiv.appendChild(cartButton);
+            compareContainer.appendChild(compareDiv)
+          })
+        })
       
+
       });
-      
-      function submitReview(event) {
+
+            function submitReview(event) {
           event.preventDefault(); // Prevent the form from submitting normally
       
           const rating = document.getElementById('rating').value;
