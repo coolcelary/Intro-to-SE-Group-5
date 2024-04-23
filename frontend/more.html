@@ -61,118 +61,151 @@
     </div>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
-        fetch(`/hasPurchased/${localStorage.getItem("clicked_id")}`)
-          .then(response => response.json())
-          .then(data => {
-          console.log(data.valid)
-          if(data.valid == false){
-            document.getElementById('reviewForm').classList.add('hidden');
-            }
-          else {
-            document.getElementById('reviewForm').classList.remove('hidden');
-          }
-        })
-        const userIcon = document.getElementById('userIcon');
-
-        const userMenu = document.getElementById('userMenu');
-
-        userIcon.addEventListener('click', function () {
-          userMenu.classList.toggle('show');
-        });
-        productCard = document.getElementById("product");
-        fetch(`/product/${localStorage.getItem("clicked_id")}`)
-          .then(response => response.json())
-          .then(item => {
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.name;
-              productCard.appendChild(title);
-
-              const price = document.createElement('div');
-              price.classList.add('product-price');
-              price.textContent = `${item.price}`;
-              productCard.appendChild(price);
-
-              const description = document.createElement('div');
-              description.textContent = item.description;
-              productCard.appendChild(description);
-
-              const image = document.createElement('img');
-              image.src = item.image_url
-              image.classList.add('product-image')
-              productCard.appendChild(image)
-
-              const cartButton = document.createElement('button');
-              cartButton.textContent = "add to cart"
-              cartButton.addEventListener('click', function() {
-                const body = { itemid : `${item.id}` }
-                fetch("/cart", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
+          // Fetch information about the clicked product
+          const productId = localStorage.getItem("clicked_id");
+      
+          fetch(`/hasPurchased/${productId}`)
+              .then(response => response.json())
+              .then(data => {
+                  console.log(data.valid);
+                  if (data.valid === false) {
+                      document.getElementById('reviewForm').classList.add('hidden');
+                  } else {
+                      document.getElementById('reviewForm').classList.remove('hidden');
+                  }
+              });
+      
+          // Toggle user menu
+          const userIcon = document.getElementById('userIcon');
+          const userMenu = document.getElementById('userMenu');
+      
+          userIcon.addEventListener('click', function () {
+              userMenu.classList.toggle('show');
+          });
+      
+          // Fetch details about the clicked product
+          const productCard = document.getElementById("product");
+          fetch(`/product/${productId}`)
+              .then(response => response.json())
+              .then(item => {
+                  const title = document.createElement('div');
+                  title.classList.add('product-title');
+                  title.textContent = item.name;
+                  productCard.appendChild(title);
+      
+                  const price = document.createElement('div');
+                  price.classList.add('product-price');
+                  price.textContent = `${item.price}`;
+                  productCard.appendChild(price);
+      
+                  const description = document.createElement('div');
+                  description.textContent = item.description;
+                  productCard.appendChild(description);
+      
+                  const image = document.createElement('img');
+                  image.src = item.image_url;
+                  image.classList.add('product-image');
+                  productCard.appendChild(image);
+      
+                  const cartButton = document.createElement('button');
+                  cartButton.textContent = "add to cart";
+                  cartButton.addEventListener('click', function() {
+                      const body = { itemid: `${item.id}` };
+                      fetch("/cart", {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify(body)
+                      });
+                  });
+                  productCard.appendChild(cartButton);
+      
+                  // Fetch products from the same category
+                  fetch(`/products/category/${item.category_id}`)
+                      .then(response => response.json())
+                      .then(products => {
+                          const comparisonContainer = document.createElement('div');
+                          comparisonContainer.classList.add('comparison-container');
+                          products.forEach(product => {
+                              if (product.id !== item.id) {
+                                  const productComparison = document.createElement('div');
+                                  productComparison.classList.add('product-comparison');
+                                  productComparison.innerHTML = `
+                                      <h3>${product.name}</h3>
+                                      <p>${product.description}</p>
+                                      <button>Add to compare</button>
+                                  `;
+                                  comparisonContainer.appendChild(productComparison);
+                              }
+                          });
+                          productCard.appendChild(comparisonContainer);
+                      })
+                      .catch(error => {
+                          console.error('Error fetching products from the same category:', error);
+                      });
               })
-              productCard.appendChild(cartButton)
-
-          })
-          reviewContainer = document.getElementById("reviews");
-          fetch(`/review/${localStorage.getItem("clicked_id")}`)
-          .then(response => response.json())
-          .then(data => {
-            data.forEach(item => {
-              const title = document.createElement('div');
-              title.classList.add('product-title');
-              title.textContent = item.username;
-              reviewContainer.appendChild(title);
-
-
-              const description = document.createElement('div');
-              description.textContent = item.text;
-              reviewContainer.appendChild(description);
-})
-          })
-
+              .catch(error => {
+                  console.error('Error fetching product details:', error);
+              });
+      
+          // Fetch reviews for the clicked product
+          const reviewContainer = document.getElementById("reviews");
+          fetch(`/review/${productId}`)
+              .then(response => response.json())
+              .then(data => {
+                  data.forEach(item => {
+                      const title = document.createElement('div');
+                      title.classList.add('product-title');
+                      title.textContent = item.username;
+                      reviewContainer.appendChild(title);
+      
+                      const description = document.createElement('div');
+                      description.textContent = item.text;
+                      reviewContainer.appendChild(description);
+                  });
+              });
+      
       });
-
+      
       function submitReview(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-
-            const rating = document.getElementById('rating').value;
-            const reviewText = document.getElementById('review').value;
-
-            // Prepare review data
-            const reviewData = {
-                productId: localStorage.getItem("clicked_id"),
-                username: 'test',
-                text: reviewText,
-                stars: rating,
-            };
-
-            // Make POST request
-        fetch('/review/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(reviewData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Review submitted successfully:', data);
-                document.getElementById("reviewForm").reset();
-            })
-            .catch(error => {
-                console.error('Error submitting review:', error);
-            });
-        }
-    </script>
+          event.preventDefault(); // Prevent the form from submitting normally
+      
+          const rating = document.getElementById('rating').value;
+          const reviewText = document.getElementById('review').value;
+      
+          // Prepare review data
+          const reviewData = {
+              productId: localStorage.getItem("clicked_id"),
+              username: 'test',
+              text: reviewText,
+              stars: rating,
+          };
+      
+          // Make POST request to submit review
+          fetch('/review/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(reviewData)
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log('Review submitted successfully:', data);
+              document.getElementById("reviewForm").reset();
+          })
+          .catch(error => {
+              console.error('Error submitting review:', error);
+          });
+      }
+      </script>
+      
 
 
 

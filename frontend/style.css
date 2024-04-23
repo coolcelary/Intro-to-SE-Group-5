@@ -854,3 +854,31 @@ nav ul li a {
 #orderHistoryTable tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+#reviewForm {
+  max-width: 400px;
+  color: #12a04d;
+  text-decoration: underline;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Style for form headings */
+#reviewForm h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #12a04d;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
