@@ -749,6 +749,17 @@ app.post("/checkout", (req, res) => {
 
 })
 
+// Compare Page
+
+app.get("/compare", (req,res) => {
+ if (req.cookies && req.cookies.authenticated) {
+    res.sendFile(path.join(__dirname, "frontend/compare.html"));
+  }
+  else {
+    res.redirect("/login")
+  }
+})
+
 // Setup the server
 
 app.listen(PORT, () => {
