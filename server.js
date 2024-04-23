@@ -740,7 +740,7 @@ app.post("/checkout", (req, res) => {
     const result = data.toString().trim();
     console.log(result)
     if (result == "valid") {
-      res.redirect("/")
+      res.send("<script>alert('Order placed'); window.location.href='/';</script>");
     }
     else {
       res.send("<script>alert('You have no items. Cannot checkout.')</script>")
