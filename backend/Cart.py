@@ -122,7 +122,6 @@ def get_total(userID):
         # Query to fetch ProductID and Quantity from Cart table for the given UserID
         cursor.execute("SELECT ProductID, Quantity FROM Cart WHERE UserID = ?", (userID,))
         cart_items = cursor.fetchall()
-        print("Cart Items:", cart_items)
         # Iterate through cart items and fetch price for each product from the products table
         for item in cart_items:
             product_id, quantity = item
@@ -130,11 +129,9 @@ def get_total(userID):
             # Query to fetch price for the product from the products table
             cursor.execute("SELECT price FROM products WHERE product_id = ?", (product_id,))
             product_price = cursor.fetchone()
-            print("Product Price:", product_price)
             if product_price:
                 price_value = float(product_price[0].replace('$', ''))
                 total_price += price_value * quantity
-                print(total_price)
         return total_price
     except sqlite3.Error as e:
         print("Error calculating total price:", e)
@@ -161,4 +158,5 @@ if __name__ == "__main__":
             print("Invalid")
     elif command == "total":
         total = get_total(sys.argv[2])
+        print(total)
     

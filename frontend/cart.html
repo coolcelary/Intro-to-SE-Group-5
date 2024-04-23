@@ -46,11 +46,23 @@
       <input type="text" class="search-input" id="search-input" placeholder="Search Products...">
     </div>-->
       <div id="product-container"></div>
+      <div id="cartTotal"></div>
       <button onclick="goBack()">Go Back</button>
       <button id="checkoutButton" onclick="checkCartAndProceed()">Checkout</button>
     </div>
   
     <script>
+      function fetchCartTotal() {
+    fetch('/cart_total') // Replace '/cart_total' with your actual API endpoint
+        .then(response => response.json())
+        .then(data => {
+            const cartTotalElement = document.getElementById('cartTotal');
+            cartTotalElement.textContent = `Total: $${data.total}`; // Assuming the API response contains the total amount
+        })
+        .catch(error => {
+            console.error('Error fetching cart total:', error);
+        });
+}
       function goBack() {
       window.history.back();
     }
@@ -177,6 +189,7 @@
         userIcon.addEventListener('click', function () {
           userMenu.classList.toggle('show');
         });
+        fetchCartTotal();
         showPage(1)
       });
 
