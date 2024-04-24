@@ -35,6 +35,7 @@
   </nav>
 
     <div class="content">
+        <div id="amount"></div>
         <div id="product-container">
         </div>
       </div>
@@ -48,6 +49,14 @@
   userIcon.addEventListener('click', function () {
     userMenu.classList.toggle('show');
   });
+
+    const amount = document.getElementById("amount")
+    fetch("/sellerAmount")
+      .then(response => response.json())
+        .then( data => {
+          amount.textContent = `You have a balance of: ${data.amount}\$`
+        })
+
 
   fetch('/seller_products')
     .then(response => response.json())

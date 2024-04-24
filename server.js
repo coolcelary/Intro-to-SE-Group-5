@@ -214,6 +214,23 @@ app.get("/productOrders/:id", (req, res) => {
   })
 })
 
+app.get("/sellerAmount", (req,res) => {
+  const sellerid = req.cookies.sellerid
+  console.log(`python3 ./backend/Seller.py getamount "${sellerid}" `)
+  const pythonProcess = spawn("python3", ["./backend/Seller.py", "getamount", sellerid])
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    console.log(result)
+    if (result) {
+      res.json({amount:result})
+    }
+    else {
+      res.json({amount:"0.00"})
+    }
+  })
+
+})
+
 
 // Admin Page
 

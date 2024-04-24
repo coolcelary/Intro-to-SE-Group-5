@@ -64,6 +64,15 @@ def delete_product(product_id):
     conn.commit()
     print("valid")
 
+def get_amount(sellerid):
+    conn = sqlite3.connect("./backend/EcommerceDB.db")
+    cursor = conn.cursor()
+    amount = cursor.execute("SELECT Money FROM Authentication WHERE UserID = ?", (sellerid,)).fetchone()
+    if not amount or not amount[0]:
+        print("0.00")
+    else:
+        print(amount[0])
+
 
 
 if __name__ == "__main__":
@@ -86,4 +95,6 @@ if __name__ == "__main__":
         get_products(sys.argv[2])
     elif command == "delete":
         delete_product(sys.argv[2])
+    elif command == "getamount":
+        get_amount(sys.argv[2])
 

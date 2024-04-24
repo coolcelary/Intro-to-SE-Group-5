@@ -15,7 +15,8 @@ def checkout(userid, name, address, email, card_number, expiration_date, card_na
     for item in cart_items:
         cursor.execute("INSERT INTO Orders (OrderID, UserID, ProductID, Quantity, Name, Address, Email, CardNumber, ExpirationDate, CardName, CVV) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (userid, item[1], item[2], name, address, email, card_number, expiration_date, card_name, cvv,))
         seller = cursor.execute("SELECT SellerID, price FROM products WHERE product_id = ?", (item[1],)).fetchone()
-        cursor.execute("UPDATE Authentication SET Money = ? WHERE UserID = ?", (seller[1] * item[2], seller[0]))
+        if seller:
+            cursor.execute("UPDATE Authentication SET Money = ? WHERE UserID = ?", (seller[1] * item[2], seller[0]))
         # Subtract quantity from the product in the Products table
         cursor.execute("UPDATE products SET quantity = Quantity - ? WHERE product_id = ?", (item[2], item[1]))
 
