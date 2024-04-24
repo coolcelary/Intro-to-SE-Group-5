@@ -14,23 +14,6 @@ app.use(bodyParser.json());
 app.use(cookieParser())
 
 
-async function isApproved(sellerid){
-  console.log(`./backend/Admin.py isapproved ${sellerid}`)
-  const pythonProcess = spawn("python3", ["./backend/Admin.py", "isapproved", sellerid]) // Make admin page connection
-  let valid = false
-  await pythonProcess.stdout.on('data', (data) => {
-    const result = data.toString().trim();
-    if (result === "yes") {
-      console.log(result)
-      valid = true
-    } else {
-      console.log("no")
-    }
-  })
-  return valid
-}
-
-
 // Admin login
 
 app.get("/admin", (req, res) => {
@@ -84,7 +67,19 @@ app.post("/seller", (req, res) => {
 
 app.get("/sellers_add", (req, res) => {
   if (req.cookies && req.cookies.seller_auth) {
-    res.sendFile(path.join(__dirname, "/frontend/selleradd.html"))
+    const sellerid = req.cookies.sellerid
+  console.log(`./backend/Admin.py isapproved ${sellerid}`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "isapproved", sellerid]) // Make admin page connection
+  let valid = false
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result === "yes") {
+      console.log(result)
+      res.sendFile(path.join(__dirname, "/frontend/selleradd.html"))
+    } else {
+      res.redirect("/seller")
+    }
+  })
   }
   else {
     res.redirect("/admin")
@@ -92,9 +87,21 @@ app.get("/sellers_add", (req, res) => {
 })
 
 app.get("/sellers_view", (req, res) => {
-  if(req.cookies && req.cookies.sellerid && isApproved(req.cookies.sellerid)){
+  if(req.cookies && req.cookies.sellerid){
+    const sellerid = req.cookies.sellerid
     console.log("here")
+  console.log(`./backend/Admin.py isapproved ${sellerid}`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "isapproved", sellerid]) // Make admin page connection
+  let valid = false
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result === "yes") {
+      console.log(result)
     res.sendFile(path.join(__dirname, "/frontend/sellerview.html"))
+    } else {
+      res.redirect("/seller")
+    }
+  })
   }
   else{
     res.redirect("/seller")
@@ -102,8 +109,20 @@ app.get("/sellers_view", (req, res) => {
 })
 
 app.get("/sellers_edit", (req, res) => {
-  if(req.cookies && req.cookies.seller_auth && isApproved(req.cookies.sellerid)){
-    res.sendFile(path.join(__dirname, "/frontend/selleredit.html"))
+  if(req.cookies && req.cookies.seller_auth){
+    const sellerid = req.cookies.sellerid
+  console.log(`./backend/Admin.py isapproved ${sellerid}`)
+  const pythonProcess = spawn("python3", ["./backend/Admin.py", "isapproved", sellerid]) // Make admin page connection
+  let valid = false
+  pythonProcess.stdout.on('data', (data) => {
+    const result = data.toString().trim();
+    if (result === "yes") {
+      console.log(result)
+      res.sendFile(path.join(__dirname, "/frontend/selleredit.html"))
+    } else {
+      res.redirect("/seller")
+    }
+  })
   }
   else{
     res.redirect("/seller")
