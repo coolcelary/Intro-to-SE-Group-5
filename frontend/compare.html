@@ -42,7 +42,7 @@
     </div>
   </nav>
 
-  <div class="content">
+  <div class="content" id="content">
       <div class="search-container">
         <button class="search-button" id="search-button-one"><img src="./assets/Search Icon.png" alt="Search"></button>
         <input type="text" class="search-input" id="search-input-one" placeholder="Search Products...">
@@ -86,14 +86,13 @@
         });
 
       function getItem(item_index, query){
-         previous_cards = document.querySelectorAll('.product-card');
-         previous_cards.forEach(function (element) {
-           element.remove()
-         })
           const productCard = document.getElementById(item_index);
+          while (productCard.firstChild) {
+            productCard.removeChild(productCard.firstChild);
+          }
           fetch(`/search?q=${query}`)
               .then(response => response.json())
-              .then(data => data.slice(1,2))
+              .then(data => data[0])
               .then(item => {
                   const title = document.createElement('div');
                   title.classList.add('product-title');
@@ -128,6 +127,26 @@
                       });
                   });
                   productCard.appendChild(cartButton);
+                  const productPrices = document.querySelectorAll(".product-price")
+            console.log(productPrices)
+                if (productPrices.length === 2) {
+                    const newPara = document.createElement("p")
+                    const content = document.getElementById("content")
+                    // Get the prices from the text content of each <p> element
+                    var price1 = parseFloat(productPrices[0].textContent.replace(/\D/g, ''));
+                    var price2 = parseFloat(productPrices[1].textContent.replace(/\D/g, ''));
+
+                    // Output which one is cheaper
+                    if (price1 < price2) {
+                        newPara.textContent = `The first product is cheaper by ${(price2 - price1)}`
+                        
+                    } else if (price2 < price1) {
+                        newPara.textContent = `The second product is cheaper by ${(price1 - price2)}`
+                    } else {
+                        newPara.textContent = "Both products are priced the same."
+                    }
+                    content.appendChild(newPara)
+                } 
               })
               .catch(error => {
                   console.error('Error fetching product details:', error);
